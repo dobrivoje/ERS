@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+OpenIDE-Module: beansbinding
+OpenIDE-Module-Localizing-Bundle: beansbinding/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+

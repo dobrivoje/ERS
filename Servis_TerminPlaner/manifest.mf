@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+OpenIDE-Module: TerminPlaner
+OpenIDE-Module-Layer: TerminPlaner/layer.xml
+OpenIDE-Module-Localizing-Bundle: TerminPlaner/Bundle.properties
+OpenIDE-Module-Requires: org.openide.windows.WindowManager
+OpenIDE-Module-Specification-Version: 1.6.6
+

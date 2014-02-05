@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Clocking" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b4c1ea61-e5fd-4db8-9055-9c57071ada8d">
+	<property name="ireport.zoom" value="1.1000000000000059"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Helvetica" pdfEncoding="Cp1250">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="PieChartDataset" uuid="d4fad921-3f0e-4c38-b9e8-c6e6e6703e47"/>
+	<parameter name="IDRadnik" class="java.lang.Long">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DatumOD" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DatumDO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     RADDAN."trajanje" AS RADDAN_trajanje,
+     RADNIK."Ime" AS RADNIK_Ime,
+     RADNIK."Prezime" AS RADNIK_Prezime,
+     RADDAN."rbrstanja" AS RADDAN_rbrstanja,
+     RADDAN."datum" AS RADDAN_datum,
+     STATUSI."Status" AS STATUSI_Status,
+     STATUSI."Znacenje" AS STATUSI_Znacenje,
+     ORGJED."Naziv" AS ORGJED_Naziv,
+     FIRMA."Naziv" AS FIRMA_Naziv,
+     KOMPANIJA."NazivKompanije" AS KOMPANIJA_NazivKompanije,
+     RADDAN."nalog" AS RADDAN_nalog
+FROM
+     "dbo"."RADNIK" RADNIK INNER JOIN "dbo"."RADDAN" RADDAN ON RADNIK."IDRadnik" = RADDAN."FK_IDRadnik"
+     INNER JOIN "dbo"."ORGJED" ORGJED ON RADNIK."FK_IDOrgjed" = ORGJED."IDOrgjed"
+     INNER JOIN "dbo"."FIRMA" FIRMA ON ORGJED."FK_IDFirma" = FIRMA."IDFirma"
+     INNER JOIN "dbo"."KOMPANIJA" KOMPANIJA ON FIRMA."FK_IDK" = KOMPANIJA."IDK"
+     INNER JOIN "dbo"."STATUSI" STATUSI ON RADDAN."FK_IDStatus" = STATUSI."IDStatus"
+WHERE
+     RADDAN."datum" BETWEEN $P{DatumOD}and$P{DatumDO}
+     and RADDAN."FK_IDRadnik" = $P{IDRadnik}
+order by RADDAN."datum" ASC, RADDAN."rbrstanja" ASC]]>
+	</queryString>
+	<field name="RADDAN_trajanje" class="java.lang.Float"/>
+	<field name="RADNIK_Ime" class="java.lang.String"/>
+	<field name="RADNIK_Prezime" class="java.lang.String"/>
+	<field name="RADDAN_rbrstanja" class="java.lang.Integer"/>
+	<field name="RADDAN_datum" class="java.lang.String"/>
+	<field name="STATUSI_Status" class="java.lang.String"/>
+	<field name="STATUSI_Znacenje" class="java.lang.String"/>
+	<field name="ORGJED_Naziv" class="java.lang.String"/>
+	<field name="FIRMA_Naziv" class="java.lang.String"/>
+	<field name="KOMPANIJA_NazivKompanije" class="java.lang.String"/>
+	<field name="RADDAN_nalog" class="java.lang.String"/>
+	<title>
+		<band height="158" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="0" width="822" height="65" forecolor="#006699" backcolor="#E7E7E7" uuid="144dd285-f1dc-4cad-80f4-e65e3dee2871"/>
+				<staticText>
+					<reportElement style="Title" x="180" y="0" width="641" height="65" forecolor="#333333" uuid="c517a552-f403-4aa4-9e29-913bd093f8b3"/>
+					<textElement>
+						<font fontName="SansSerif" size="50" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA["Clocking" Radnika]]></text>
+				</staticText>
+			</frame>
+			<textField>
+				<reportElement x="161" y="65" width="641" height="29" uuid="63579d96-e71a-4379-8f75-0beb030aef7f"/>
+				<textElement>
+					<font fontName="SansSerif" size="22" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Evidencije radnika za period " + $P{DatumOD} + ", do " + $P{DatumDO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="161" y="126" width="188" height="24" uuid="9c5a20b1-1579-40da-b08f-1d52b9e2fefe"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORGJED_Naziv}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="161" y="100" width="188" height="24" uuid="272e3673-933c-4444-ac82-d4df53c2e652"/>
+				<textElement>
+					<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FIRMA_Naziv}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="448" y="106" width="354" height="37" uuid="1d660c1d-d666-4ada-9b38-585b4c965c2b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="24" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{RADNIK_Ime} + " " + $F{RADNIK_Prezime}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="161" y="154" width="640" height="1" uuid="e1990ce8-07ab-4171-84fa-6b9deef8792e"/>
+			</line>
+			<line>
+				<reportElement x="161" y="97" width="641" height="1" uuid="a0efe638-3e91-4058-91da-550ea33ed765"/>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<frame>
+				<reportElement mode="Transparent" x="159" y="2" width="643" height="21" backcolor="#FFFFFF" uuid="7d5ee7f1-fd31-47bc-9f10-b4acfc4ba618"/>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="2" y="1" width="115" height="18" forecolor="#000000" uuid="aff27ad1-6b86-45dc-814a-51d9363342df"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Datum]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="437" y="1" width="122" height="18" forecolor="#000000" uuid="e398d774-a395-4e44-b9ef-afd986314406"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Nalog]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="207" y="1" width="64" height="18" forecolor="#000000" uuid="1f76a3fd-9e0f-439a-a13e-8b4a7d19e1df"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="271" y="1" width="166" height="18" forecolor="#000000" uuid="c6e79155-3201-4143-9688-d95333120c28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Značenje]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="117" y="1" width="90" height="18" forecolor="#000000" uuid="a55b951d-b1ea-4b4f-b221-a83d1cb85af1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Rbr. Operacije]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="559" y="1" width="81" height="18" forecolor="#000000" uuid="70f45ad5-b6cf-4a07-bdb4-6ca12ba3b7f4"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<text><![CDATA[Trajanje]]></text>
+				</staticText>
+			</frame>
+			<line>
+				<reportElement x="161" y="25" width="640" height="1" uuid="e2d4be0d-17d2-4586-89ba-89451c50d6a7"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<frame>
+				<reportElement x="160" y="3" width="639" height="24" uuid="cf58c3ef-f060-4bd1-91f3-0525a038c933"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="1" y="0" width="115" height="24" uuid="c4e37812-ab52-4b93-bae6-0604e427d923"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{RADDAN_datum}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="436" y="0" width="122" height="24" uuid="dda359bd-91cd-4122-8bbe-fd39d4572ded"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{RADDAN_nalog}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="206" y="0" width="63" height="24" uuid="e2fc83c8-6ec7-41bc-8638-da3ded13f68d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STATUSI_Status}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="270" y="0" width="166" height="24" uuid="c762b4b7-5dfa-42d7-9961-b1a81c2a18fa"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STATUSI_Znacenje}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="116" y="0" width="90" height="24" uuid="8488babe-6c76-49ba-a0ad-e3503c9b3c40"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{RADDAN_rbrstanja}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="558" y="0" width="81" height="24" uuid="eef0cf0c-78b1-43e1-9ac8-a543203f9103"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{RADDAN_trajanje}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="3" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="802" height="1" uuid="396f3612-0bd1-4f2a-a701-4d6eeaf5ccda"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="19" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="1" width="800" height="16" forecolor="#D0B48E" backcolor="#CCCCCC" uuid="321e5580-f346-40cc-96b9-e074dceaa99f"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="753" y="0" width="40" height="16" forecolor="#333333" uuid="1a1e0dde-74e1-4961-aad6-73dcd0228e7f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="673" y="0" width="80" height="16" forecolor="#333333" uuid="682a2e78-7b1d-4c24-ab50-03c979fc95e1"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Strana "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd-MM-yyyy,  HH:mm" isBlankWhenNull="true">
+					<reportElement style="Column header" x="2" y="0" width="197" height="16" forecolor="#333333" uuid="5eddcf63-9b6e-41bc-901c-6df9c6d6736e"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

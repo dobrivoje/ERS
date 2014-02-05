@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://www.netbeans.org/ns/project/1">
+    <type>org.netbeans.modules.apisupport.project</type>
+    <configuration>
+        <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
+            <code-name-base>ent</code-name-base>
+            <suite-component/>
+            <module-dependencies>
+                <dependency>
+                    <code-name-base>persistence</code-name-base>
+                    <build-prerequisite/>
+                    <compile-dependency/>
+                    <run-dependency>
+                        <specification-version>1.0</specification-version>
+                    </run-dependency>
+                </dependency>
+            </module-dependencies>
+            <public-packages>
+                <package>ERS.queries</package>
+                <package>INFSYS.queries</package>
+                <package>ent</package>
+                <package>ent.infsistem</package>
+                <package>ent.infsistem.beans</package>
+                <package>sp.izvestaji</package>
+            </public-packages>
+            <class-path-extension>
+                <runtime-relative-path>ext/JavaLibraryERS.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/JavaLibraryERS.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/JavaLibraryINFSISTEM.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/JavaLibraryINFSISTEM.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/JavaLibraryCENOVNIK_RD.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/JavaLibraryCENOVNIK_RD.jar</binary-origin>
+            </class-path-extension>
+        </data>
+    </configuration>
+</project>

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Barkod Radnici" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d15dc37f-2576-4d5c-954b-d3ddba5544c0">
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="PieChartDataset" uuid="37e60b86-693c-4d0e-8d7b-c6fb4a1719ef"/>
+	<parameter name="IDFirma" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="RadnikAktivan" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     KOMPANIJA."IDK" AS KOMPANIJA_IDK,
+     KOMPANIJA."NazivKompanije" AS KOMPANIJA_NazivKompanije,
+     FIRMA."IDFirma" AS FIRMA_IDFirma,
+     FIRMA."Naziv" AS FIRMA_Naziv,
+     FIRMA."Grad" AS FIRMA_Grad,
+     ORGJED."IDOrgjed" AS ORGJED_IDOrgjed,
+     ORGJED."Sifra" AS ORGJED_Sifra,
+     ORGJED."Naziv" AS ORGJED_Naziv,
+     ORGJED."Mehanika" AS ORGJED_Mehanika,
+     RADNIK."IDRadnik" AS RADNIK_IDRadnik,
+     RADNIK."Prezime" AS RADNIK_Prezime,
+     RADNIK."Ime" AS RADNIK_Ime,
+     RADNIK."Aktivan" AS RADNIK_Aktivan,
+     RADNIK."Sifra_INFSISTEM" AS RADNIK_Sifra_INFSISTEM,
+     RADNIK."Radnik" AS RADNIK_Radnik
+FROM
+     "dbo"."KOMPANIJA" KOMPANIJA INNER JOIN "dbo"."FIRMA" FIRMA ON KOMPANIJA."IDK" = FIRMA."FK_IDK"
+     INNER JOIN "dbo"."ORGJED" ORGJED ON FIRMA."IDFirma" = ORGJED."FK_IDFirma"
+     INNER JOIN "dbo"."RADNIK" RADNIK ON ORGJED."IDOrgjed" = RADNIK."FK_IDOrgjed"
+WHERE FIRMA.IDFirma = $P{IDFirma} 
+AND RADNIK.Aktivan = $P{RadnikAktivan}
+AND RADNIK.Radnik = 1
+order by ORGJED_Sifra asc]]>
+	</queryString>
+	<field name="KOMPANIJA_IDK" class="java.lang.Integer"/>
+	<field name="KOMPANIJA_NazivKompanije" class="java.lang.String"/>
+	<field name="FIRMA_IDFirma" class="java.lang.Integer"/>
+	<field name="FIRMA_Naziv" class="java.lang.String"/>
+	<field name="FIRMA_Grad" class="java.lang.String"/>
+	<field name="ORGJED_IDOrgjed" class="java.lang.Integer"/>
+	<field name="ORGJED_Sifra" class="java.lang.String"/>
+	<field name="ORGJED_Naziv" class="java.lang.String"/>
+	<field name="ORGJED_Mehanika" class="java.lang.Boolean"/>
+	<field name="RADNIK_IDRadnik" class="java.lang.Long"/>
+	<field name="RADNIK_Prezime" class="java.lang.String"/>
+	<field name="RADNIK_Ime" class="java.lang.String"/>
+	<field name="RADNIK_Aktivan" class="java.lang.Boolean"/>
+	<field name="RADNIK_Sifra_INFSISTEM" class="java.lang.String"/>
+	<field name="RADNIK_Radnik" class="java.lang.Boolean"/>
+	<group name="FIRMA_IDFirma" isStartNewPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{FIRMA_IDFirma}]]></groupExpression>
+		<groupHeader>
+			<band height="42">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="42" backcolor="#F1F1F1" uuid="b96aae57-079f-45b2-a1a7-ad90f572618d"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="Detail" positionType="Float" x="0" y="3" width="555" height="35" forecolor="#666666" uuid="6125c9b2-e645-430a-a8b2-9850d36607b8"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="SansSerif" size="22" isBold="true" pdfFontName="Helvetica"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{FIRMA_Naziv} + ", " + $F{FIRMA_Grad}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="6">
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="555" height="1" uuid="1e09e4d3-ddc4-49fe-af69-9ab0cef2135b"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="ORGJED_IDOrgjed" minHeightToStartNewPage="100" keepTogether="true">
+		<groupExpression><![CDATA[$F{ORGJED_IDOrgjed}]]></groupExpression>
+		<groupHeader>
+			<band height="38" splitType="Prevent">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="0" width="555" height="38" backcolor="#F1F1F1" uuid="55e304de-ab89-46d4-9347-eff494a1d527"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="Detail" positionType="Float" mode="Transparent" x="0" y="4" width="555" height="29" forecolor="#666666" backcolor="#FFB6B6" uuid="ce8a9506-30d9-481b-ab8d-d2af083c4c97"/>
+						<textElement verticalAlignment="Middle">
+							<font fontName="SansSerif" size="18" isBold="true" pdfFontName="Helvetica"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{ORGJED_Sifra} + ", ID-" + $F{ORGJED_IDOrgjed}.toString() + ", " + $F{ORGJED_Naziv}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="105" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="0" width="597" height="65" forecolor="#006699" backcolor="#CCCCCC" uuid="a4817e38-25ea-4935-97bd-847ac1165e6e"/>
+				<staticText>
+					<reportElement style="Title" x="20" y="0" width="557" height="65" uuid="58f13789-401d-4693-90ff-e412726efdcb"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="40" isBold="false"/>
+					</textElement>
+					<text><![CDATA[Bar Kodovi Radnika]]></text>
+				</staticText>
+			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="0" y="65" width="555" height="29" forecolor="#666666" uuid="9e6dd267-ce85-41aa-aa2d-afd94b70a429"/>
+				<textElement>
+					<font fontName="SansSerif" size="22" isBold="true" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Kompanija " + $F{KOMPANIJA_NazivKompanije}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="2" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="46" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="43" uuid="a14a85d5-2711-472b-bd60-1aefcf48197b"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="13" width="68" height="18" uuid="a5139f29-82da-44a4-9379-b722e588477c"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ID - " + $F{RADNIK_IDRadnik}.toString()]]></textFieldExpression>
+				</textField>
+				<componentElement>
+					<reportElement x="416" y="0" width="135" height="41" uuid="88fb5195-f771-4aaf-a286-6b8504308690"/>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="3of9" drawText="false" checksumRequired="false">
+						<jr:codeExpression><![CDATA[$F{RADNIK_IDRadnik}]]></jr:codeExpression>
+					</jr:barbecue>
+				</componentElement>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="71" y="13" width="242" height="18" uuid="9d592858-6e01-4aee-a7f6-f801b0ff4662"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{RADNIK_Ime} + " " + $F{RADNIK_Prezime}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="313" y="13" width="100" height="18" uuid="80661154-7ba2-4c10-b9ae-eb27a0d46f28"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="true" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ID IS - " + $F{RADNIK_Sifra_INFSISTEM}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="86a42f11-8e6e-4b2c-8ca1-39eef3b6c345"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="13" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="553" height="13" forecolor="#D0B48E" backcolor="#CCCCCC" uuid="92e9c78c-5c1d-4dde-87f6-477e25fef97f"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="12" forecolor="#000000" uuid="504cd6b4-d0d9-4201-a38d-794aff4559a9"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="433" y="0" width="80" height="12" forecolor="#000000" uuid="18916e59-3e08-4827-8108-86a391ac4ba7"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Stranica"+$V{PAGE_NUMBER}+" od"]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd.MM.yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="13" forecolor="#000000" uuid="78911ebe-f1b0-48d7-bc26-5788eeb0b916"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

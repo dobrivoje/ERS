@@ -1,0 +1,192 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*
+ * RootFrame.java
+ *
+ * Created on Jul 14, 2011, 10:42:30 PM
+ */
+package wallpaper;
+
+import com.dobrivoje.utilities.icons.icon_renderer.IconRenderer;
+import com.dobrivoje.utilities.icons.icon_renderer.IconType;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JRootPane;
+import javax.swing.border.BevelBorder;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
+import org.openide.util.ImageUtilities;
+
+/**
+ *
+ * @author geertjan
+ */
+public class RootFrame extends javax.swing.JFrame {
+
+    public JPopupMenu popup;
+    private final Paint bannerPaint = makeBannerPaint();
+
+    /**
+     * Creates new form RootFrame
+     */
+    //<editor-fold defaultstate="collapsed" desc="geertjan..">
+    public RootFrame() {
+        setRootPane(new CustomRootPane());
+        initComponents();
+        setName("NbMainWindow");
+        popup = new JPopupMenu();
+        ActionListener menuListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                System.out.println("Popup menu item ["
+                        + event.getActionCommand() + "] was pressed.");
+            }
+        };
+        JMenuItem item;
+        popup.add(item = new JMenuItem("New Patient", new ImageIcon("1.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.add(item = new JMenuItem("New Illness", new ImageIcon("2.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.add(item = new JMenuItem("New Hospital", new ImageIcon("3.gif")));
+        item.setHorizontalTextPosition(JMenuItem.RIGHT);
+        item.addActionListener(menuListener);
+        popup.addSeparator();
+        popup.add(item = new JMenuItem("Settings . . ."));
+        item.addActionListener(menuListener);
+
+        popup.setLabel("Justification");
+        popup.setBorder(new BevelBorder(BevelBorder.RAISED));
+        popup.addPopupMenuListener(new PopupPrintListener());
+
+        addMouseListener(new MousePopupListener());
+
+    }
+
+    // An inner class to check whether mouse events are the popup trigger
+    class MousePopupListener extends MouseAdapter {
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            checkPopup(e);
+        }
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            checkPopup(e);
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            checkPopup(e);
+        }
+
+        private void checkPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                popup.show(RootFrame.this, e.getX(), e.getY());
+            }
+        }
+    }
+
+    // An inner class to show when popup events occur
+    class PopupPrintListener implements PopupMenuListener {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            System.out.println("Popup menu will be visible!");
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            System.out.println("Popup menu will be invisible!");
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+            System.out.println("Popup menu is hidden!");
+        }
+    }
+
+    static void init() {
+        RootFrame rootFrame = new RootFrame();
+    }
+
+    private class CustomRootPane extends JRootPane {
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setPaint(bannerPaint);
+            g2.fillRect(0, 0, getWidth(), getHeight());
+        }
+    }
+//</editor-fold>
+
+    private Paint makeBannerPaint() {
+        //Pointing to an image in org/menu/bar:
+        /*
+         BufferedImage img = (BufferedImage) ImageUtilities.loadImage("com/dobrivoje/utilities/cars/wallpapers/passat-cc3.croped.3.jpg");
+         */
+
+        BufferedImage img = (BufferedImage) ImageUtilities.loadImage(
+                IconRenderer.getDefault().getWallpaper(IconType.Wallpapers.WINDOW_WALLPAPER));
+        return new TexturePaint(img, new Rectangle(0, 0, img.getWidth() + 120, img.getHeight()));
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                new RootFrame().setVisible(true);
+            }
+        });
+    }
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+
+}

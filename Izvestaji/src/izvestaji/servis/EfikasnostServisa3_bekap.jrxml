@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Efikasnost" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bbd6549f-b4d3-41ee-83c8-00777c575301">
-	<property name="ireport.zoom" value="1.331000000000006"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="86"/>
+	<property name="ireport.zoom" value="1.7715610000000082"/>
+	<property name="ireport.x" value="80"/>
+	<property name="ireport.y" value="645"/>
 	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
@@ -277,133 +277,133 @@ order by sifra_orgjed asc]]>
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="31" y="0" width="134" height="14" uuid="fa4f89c7-d2a0-4366-8005-fe30dd70b6c0"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Ime} +" " + $F{Prezime}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="200" y="0" width="40" height="14" uuid="ca9173ee-8cb6-426d-a1ee-a2997db46ceb"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{UK_VremePrisustva}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="239" y="0" width="51" height="14" backcolor="#77DCFE" uuid="557ab0e8-c801-4447-9eaa-502331806fb1"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{UK_Pauza}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="340" y="0" width="50" height="14" backcolor="#77DCFE" uuid="d8420a2e-d112-4bdc-92ac-f0eebe6b5400"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{UK_FaktSati}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="391" y="0" width="32" height="14" uuid="f86ef5e4-d2f3-4623-aca4-fbd0ddde1372"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $F{UK_StepenPrisustva} == null ? "N/A" : $F{UK_StepenPrisustva} )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="423" y="0" width="33" height="14" uuid="30606843-9d7e-46c8-b99b-b7741ced191b"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $F{UK_StepenIskoriscenja} == null ? "N/A" : $F{UK_StepenIskoriscenja} )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="456" y="0" width="32" height="14" uuid="3630ea7b-a22e-4143-a268-cc9d1c5dcdbb"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $F{UK_StepenEfikasnosti} == null ? "N/A" : $F{UK_StepenEfikasnosti} )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="488" y="0" width="41" height="14" uuid="d529023d-95b3-46aa-a1fb-6922a3681cd5"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[( $F{UK_StepenProduktivnosti} == null ? "N/A" : $F{UK_StepenProduktivnosti} )]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="531" y="0" width="32" height="14" backcolor="#77DCFE" uuid="ea59fb27-2f6a-44f8-acf0-d92a2fef4720"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W1}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="562" y="0" width="32" height="14" backcolor="#77DCFE" uuid="15aefb5d-4452-4682-8eeb-c6d28d5891a7"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W2}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="593" y="0" width="32" height="14" backcolor="#77DCFE" uuid="17c3b308-f958-442f-a49e-0ee9db2aaca3"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W3}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="624" y="0" width="32" height="14" backcolor="#77DCFE" uuid="7c580993-2474-4402-9a82-1b30c30bf47c"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W4}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="655" y="0" width="32" height="14" backcolor="#77DCFE" uuid="8255ec15-8702-43b8-9bba-db86fa913903"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W8}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="686" y="0" width="32" height="14" backcolor="#77DCFE" uuid="6a1f929a-9372-4464-88d7-53655f07f0ad"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W5}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="717" y="0" width="32" height="14" backcolor="#77DCFE" uuid="9920169a-dfd4-4af4-9ca5-7869ff6aecaf"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W6}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="748" y="0" width="32" height="14" backcolor="#77DCFE" uuid="0cc156f0-e804-4d98-9aad-03bc55da88eb"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{W7}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="0" y="0" width="31" height="14" uuid="dc6a63e7-b081-4002-98cb-ba0529d20288"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{IDRadnik}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" x="164" y="0" width="35" height="14" uuid="b694df72-73c7-4aa9-be89-a5753003719c"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{Sifra_OrgJed}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
 					<reportElement style="Detail" positionType="Float" mode="Opaque" x="289" y="0" width="53" height="14" backcolor="#77DCFE" uuid="a9de51ed-557d-44d0-b18c-29d4f163fddc"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{UK_Produktivno}]]></textFieldExpression>
 				</textField>

@@ -19,7 +19,7 @@ import org.openide.util.NbBundle.Messages;
         id = "servis.manager.akcije.ManagementPodataka"
 )
 @ActionRegistration(
-        iconBase = "ikonice/servis/zastavica.gif",
+        iconBase = "ikonice/servis/management2-transp.32x32.gif",
         displayName = "#CTL_ManagementPodataka"
 )
 @ActionReferences({

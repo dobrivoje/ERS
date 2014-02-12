@@ -10,5 +10,5 @@ package node_klase.interfejsi.globalrefresh;
  */
 public interface refreshEvidencijeRadnika {
 
-    public void refreshAktivniRdnici();
+    public void refreshAktivniRadnici();
 }

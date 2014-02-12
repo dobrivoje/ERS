@@ -10,6 +10,7 @@ import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.TipRadnikaComboBoxModel;
+import com.dobrivoje.utilities.datumi.DatumSelektor;
 import com.dobrivoje.utilities.warnings.Display;
 import ent.Firma;
 import ent.Kompanija;
@@ -31,6 +32,8 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
+import javax.swing.SwingUtilities;
+import servis.manager.QuickSearch.IRadnik;
 
 /**
  * Top component which displays something.
@@ -63,9 +66,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private Lookup.Result<Firma> firmaLookup = null;
     private Lookup.Result<Orgjed> orgJedLookup = null;
     private Lookup.Result<Radnik> radnikLookup = null;
-
+    private Lookup.Result<DatumSelektor> datumiLookup;
+    //
+    private DatumSelektor ds;
+    //
     private static EntityManager em;
-    private static ReportGenerator reportGenerator;
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -236,11 +241,15 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         bindingGroup = new org.jdesktop.beansbinding.BindingGroup();
 
         buttonGroup_Barkod = new javax.swing.ButtonGroup();
+        buttonGroup_Radnici_Izvestaji = new javax.swing.ButtonGroup();
+        buttonGroup_Radnik_Izvestaj = new javax.swing.ButtonGroup();
         jLabel_Naslov = new javax.swing.JLabel();
         jTP_DataManagement = new javax.swing.JTabbedPane();
         jPanel_Kompanija = new javax.swing.JPanel();
         jTextField_KOMPANIJA_Naziv = new javax.swing.JTextField();
         jTextField_KOMPANIJA_Adresa = new javax.swing.JTextField();
+        jTextField_KOMPANIJA_Grad = new javax.swing.JTextField();
+        jTextField_KOMPANIJA__Vlasnik = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jButton_KOMPANIJA_IzmenaPodataka = new javax.swing.JButton();
         jSeparator4 = new javax.swing.JSeparator();
@@ -248,21 +257,20 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jLabel21 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
-        jTextField_KOMPANIJA_Grad = new javax.swing.JTextField();
         jLabel28 = new javax.swing.JLabel();
-        jTextField_KOMPANIJA__Vlasnik = new javax.swing.JTextField();
         jLabel29 = new javax.swing.JLabel();
         jPanel_Firma = new javax.swing.JPanel();
         jTextField_FIRMA_Kompanija = new javax.swing.JTextField();
         jTextField_FIRMA_Naziv = new javax.swing.JTextField();
         jTextField_FIRMA_Grad = new javax.swing.JTextField();
         jTextField_FIRMA_Adresa = new javax.swing.JTextField();
+        jTextField_FIRMA_PostanskiBroj = new javax.swing.JTextField();
+        jTextField_FIRMA_PIB = new javax.swing.JTextField();
+        jTextField_FIRMA_MATBROJ = new javax.swing.JTextField();
+        jCheckBox_FIRMA_Aktivna = new javax.swing.JCheckBox();
         jPanel3 = new javax.swing.JPanel();
         jButton_FIRMA_Nova = new javax.swing.JButton();
         jButton_FIRMA_IzmenaPodataka = new javax.swing.JButton();
-        jTextField_FIRMA_PIB = new javax.swing.JTextField();
-        jTextField_FIRMA_MATBROJ = new javax.swing.JTextField();
-        jTextField_FIRMA_PostanskiBroj = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -272,11 +280,21 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jCheckBox_FIRMA_Aktivna = new javax.swing.JCheckBox();
-        jPanel_Barkod = new javax.swing.JPanel();
-        jRadioButton_Barkod_Radnici = new javax.swing.JRadioButton();
-        jRadioButton_Barkod_Statusi = new javax.swing.JRadioButton();
-        jButton_Barkod = new javax.swing.JButton();
+        jPanel_Klijent = new javax.swing.JPanel();
+        jRadioButton_Efikasnost_SveJedinice = new javax.swing.JRadioButton();
+        jRadioButton_Efikasnost_ElektroMehanika = new javax.swing.JRadioButton();
+        jRadioButton_Efikasnost_Limarija = new javax.swing.JRadioButton();
+        jButton_Efikasnost_Servisa_Izvestaj = new javax.swing.JButton();
+        jCheckBox_AKTIVNI_RADNICI = new javax.swing.JCheckBox();
+        jCheckBox_NEAKTIVNI_RADNICI = new javax.swing.JCheckBox();
+        jCheckBox_SAMO_RADNICI = new javax.swing.JCheckBox();
+        jCheckBox_OSTALI_NALOZI = new javax.swing.JCheckBox();
+        jLabel_Naslov1 = new javax.swing.JLabel();
+        jTextField_DATUMOD = new javax.swing.JTextField();
+        jTextField_DATUMDO = new javax.swing.JTextField();
+        jTextField_GodinaOD = new javax.swing.JTextField();
+        jTextField_GodinaDO = new javax.swing.JTextField();
+        jSeparator2 = new javax.swing.JSeparator();
         jPanel_OrgJed = new javax.swing.JPanel();
         jTextField_ORGJED_Kompanija = new javax.swing.JTextField();
         jComboBox_ORGJED_Kompanija = new javax.swing.JComboBox();
@@ -294,6 +312,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
+        jButton_Produktivnost_ZaPeriodu = new javax.swing.JButton();
+        jLabel_Naslov3 = new javax.swing.JLabel();
         jPanel_Radnik = new javax.swing.JPanel();
         jTextField_Radnik_Ime = new javax.swing.JTextField();
         jTextField_Radnik_Prezime = new javax.swing.JTextField();
@@ -315,6 +335,16 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jButton_RADNIK_Brisanje = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
+        jPanel_Barkod = new javax.swing.JPanel();
+        jRadioButton_Barkod_Radnici = new javax.swing.JRadioButton();
+        jRadioButton_Barkod_Statusi = new javax.swing.JRadioButton();
+        jButton_Barkod = new javax.swing.JButton();
+        jPanel_Klijent1 = new javax.swing.JPanel();
+        jRadioButton_Radnik_Clocking = new javax.swing.JRadioButton();
+        jRadioButton_Radnik_Analiza = new javax.swing.JRadioButton();
+        jRadioButton_Radnik_Savetnici = new javax.swing.JRadioButton();
+        jButton_Efikasnost_Radnika_Izvestaj = new javax.swing.JButton();
+        jLabel_Naslov4 = new javax.swing.JLabel();
 
         jLabel_Naslov.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel_Naslov, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel_Naslov.text")); // NOI18N
@@ -325,8 +355,13 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         jTextField_KOMPANIJA_Adresa.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_KOMPANIJA_Adresa.text")); // NOI18N
 
+        jTextField_KOMPANIJA_Grad.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_KOMPANIJA_Grad.text")); // NOI18N
+
+        jTextField_KOMPANIJA__Vlasnik.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_KOMPANIJA__Vlasnik.text")); // NOI18N
+
         jPanel6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jButton_KOMPANIJA_IzmenaPodataka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/warning-triangle.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_KOMPANIJA_IzmenaPodataka, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_KOMPANIJA_IzmenaPodataka.text")); // NOI18N
         jButton_KOMPANIJA_IzmenaPodataka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -341,7 +376,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jButton_KOMPANIJA_IzmenaPodataka)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,11 +393,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel24, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel24.text")); // NOI18N
 
-        jTextField_KOMPANIJA_Grad.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_KOMPANIJA_Grad.text")); // NOI18N
-
         org.openide.awt.Mnemonics.setLocalizedText(jLabel28, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel28.text")); // NOI18N
-
-        jTextField_KOMPANIJA__Vlasnik.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_KOMPANIJA__Vlasnik.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel29, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel29.text")); // NOI18N
 
@@ -392,7 +423,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                                     .addComponent(jTextField_KOMPANIJA__Vlasnik, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(200, Short.MAX_VALUE))
         );
         jPanel_KompanijaLayout.setVerticalGroup(
             jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -440,8 +471,18 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         jTextField_FIRMA_Adresa.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_Adresa.text")); // NOI18N
 
+        jTextField_FIRMA_PostanskiBroj.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_PostanskiBroj.text")); // NOI18N
+
+        jTextField_FIRMA_PIB.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_PIB.text")); // NOI18N
+
+        jTextField_FIRMA_MATBROJ.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_MATBROJ.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_FIRMA_Aktivna, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_FIRMA_Aktivna.text")); // NOI18N
+        jCheckBox_FIRMA_Aktivna.setToolTipText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_FIRMA_Aktivna.toolTipText")); // NOI18N
+
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jButton_FIRMA_Nova.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_FIRMA_Nova, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_FIRMA_Nova.text")); // NOI18N
         jButton_FIRMA_Nova.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -449,6 +490,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             }
         });
 
+        jButton_FIRMA_IzmenaPodataka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/warning-triangle.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_FIRMA_IzmenaPodataka, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_FIRMA_IzmenaPodataka.text")); // NOI18N
         jButton_FIRMA_IzmenaPodataka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -470,18 +512,12 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton_FIRMA_Nova)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton_FIRMA_IzmenaPodataka)
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
-
-        jTextField_FIRMA_PIB.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_PIB.text")); // NOI18N
-
-        jTextField_FIRMA_MATBROJ.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_MATBROJ.text")); // NOI18N
-
-        jTextField_FIRMA_PostanskiBroj.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_FIRMA_PostanskiBroj.text")); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel1.text")); // NOI18N
@@ -500,44 +536,77 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel8, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel8.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_FIRMA_Aktivna, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_FIRMA_Aktivna.text")); // NOI18N
-        jCheckBox_FIRMA_Aktivna.setToolTipText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_FIRMA_Aktivna.toolTipText")); // NOI18N
+        jPanel_Klijent.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Klijent.border.title"))); // NOI18N
 
-        jPanel_Barkod.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Barkod.border.title"))); // NOI18N
+        buttonGroup_Radnici_Izvestaji.add(jRadioButton_Efikasnost_SveJedinice);
+        jRadioButton_Efikasnost_SveJedinice.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Efikasnost_SveJedinice, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Efikasnost_SveJedinice.text")); // NOI18N
 
-        buttonGroup_Barkod.add(jRadioButton_Barkod_Radnici);
-        jRadioButton_Barkod_Radnici.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Barkod_Radnici, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Barkod_Radnici.text")); // NOI18N
+        buttonGroup_Radnici_Izvestaji.add(jRadioButton_Efikasnost_ElektroMehanika);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Efikasnost_ElektroMehanika, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Efikasnost_ElektroMehanika.text")); // NOI18N
 
-        buttonGroup_Barkod.add(jRadioButton_Barkod_Statusi);
-        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Barkod_Statusi, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Barkod_Statusi.text")); // NOI18N
+        buttonGroup_Radnici_Izvestaji.add(jRadioButton_Efikasnost_Limarija);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Efikasnost_Limarija, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Efikasnost_Limarija.text")); // NOI18N
 
-        javax.swing.GroupLayout jPanel_BarkodLayout = new javax.swing.GroupLayout(jPanel_Barkod);
-        jPanel_Barkod.setLayout(jPanel_BarkodLayout);
-        jPanel_BarkodLayout.setHorizontalGroup(
-            jPanel_BarkodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_BarkodLayout.createSequentialGroup()
-                .addGroup(jPanel_BarkodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton_Barkod_Radnici)
-                    .addComponent(jRadioButton_Barkod_Statusi))
-                .addContainerGap(48, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanel_KlijentLayout = new javax.swing.GroupLayout(jPanel_Klijent);
+        jPanel_Klijent.setLayout(jPanel_KlijentLayout);
+        jPanel_KlijentLayout.setHorizontalGroup(
+            jPanel_KlijentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_KlijentLayout.createSequentialGroup()
+                .addGroup(jPanel_KlijentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton_Efikasnost_Limarija)
+                    .addComponent(jRadioButton_Efikasnost_SveJedinice)
+                    .addComponent(jRadioButton_Efikasnost_ElektroMehanika))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel_BarkodLayout.setVerticalGroup(
-            jPanel_BarkodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_BarkodLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jRadioButton_Barkod_Radnici, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+        jPanel_KlijentLayout.setVerticalGroup(
+            jPanel_KlijentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_KlijentLayout.createSequentialGroup()
+                .addComponent(jRadioButton_Efikasnost_SveJedinice, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton_Barkod_Statusi, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(41, 41, 41))
+                .addComponent(jRadioButton_Efikasnost_ElektroMehanika, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButton_Efikasnost_Limarija, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton_Barkod, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_Barkod.text")); // NOI18N
-        jButton_Barkod.addActionListener(new java.awt.event.ActionListener() {
+        jButton_Efikasnost_Servisa_Izvestaj.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jButton_Efikasnost_Servisa_Izvestaj, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_Efikasnost_Servisa_Izvestaj.text")); // NOI18N
+        jButton_Efikasnost_Servisa_Izvestaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_BarkodActionPerformed(evt);
+                jButton_Efikasnost_Servisa_IzvestajActionPerformed(evt);
             }
         });
+
+        jCheckBox_AKTIVNI_RADNICI.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jCheckBox_AKTIVNI_RADNICI.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_AKTIVNI_RADNICI, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_AKTIVNI_RADNICI.text")); // NOI18N
+
+        jCheckBox_NEAKTIVNI_RADNICI.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jCheckBox_NEAKTIVNI_RADNICI.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_NEAKTIVNI_RADNICI, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_NEAKTIVNI_RADNICI.text")); // NOI18N
+
+        jCheckBox_SAMO_RADNICI.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jCheckBox_SAMO_RADNICI.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_SAMO_RADNICI, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_SAMO_RADNICI.text")); // NOI18N
+
+        jCheckBox_OSTALI_NALOZI.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jCheckBox_OSTALI_NALOZI.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_OSTALI_NALOZI, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jCheckBox_OSTALI_NALOZI.text")); // NOI18N
+
+        jLabel_Naslov1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel_Naslov1, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel_Naslov1.text")); // NOI18N
+
+        jTextField_DATUMOD.setEditable(false);
+        jTextField_DATUMOD.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_DATUMOD.text")); // NOI18N
+
+        jTextField_DATUMDO.setEditable(false);
+        jTextField_DATUMDO.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_DATUMDO.text")); // NOI18N
+
+        jTextField_GodinaOD.setEditable(false);
+        jTextField_GodinaOD.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_GodinaOD.text")); // NOI18N
+
+        jTextField_GodinaDO.setEditable(false);
+        jTextField_GodinaDO.setText(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jTextField_GodinaDO.text")); // NOI18N
 
         javax.swing.GroupLayout jPanel_FirmaLayout = new javax.swing.GroupLayout(jPanel_Firma);
         jPanel_Firma.setLayout(jPanel_FirmaLayout);
@@ -547,7 +616,34 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 .addContainerGap()
                 .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel_FirmaLayout.createSequentialGroup()
+                        .addComponent(jSeparator1)
+                        .addContainerGap())
+                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
+                        .addComponent(jLabel_Naslov1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(270, 270, 270))
+                    .addComponent(jSeparator2)
+                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
                         .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel_FirmaLayout.createSequentialGroup()
+                                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField_DATUMDO, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                                    .addComponent(jTextField_DATUMOD))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField_GodinaOD, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField_GodinaDO, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButton_Efikasnost_Servisa_Izvestaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jPanel_Klijent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
+                                        .addComponent(jCheckBox_AKTIVNI_RADNICI, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jCheckBox_NEAKTIVNI_RADNICI))
+                                    .addComponent(jCheckBox_SAMO_RADNICI, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jCheckBox_OSTALI_NALOZI, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jLabel1)
                             .addGroup(jPanel_FirmaLayout.createSequentialGroup()
                                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -558,20 +654,14 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jTextField_FIRMA_PostanskiBroj, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jCheckBox_FIRMA_Aktivna)))
-                        .addGap(254, 266, Short.MAX_VALUE))
-                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
-                        .addComponent(jSeparator1)
-                        .addContainerGap())
-                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
-                        .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jCheckBox_FIRMA_Aktivna))
                             .addGroup(jPanel_FirmaLayout.createSequentialGroup()
                                 .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField_FIRMA_Grad, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField_FIRMA_Adresa, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel_FirmaLayout.createSequentialGroup()
@@ -581,16 +671,13 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextField_FIRMA_PIB, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                        .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextField_FIRMA_PIB)
                                             .addComponent(jTextField_FIRMA_MATBROJ)))
                                     .addGroup(jPanel_FirmaLayout.createSequentialGroup()
                                         .addGap(335, 335, 335)
-                                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jButton_Barkod, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel_Barkod, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addContainerGap(78, Short.MAX_VALUE))))
         );
         jPanel_FirmaLayout.setVerticalGroup(
             jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -632,11 +719,33 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                             .addComponent(jCheckBox_FIRMA_Aktivna)))
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel_Naslov1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel_Barkod, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField_DATUMOD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField_GodinaOD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField_DATUMDO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField_GodinaDO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jPanel_Klijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel_FirmaLayout.createSequentialGroup()
+                        .addGroup(jPanel_FirmaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jCheckBox_AKTIVNI_RADNICI)
+                            .addComponent(jCheckBox_NEAKTIVNI_RADNICI))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCheckBox_SAMO_RADNICI)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jCheckBox_OSTALI_NALOZI)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton_Barkod)
+                .addComponent(jButton_Efikasnost_Servisa_Izvestaj)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -677,6 +786,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jButton_ORGJED_Nova.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_ORGJED_Nova, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_ORGJED_Nova.text")); // NOI18N
         jButton_ORGJED_Nova.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -684,6 +794,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             }
         });
 
+        jButton_ORGJED_IzmenaPodataka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/warning-triangle.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_ORGJED_IzmenaPodataka, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_ORGJED_IzmenaPodataka.text")); // NOI18N
         jButton_ORGJED_IzmenaPodataka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -722,6 +833,17 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         org.openide.awt.Mnemonics.setLocalizedText(jLabel18, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel18.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel19, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel19.text")); // NOI18N
+
+        jButton_Produktivnost_ZaPeriodu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jButton_Produktivnost_ZaPeriodu, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_Produktivnost_ZaPeriodu.text")); // NOI18N
+        jButton_Produktivnost_ZaPeriodu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_Produktivnost_ZaPerioduActionPerformed(evt);
+            }
+        });
+
+        jLabel_Naslov3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel_Naslov3, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel_Naslov3.text")); // NOI18N
 
         javax.swing.GroupLayout jPanel_OrgJedLayout = new javax.swing.GroupLayout(jPanel_OrgJed);
         jPanel_OrgJed.setLayout(jPanel_OrgJedLayout);
@@ -763,7 +885,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                                 .addComponent(jTextField_ORGJED_Sifra, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(60, 60, 60)
                                 .addComponent(jCheckBox_ORGJED_Mehanika)))
-                        .addContainerGap(248, Short.MAX_VALUE))))
+                        .addContainerGap(367, Short.MAX_VALUE))
+                    .addGroup(jPanel_OrgJedLayout.createSequentialGroup()
+                        .addComponent(jButton_Produktivnost_ZaPeriodu, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel_Naslov3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         jPanel_OrgJedLayout.setVerticalGroup(
             jPanel_OrgJedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -794,7 +920,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(36, 36, 36)
                 .addComponent(jSeparator5, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel_Naslov3, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton_Produktivnost_ZaPeriodu)
+                .addContainerGap())
         );
 
         jTP_DataManagement.addTab(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_OrgJed.TabConstraints.tabTitle"), jPanel_OrgJed); // NOI18N
@@ -852,6 +982,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         jPanel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        jButton_RADNIK_Novi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_RADNIK_Novi, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_RADNIK_Novi.text")); // NOI18N
         jButton_RADNIK_Novi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -859,6 +990,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             }
         });
 
+        jButton_RADNIK_IzmenaPodataka.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/warning-triangle.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_RADNIK_IzmenaPodataka, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_RADNIK_IzmenaPodataka.text")); // NOI18N
         jButton_RADNIK_IzmenaPodataka.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -866,6 +998,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             }
         });
 
+        jButton_RADNIK_Brisanje.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/error_circle.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_RADNIK_Brisanje, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_RADNIK_Brisanje.text")); // NOI18N
         jButton_RADNIK_Brisanje.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -900,6 +1033,87 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel14, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel14.text")); // NOI18N
 
+        jPanel_Barkod.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Barkod.border.title"))); // NOI18N
+
+        buttonGroup_Barkod.add(jRadioButton_Barkod_Radnici);
+        jRadioButton_Barkod_Radnici.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Barkod_Radnici, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Barkod_Radnici.text")); // NOI18N
+
+        buttonGroup_Barkod.add(jRadioButton_Barkod_Statusi);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Barkod_Statusi, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Barkod_Statusi.text")); // NOI18N
+
+        javax.swing.GroupLayout jPanel_BarkodLayout = new javax.swing.GroupLayout(jPanel_Barkod);
+        jPanel_Barkod.setLayout(jPanel_BarkodLayout);
+        jPanel_BarkodLayout.setHorizontalGroup(
+            jPanel_BarkodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_BarkodLayout.createSequentialGroup()
+                .addGroup(jPanel_BarkodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton_Barkod_Radnici)
+                    .addComponent(jRadioButton_Barkod_Statusi))
+                .addContainerGap(48, Short.MAX_VALUE))
+        );
+        jPanel_BarkodLayout.setVerticalGroup(
+            jPanel_BarkodLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_BarkodLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jRadioButton_Barkod_Radnici, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButton_Barkod_Statusi, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+        );
+
+        jButton_Barkod.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jButton_Barkod, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_Barkod.text")); // NOI18N
+        jButton_Barkod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_BarkodActionPerformed(evt);
+            }
+        });
+
+        jPanel_Klijent1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Klijent1.border.title"))); // NOI18N
+
+        buttonGroup_Radnik_Izvestaj.add(jRadioButton_Radnik_Clocking);
+        jRadioButton_Radnik_Clocking.setSelected(true);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Radnik_Clocking, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Radnik_Clocking.text")); // NOI18N
+
+        buttonGroup_Radnik_Izvestaj.add(jRadioButton_Radnik_Analiza);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Radnik_Analiza, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Radnik_Analiza.text")); // NOI18N
+
+        buttonGroup_Radnik_Izvestaj.add(jRadioButton_Radnik_Savetnici);
+        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Radnik_Savetnici, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jRadioButton_Radnik_Savetnici.text")); // NOI18N
+
+        javax.swing.GroupLayout jPanel_Klijent1Layout = new javax.swing.GroupLayout(jPanel_Klijent1);
+        jPanel_Klijent1.setLayout(jPanel_Klijent1Layout);
+        jPanel_Klijent1Layout.setHorizontalGroup(
+            jPanel_Klijent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_Klijent1Layout.createSequentialGroup()
+                .addGroup(jPanel_Klijent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jRadioButton_Radnik_Savetnici)
+                    .addComponent(jRadioButton_Radnik_Clocking)
+                    .addComponent(jRadioButton_Radnik_Analiza))
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+        jPanel_Klijent1Layout.setVerticalGroup(
+            jPanel_Klijent1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel_Klijent1Layout.createSequentialGroup()
+                .addComponent(jRadioButton_Radnik_Clocking, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jRadioButton_Radnik_Analiza, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addComponent(jRadioButton_Radnik_Savetnici, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jButton_Efikasnost_Radnika_Izvestaj.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/ok.gif"))); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jButton_Efikasnost_Radnika_Izvestaj, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jButton_Efikasnost_Radnika_Izvestaj.text")); // NOI18N
+        jButton_Efikasnost_Radnika_Izvestaj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_Efikasnost_Radnika_IzvestajActionPerformed(evt);
+            }
+        });
+
+        jLabel_Naslov4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel_Naslov4, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel_Naslov4.text")); // NOI18N
+
         javax.swing.GroupLayout jPanel_RadnikLayout = new javax.swing.GroupLayout(jPanel_Radnik);
         jPanel_Radnik.setLayout(jPanel_RadnikLayout);
         jPanel_RadnikLayout.setHorizontalGroup(
@@ -908,40 +1122,56 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 .addContainerGap()
                 .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator3)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel_RadnikLayout.createSequentialGroup()
+                        .addComponent(jButton_Efikasnost_Radnika_Izvestaj, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel_RadnikLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
+                        .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel14)
+                            .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jPanel_Barkod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jButton_Barkod, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel_Naslov4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel_RadnikLayout.createSequentialGroup()
                         .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel13))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField_Radnik_Prezime, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel_RadnikLayout.createSequentialGroup()
-                                .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jTextField_Radnik_TipRadnika, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField_Radnik_Sifra_INFSISTEM, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField_Radnik_OrgJed, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextField_Radnik_Ime))
+                                .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jTextField_Radnik_Prezime, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField_Radnik_Sifra_INFSISTEM))
+                                    .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField_Radnik_OrgJed, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jTextField_Radnik_TipRadnika, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBox_RADNICI_OrgJed, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jComboBox_RADNICI_TipRadnika, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addComponent(jTextField_Radnik_Ime))
+                                    .addGroup(jPanel_RadnikLayout.createSequentialGroup()
+                                        .addComponent(jCheckBox_Radnik_Aktivan)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jCheckBox_Radnik_Radnik))
+                                    .addComponent(jComboBox_RADNICI_OrgJed, 0, 248, Short.MAX_VALUE)
+                                    .addComponent(jComboBox_RADNICI_TipRadnika, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))
-                    .addGroup(jPanel_RadnikLayout.createSequentialGroup()
-                        .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel_RadnikLayout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jCheckBox_Radnik_Aktivan)
-                                .addGap(11, 11, 11)
-                                .addComponent(jCheckBox_Radnik_Radnik))
-                            .addComponent(jLabel14))
-                        .addGap(0, 411, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
         jPanel_RadnikLayout.setVerticalGroup(
             jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -971,15 +1201,23 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField_Radnik_Sifra_INFSISTEM, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel13)))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel13)
+                            .addComponent(jCheckBox_Radnik_Aktivan)
+                            .addComponent(jCheckBox_Radnik_Radnik)))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(4, 4, 4)
+                .addGap(1, 1, 1)
+                .addComponent(jLabel_Naslov4, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel_Barkod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jCheckBox_Radnik_Aktivan)
-                    .addComponent(jCheckBox_Radnik_Radnik))
-                .addContainerGap(131, Short.MAX_VALUE))
+                    .addComponent(jButton_Efikasnost_Radnika_Izvestaj)
+                    .addComponent(jButton_Barkod))
+                .addGap(86, 86, 86))
         );
 
         jTP_DataManagement.addTab(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Radnik.TabConstraints.tabTitle"), jPanel_Radnik); // NOI18N
@@ -999,7 +1237,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel_Naslov, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTP_DataManagement))
+                .addComponent(jTP_DataManagement, javax.swing.GroupLayout.PREFERRED_SIZE, 441, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         bindingGroup.bind();
@@ -1100,10 +1339,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private void jButton_RADNIK_BrisanjeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RADNIK_BrisanjeActionPerformed
         // TODO add your handling code here:
         try {
-            Radnik r = em.find(Radnik.class, radnik_bind.getIDRadnik());
-
             em.getTransaction().begin();
+
+            Radnik r = em.find(Radnik.class, radnik_bind.getIDRadnik());
             em.remove(r);
+
             em.getTransaction().commit();
             Display.obavestenjeBaloncic("Obaveštenje.", "Radnik Je Obrisan.", Display.TIP_OBAVESTENJA.INFORMATIVNO);
         } catch (NullPointerException e) {
@@ -1115,7 +1355,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
     private void jButton_ORGJED_NovaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ORGJED_NovaActionPerformed
         try {
-            // TODO add your handling code here:
             ERSQuery.novaOrgJed(
                     firma_bind,
                     jTextField_ORGJED_Naziv.getText(),
@@ -1132,9 +1371,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }//GEN-LAST:event_jButton_ORGJED_NovaActionPerformed
 
     private void jButton_ORGJED_IzmenaPodatakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_ORGJED_IzmenaPodatakaActionPerformed
-        // TODO add your handling code here:
         try {
-            // TODO add your handling code here:
             ERSQuery.updateOrgJed(
                     orgJed_bind,
                     firma_bind,
@@ -1157,7 +1394,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }//GEN-LAST:event_jComboBox_RADNICI_TipRadnikaPropertyChange
 
     private void jComboBox_RADNICI_OrgJedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_RADNICI_OrgJedActionPerformed
-        // TODO add your handling code here:
         Orgjed o = (Orgjed) jComboBox_RADNICI_OrgJed.getSelectedItem();
         if (o != null) {
             setOrgJed_bind(o);
@@ -1165,7 +1401,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }//GEN-LAST:event_jComboBox_RADNICI_OrgJedActionPerformed
 
     private void jComboBox_RADNICI_TipRadnikaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_RADNICI_TipRadnikaActionPerformed
-        // TODO add your handling code here:
         TipRadnika t = (TipRadnika) jComboBox_RADNICI_TipRadnika.getSelectedItem();
         if (t != null) {
             setTipRadnika_bind(t);
@@ -1173,7 +1408,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }//GEN-LAST:event_jComboBox_RADNICI_TipRadnikaActionPerformed
 
     private void jComboBox_ORGJED_FirmaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_ORGJED_FirmaActionPerformed
-        // TODO add your handling code here:
         Firma f = (Firma) jComboBox_ORGJED_Firma.getSelectedItem();
         if (f != null) {
             setFirma_bind(f);
@@ -1181,7 +1415,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }//GEN-LAST:event_jComboBox_ORGJED_FirmaActionPerformed
 
     private void jComboBox_ORGJED_KompanijaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_ORGJED_KompanijaActionPerformed
-        // TODO add your handling code here:
         Kompanija k = (Kompanija) jComboBox_ORGJED_Kompanija.getSelectedItem();
         if (k != null) {
             setKompanija_bind(k);
@@ -1197,14 +1430,12 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     jTextField_KOMPANIJA__Vlasnik.getText());
 
             Display.obavestenjeBaloncic("Obaveštenje.", "Podaci o Kompaniji Su Uspešno Ažurirani.", Display.TIP_OBAVESTENJA.INFORMATIVNO);
-
         } catch (Exception e) {
             Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
         }
     }//GEN-LAST:event_jButton_KOMPANIJA_IzmenaPodatakaActionPerformed
 
     private void jButton_BarkodActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_BarkodActionPerformed
-        // TODO add your handling code here:
         try {
             if (jRadioButton_Barkod_Radnici.isSelected()) {
                 new ReportGenerator()
@@ -1220,21 +1451,150 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         }
     }//GEN-LAST:event_jButton_BarkodActionPerformed
 
+    private void jButton_Efikasnost_Servisa_IzvestajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Efikasnost_Servisa_IzvestajActionPerformed
+        if (jRadioButton_Efikasnost_SveJedinice.isSelected()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        new ReportGenerator()
+                                .generisanjeIzvestaja_EfikasnostServisa(ds.getYMDDatumOD(),
+                                        ds.getYMDDatumDO(),
+                                        jCheckBox_SAMO_RADNICI.isSelected(),
+                                        jCheckBox_OSTALI_NALOZI.isSelected(),
+                                        firma_bind.getIDFirma());
+
+                    } catch (NullPointerException npe) {
+                        Display.obavestenjeBaloncic("Greška.", "Izabrati firmu i datume.", Display.TIP_OBAVESTENJA.GRESKA);
+                    } catch (Exception e) {
+                        Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+                    }
+                }
+            });
+        } else if (jRadioButton_Efikasnost_ElektroMehanika.isSelected()) {
+            try {
+                new ReportGenerator()
+                        .generisanjeIzvestaja_EfikasnostServisa_MehLim(
+                                ds.getYMDDatumOD(),
+                                ds.getYMDDatumDO(),
+                                jCheckBox_SAMO_RADNICI.isSelected(),
+                                jCheckBox_OSTALI_NALOZI.isSelected(),
+                                firma_bind.getIDFirma(),
+                                true);
+
+            } catch (NullPointerException npe) {
+                Display.obavestenjeBaloncic("Greška.", "Izabrati firmu i datume.", Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
+        } else if (jRadioButton_Efikasnost_Limarija.isSelected()) {
+            try {
+                new ReportGenerator()
+                        .generisanjeIzvestaja_EfikasnostServisa_MehLim(
+                                ds.getYMDDatumOD(),
+                                ds.getYMDDatumDO(),
+                                jCheckBox_SAMO_RADNICI.isSelected(),
+                                jCheckBox_OSTALI_NALOZI.isSelected(),
+                                firma_bind.getIDFirma(),
+                                false);
+
+            } catch (NullPointerException npe) {
+                Display.obavestenjeBaloncic("Greška.", "Izabrati firmu i datume.", Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
+        }
+    }//GEN-LAST:event_jButton_Efikasnost_Servisa_IzvestajActionPerformed
+
+    private void jButton_Produktivnost_ZaPerioduActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Produktivnost_ZaPerioduActionPerformed
+        try {
+            new ReportGenerator()
+                    .generisanjeIzvestaja_ORGJED(
+                            orgJed_bind.getIDOrgjed(),
+                            ds.getYMDDatumOD(),
+                            ds.getYMDDatumDO());
+
+        } catch (NullPointerException npe) {
+            Display.obavestenjeBaloncic("Greška.", "Izabrati Org. Jedinicu i Datume.", Display.TIP_OBAVESTENJA.GRESKA);
+        } catch (Exception e) {
+            Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+        }
+    }//GEN-LAST:event_jButton_Produktivnost_ZaPerioduActionPerformed
+
+    private void jButton_Efikasnost_Radnika_IzvestajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Efikasnost_Radnika_IzvestajActionPerformed
+        if (jRadioButton_Radnik_Clocking.isSelected()) {
+            try {
+                new ReportGenerator()
+                        .generisanjeIzvestaja_ClockingZaPeriod(
+                                radnik_bind.getIDRadnik(),
+                                ds.getYMDDatumOD(),
+                                ds.getYMDDatumDO());
+
+            } catch (NullPointerException e) {
+                Display.obavestenjeBaloncic("Radnik nije odabran.",
+                        "Odaberite radnika u prozoru \"Aktivni radnici\", ili u Pretraživaču.",
+                        Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
+        } else if (jRadioButton_Radnik_Analiza.isSelected()) {
+            try {
+
+                new ReportGenerator()
+                        .generisanjeIzvestaja_AnalizaVremena(
+                                radnik_bind.getIDRadnik(),
+                                ds.getYMDDatumOD(),
+                                ds.getYMDDatumDO());
+
+            } catch (NullPointerException e) {
+                Display.obavestenjeBaloncic("Radnik nije odabran.",
+                        "Odaberite radnika u prozoru \"Aktivni radnici\", ili u Pretraživaču.",
+                        Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
+
+        } else if (jRadioButton_Radnik_Savetnici.isSelected()) {
+            try {
+                new ReportGenerator()
+                        .generisanjeIzvestaja_SavetniciFinansijskiIzvestaj(
+                                ds.getYMDDatumOD(),
+                                ds.getYMDDatumDO()
+                        );
+
+            } catch (NullPointerException e) {
+                Display.obavestenjeBaloncic("Greška.", "Odaberite početni i krajni datum.",
+                        Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
+        }
+    }//GEN-LAST:event_jButton_Efikasnost_Radnika_IzvestajActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup_Barkod;
+    private javax.swing.ButtonGroup buttonGroup_Radnici_Izvestaji;
+    private javax.swing.ButtonGroup buttonGroup_Radnik_Izvestaj;
     private javax.swing.JButton jButton_Barkod;
+    private javax.swing.JButton jButton_Efikasnost_Radnika_Izvestaj;
+    private javax.swing.JButton jButton_Efikasnost_Servisa_Izvestaj;
     private javax.swing.JButton jButton_FIRMA_IzmenaPodataka;
     private javax.swing.JButton jButton_FIRMA_Nova;
     private javax.swing.JButton jButton_KOMPANIJA_IzmenaPodataka;
     private javax.swing.JButton jButton_ORGJED_IzmenaPodataka;
     private javax.swing.JButton jButton_ORGJED_Nova;
+    private javax.swing.JButton jButton_Produktivnost_ZaPeriodu;
     private javax.swing.JButton jButton_RADNIK_Brisanje;
     private javax.swing.JButton jButton_RADNIK_IzmenaPodataka;
     private javax.swing.JButton jButton_RADNIK_Novi;
+    private javax.swing.JCheckBox jCheckBox_AKTIVNI_RADNICI;
     private javax.swing.JCheckBox jCheckBox_FIRMA_Aktivna;
+    private javax.swing.JCheckBox jCheckBox_NEAKTIVNI_RADNICI;
     private javax.swing.JCheckBox jCheckBox_ORGJED_Mehanika;
+    private javax.swing.JCheckBox jCheckBox_OSTALI_NALOZI;
     private javax.swing.JCheckBox jCheckBox_Radnik_Aktivan;
     private javax.swing.JCheckBox jCheckBox_Radnik_Radnik;
+    private javax.swing.JCheckBox jCheckBox_SAMO_RADNICI;
     private javax.swing.JComboBox jComboBox_ORGJED_Firma;
     private javax.swing.JComboBox jComboBox_ORGJED_Kompanija;
     private javax.swing.JComboBox jComboBox_RADNICI_OrgJed;
@@ -1264,23 +1624,37 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel_Naslov;
+    private javax.swing.JLabel jLabel_Naslov1;
+    private javax.swing.JLabel jLabel_Naslov3;
+    private javax.swing.JLabel jLabel_Naslov4;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel_Barkod;
     private javax.swing.JPanel jPanel_Firma;
+    private javax.swing.JPanel jPanel_Klijent;
+    private javax.swing.JPanel jPanel_Klijent1;
     private javax.swing.JPanel jPanel_Kompanija;
     private javax.swing.JPanel jPanel_OrgJed;
     private javax.swing.JPanel jPanel_Radnik;
     private javax.swing.JRadioButton jRadioButton_Barkod_Radnici;
     private javax.swing.JRadioButton jRadioButton_Barkod_Statusi;
+    private javax.swing.JRadioButton jRadioButton_Efikasnost_ElektroMehanika;
+    private javax.swing.JRadioButton jRadioButton_Efikasnost_Limarija;
+    private javax.swing.JRadioButton jRadioButton_Efikasnost_SveJedinice;
+    private javax.swing.JRadioButton jRadioButton_Radnik_Analiza;
+    private javax.swing.JRadioButton jRadioButton_Radnik_Clocking;
+    private javax.swing.JRadioButton jRadioButton_Radnik_Savetnici;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JSeparator jSeparator5;
     private javax.swing.JSeparator jSeparator6;
     private javax.swing.JTabbedPane jTP_DataManagement;
+    private javax.swing.JTextField jTextField_DATUMDO;
+    private javax.swing.JTextField jTextField_DATUMOD;
     private javax.swing.JTextField jTextField_FIRMA_Adresa;
     private javax.swing.JTextField jTextField_FIRMA_Grad;
     private javax.swing.JTextField jTextField_FIRMA_Kompanija;
@@ -1288,6 +1662,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private javax.swing.JTextField jTextField_FIRMA_Naziv;
     private javax.swing.JTextField jTextField_FIRMA_PIB;
     private javax.swing.JTextField jTextField_FIRMA_PostanskiBroj;
+    private javax.swing.JTextField jTextField_GodinaDO;
+    private javax.swing.JTextField jTextField_GodinaOD;
     private javax.swing.JTextField jTextField_KOMPANIJA_Adresa;
     private javax.swing.JTextField jTextField_KOMPANIJA_Grad;
     private javax.swing.JTextField jTextField_KOMPANIJA_Naziv;
@@ -1309,7 +1685,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     public void componentOpened() {
         kompanijaLookup = Utilities.actionsGlobalContext().lookupResult(Kompanija.class);
         kompanijaLookup.addLookupListener(new LookupListener() {
-
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result k = (Lookup.Result) le.getSource();
@@ -1318,9 +1693,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 if (!kompanije.isEmpty()) {
                     for (Kompanija k1 : kompanije) {
                         setKompanija_bind(k1);
-                        setKOMPANIJATextFields(kompanija_bind);
-
-                        jTP_DataManagement.setSelectedIndex(0);
+                        setKompanijaUI(kompanija_bind);
                     }
                 }
             }
@@ -1328,7 +1701,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         firmaLookup = Utilities.actionsGlobalContext().lookupResult(Firma.class);
         firmaLookup.addLookupListener(new LookupListener() {
-
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result k = (Lookup.Result) le.getSource();
@@ -1339,7 +1711,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                         setFirma_bind(f1);
                         setKompanija_bind(f1.getFkIdk());
 
-                        setFIRMATextFields(getFirma_bind());
+                        setFirmaUI(getFirma_bind());
 
                         jTP_DataManagement.setSelectedIndex(1);
                     }
@@ -1349,7 +1721,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         orgJedLookup = Utilities.actionsGlobalContext().lookupResult(Orgjed.class);
         orgJedLookup.addLookupListener(new LookupListener() {
-
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result k = (Lookup.Result) le.getSource();
@@ -1361,7 +1732,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                         setFirma_bind(o1.getFKIDFirma());
                         setKompanija_bind(firma_bind.getFkIdk());
 
-                        setORGJEDTextFields(getOrgJed_bind());
+                        setOrgJedUI(getOrgJed_bind());
 
                         jTP_DataManagement.setSelectedIndex(2);
                     }
@@ -1371,7 +1742,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         radnikLookup = Utilities.actionsGlobalContext().lookupResult(Radnik.class);
         radnikLookup.addLookupListener(new LookupListener() {
-
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result s = (Lookup.Result) le.getSource();
@@ -1379,19 +1749,28 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
                 if (!radnici.isEmpty()) {
                     for (Radnik r1 : radnici) {
-                        setRadnik_bind(r1);
-                        setTipRadnika_bind(r1.getFKIDVrsta());
-                        setOrgJed_bind(r1.getFKIDOrgjed());
-                        setFirma_bind(orgJed_bind.getFKIDFirma());
-                        setKompanija_bind(firma_bind.getFkIdk());
-
-                        setRADNIKTextFields(getRadnik_bind());
-
-                        jTP_DataManagement.setSelectedIndex(3);
+                        setUpRadnik(r1);
                     }
                 }
             }
         });
+
+        datumiLookup = Utilities.actionsGlobalContext().lookupResult(DatumSelektor.class);
+        datumiLookup.addLookupListener(new LookupListener() {
+            @Override
+            public void resultChanged(LookupEvent le) {
+                Lookup.Result lr = (Lookup.Result) le.getSource();
+                Collection<DatumSelektor> datumi = lr.allInstances();
+
+                if (!datumi.isEmpty()) {
+                    for (DatumSelektor d1 : datumi) {
+                        setDateUI(d1);
+                        ds = d1;
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -1404,18 +1783,41 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         orgJedLookup = null;
         radnikLookup.removeLookupListener(this);
         radnikLookup = null;
+        datumiLookup.removeLookupListener(this);
+        datumiLookup = null;
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="set text fields...">
-    private void setKOMPANIJATextFields(Kompanija k) {
+    //<editor-fold defaultstate="collapsed" desc="UI kontrole">
+    private void setDateUI(DatumSelektor d1) {
+        jTextField_DATUMOD.setText(d1.getYMDDatumOD());
+        jTextField_DATUMDO.setText(d1.getYMDDatumDO());
+
+        jTextField_GodinaOD.setText(Integer.toString(d1.getGodinaOD()));
+        jTextField_GodinaDO.setText(Integer.toString(d1.getGodinaDO()));
+    }
+
+    private void setUpRadnik(Radnik r1) {
+        setRadnik_bind(r1);
+
+        setTipRadnika_bind(radnik_bind.getFKIDVrsta());
+        setOrgJed_bind(radnik_bind.getFKIDOrgjed());
+        setFirma_bind(orgJed_bind.getFKIDFirma());
+        setKompanija_bind(firma_bind.getFkIdk());
+
+        setRadnikUI(radnik_bind);
+
+        jTP_DataManagement.setSelectedIndex(3);
+    }
+
+    private void setKompanijaUI(Kompanija k) {
         jTextField_KOMPANIJA_Naziv.setText(k.getNazivKompanije());
         jTextField_KOMPANIJA_Adresa.setText(k.getAdresa());
         jTextField_KOMPANIJA_Grad.setText(k.getGrad());
         jTextField_KOMPANIJA__Vlasnik.setText(k.getVlasnik());
     }
 
-    private void setFIRMATextFields(Firma f) {
+    private void setFirmaUI(Firma f) {
         jTextField_FIRMA_Naziv.setText(f.getNaziv());
         jTextField_FIRMA_Grad.setText(f.getGrad());
         jTextField_FIRMA_Adresa.setText(f.getAdresa());
@@ -1425,7 +1827,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jCheckBox_FIRMA_Aktivna.setSelected(f.isAktivna());
     }
 
-    private void setORGJEDTextFields(Orgjed orgjed) {
+    private void setOrgJedUI(Orgjed orgjed) {
         jTextField_ORGJED_Kompanija.setText(orgjed.getFKIDFirma().getFkIdk().getNazivKompanije());
         jTextField_ORGJED_Firma.setText(orgjed.getFKIDFirma().getNaziv());
         jTextField_ORGJED_Naziv.setText(orgjed.getNaziv());
@@ -1433,7 +1835,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jCheckBox_ORGJED_Mehanika.setSelected(orgjed.isMehanika());
     }
 
-    private void setRADNIKTextFields(Radnik r) {
+    private void setRadnikUI(Radnik r) {
         jTextField_Radnik_Ime.setText(r.getIme());
         jTextField_Radnik_Prezime.setText(r.getPrezime());
         jTextField_Radnik_OrgJed.setText(r.getFKIDOrgjed().getSifra());
@@ -1442,7 +1844,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jCheckBox_Radnik_Aktivan.setSelected(r.getAktivan());
         jCheckBox_Radnik_Radnik.setSelected(r.isRadnik());
     }
-//</editor-fold>
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="ne koristi se...">
     void writeProperties(java.util.Properties p) {
@@ -1461,5 +1863,18 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     public void resultChanged(LookupEvent le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
 //</editor-fold>
+    @Override
+    public void requestActive() {
+        QSRadnik();
+    }
+
+    private void QSRadnik() {
+        IRadnik ir = Lookup.getDefault().lookup(IRadnik.class);
+        if (ir.getRadnik() != null) {
+            Radnik r = ir.getRadnik();
+            setUpRadnik(r);
+        }
+    }
 }

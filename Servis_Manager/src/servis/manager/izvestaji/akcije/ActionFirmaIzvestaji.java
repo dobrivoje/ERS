@@ -35,6 +35,6 @@ public final class ActionFirmaIzvestaji implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ev) {
-        TopComponentUtils.OpenTopComponent("IzvestajiFirmaTopComponent");
+        TopComponentUtils.OpenTopComponent("ManagementPodatakaTopComponent");
     }
 }

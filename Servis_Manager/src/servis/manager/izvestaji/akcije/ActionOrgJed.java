@@ -63,6 +63,6 @@ public final class ActionOrgJed implements ActionListener {
             }
         });
 
-        TopComponentUtils.OpenTopComponent("IzvestajiOrgJedTopComponent");
+        TopComponentUtils.OpenTopComponent("ManagementPodatakaTopComponent");
     }
 }

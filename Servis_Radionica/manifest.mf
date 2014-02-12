@@ -3,5 +3,5 @@ OpenIDE-Module: radionica
 OpenIDE-Module-Layer: radionica/layer.xml
 OpenIDE-Module-Localizing-Bundle: radionica/Bundle.properties
 OpenIDE-Module-Reqradionicares: org.openide.windows.WindowManager
-OpenIDE-Module-Specification-Version: 1.4.7
+OpenIDE-Module-Specification-Version: 1.4.19
 

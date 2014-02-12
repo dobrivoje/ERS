@@ -18,7 +18,7 @@ import org.openide.util.NbBundle.Messages;
         id = "radionica.akcije.OpenWindowEvidencijaMajstoraAction"
 )
 @ActionRegistration(
-        iconBase = "ikonice/servis/FinishFlag_Crvena.gif",
+        iconBase = "ikonice/servis/kugla-transp.32x32.gif",
         displayName = "#CTL_OpenWindowEvidencijaMajstoraAction"
 )
 @ActionReference(path = "Toolbars/c1_Servis_Majstori", position = 11000)

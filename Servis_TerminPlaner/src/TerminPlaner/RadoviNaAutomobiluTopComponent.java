@@ -931,6 +931,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jButton_Trazi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/info.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_Trazi, org.openide.util.NbBundle.getMessage(RadoviNaAutomobiluTopComponent.class, "RadoviNaAutomobiluTopComponent.text")); // NOI18N
         jButton_Trazi.setName(""); // NOI18N
         jButton_Trazi.addActionListener(new java.awt.event.ActionListener() {
@@ -1001,7 +1002,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel_Automobil1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(beanTreeView, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE))
+                        .addComponent(beanTreeView, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel_NacinPretrage1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

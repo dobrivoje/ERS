@@ -15,25 +15,11 @@
         <folder name="Recent_hidden"/>
         <file name="GoToOption_hidden"/>
         
-        <folder name="Kompanija">
-            <attr name="command" stringvalue="k"/>
-            <attr name="position" intvalue="2"/>
-            <file name="servis-manager-QuickSearch-QSERSKompanija.instance">
-                <attr name="displayName" bundlevalue="servis.manager.Bundle#QuickSearch/Kompanija/servis-manager-QuickSearch-QSERSKompanija.instance"/>
-            </file>
-        </folder>
-        <folder name="Firma">
-            <attr name="command" stringvalue="f"/>
-            <attr name="position" intvalue="3"/>
-            <file name="servis-manager-QuickSearch-QSERSFirma.instance">
-                <attr name="displayName" bundlevalue="servis.manager.Bundle#QuickSearch/Firma/servis-manager-QuickSearch-QSERSFirma.instance"/>
-            </file>
-        </folder>
-        <folder name="Org. Jedinica">
-            <attr name="command" stringvalue="o"/>
-            <attr name="position" intvalue="4"/>
-            <file name="servis-manager-QuickSearch-QSERSOrgJed.instance">
-                <attr name="displayName" bundlevalue="servis.manager.Bundle#QuickSearch/OrgJed/servis-manager-QuickSearch-QSERSOrgJed.instance"/>
+        <folder name="Radnik-M.">
+            <attr name="command" stringvalue="m"/>
+            <attr name="position" intvalue="1"/>
+            <file name="servis-manager-QuickSearch-QS_ManagementRadnika.instance">
+                <attr name="displayName" bundlevalue="servis.manager.Bundle#QuickSearch/servis-manager-QuickSearch-QS_ManagementRadnika.instance"/>
             </file>
         </folder>
     </folder>

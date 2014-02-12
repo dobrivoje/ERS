@@ -22,6 +22,13 @@
                 <attr name="displayName" bundlevalue="TerminPlaner.Bundle#QuickSearch/TerminPlaner-QuickSearch-ServisiKlijenataQS.instance"/>
             </file>
         </folder>
+        <folder name="Cenovnik RD">
+            <attr name="command" stringvalue="c"/>
+            <attr name="position" intvalue="1"/>
+            <file name="TerminPlaner-QuickSearch-CenovnikRD_QS.instance">
+                <attr name="displayName" bundlevalue="TerminPlaner.Bundle#QuickSearch/TerminPlaner-QuickSearch-CenovnikRD_QS.instance"/>
+            </file>
+        </folder>
     </folder>
     <folder name="Windows2">
         <folder name="Modes">

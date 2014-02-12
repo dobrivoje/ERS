@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package radionica.QuickSearch;
 
 import ent.Radnik;
@@ -13,5 +12,6 @@ import ent.Radnik;
  * @author dobri
  */
 public interface IRadnik {
+
     public Radnik getRadnik();
 }

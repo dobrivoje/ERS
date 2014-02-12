@@ -126,6 +126,7 @@
                 <package>izvestaji.jasperreports.promet.TopKlijenti_Najveci_Promet</package>
                 <package>izvestaji.resursi.generatori</package>
                 <package>izvestaji.servis</package>
+                <package>izvestaji.servis.barkodovi</package>
             </public-packages>
         </data>
     </configuration>

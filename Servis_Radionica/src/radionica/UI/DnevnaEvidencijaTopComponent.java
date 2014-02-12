@@ -268,13 +268,13 @@ public final class DnevnaEvidencijaTopComponent extends TopComponent
     }
 
     @Override
-    public void refreshAktivniRdnici() {
+    public void refreshAktivniRadnici() {
         evidencijeRadnikaNodeCreation(true);
     }
 
     @Override
     public void requestActive() {
-        refreshAktivniRdnici();
+        refreshAktivniRadnici();
 
         StatusDisplayer.getDefault().setStatusText(
                 firmaLookup == null ? ""

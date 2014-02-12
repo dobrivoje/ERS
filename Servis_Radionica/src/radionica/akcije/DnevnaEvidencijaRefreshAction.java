@@ -96,7 +96,7 @@ public final class DnevnaEvidencijaRefreshAction implements ActionListener {
         TopComponent tc = WindowManager
                 .getDefault()
                 .findTopComponent("DnevnaEvidencijaTopComponent");
-        ((DnevnaEvidencijaTopComponent) tc).refreshAktivniRdnici();
+        ((DnevnaEvidencijaTopComponent) tc).refreshAktivniRadnici();
         TopComponentUtils.OpenTopComponent("DnevnaEvidencijaTopComponent");
 
         StatusDisplayer.getDefault().setStatusText(

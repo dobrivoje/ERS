@@ -31,7 +31,7 @@ public class Display {
     //<editor-fold defaultstate="collapsed" desc="Obaveštenje Balončić">
     public static void obavestenjeBaloncic(String naslov, String poruka, TIP_OBAVESTENJA tip_obavestenja) {
         String p;
-        
+
         switch (tip_obavestenja) {
             case GRESKA:
                 p = "ikonice/errors_warnings_info/error-triangle.gif";
@@ -45,11 +45,15 @@ public class Display {
             default:
                 p = "ikonice/errors_warnings_info/warning-triangle.gif";
         }
-        
-        NotificationDisplayer.getDefault()
-                .notify(naslov,
-                        ImageUtilities.loadImageIcon(p, true),
-                        poruka, null);
+
+        try {
+            NotificationDisplayer.getDefault()
+                    .notify(naslov,
+                            ImageUtilities.loadImageIcon(p, true),
+                            poruka, null);
+        } catch (NullPointerException e) {
+        } catch (Exception e) {
+        }
     }
 //</editor-fold>
 }

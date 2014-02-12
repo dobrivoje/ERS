@@ -42,8 +42,8 @@
         <folder name="Radnik-Evidencija">
             <attr name="command" stringvalue="r"/>
             <attr name="position" intvalue="5"/>
-            <file name="radionica-QuickSearch-QSAktivniRadnik.instance">
-                <attr name="displayName" bundlevalue="radionica.Bundle#QuickSearch/Radnik/radionica-QuickSearch-QSAktivniRadnik.instance"/>
+            <file name="radionica-QuickSearch-QS_AktivniRadnik.instance">
+                <attr name="displayName" bundlevalue="radionica.Bundle#QuickSearch/Radnik/radionica-QuickSearch-QS_AktivniRadnik.instance"/>
             </file>
         </folder>
     </folder>

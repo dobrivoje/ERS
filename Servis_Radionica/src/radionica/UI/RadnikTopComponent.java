@@ -15,10 +15,13 @@ import ent.Firma;
 import ent.Orgjed;
 import ent.Radnik;
 import ent.Statusi;
-import ent.infsistem.Sifarnik;
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.VK_ENTER;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.NoResultException;
 import node_klase.RADDANZaDatumChildFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -65,15 +68,159 @@ public final class RadnikTopComponent extends TopComponent
     private Lookup.Result<Orgjed> odabraneOrgJed = null;
     private Lookup.Result<Radnik> odabraniRadnici = null;
     private Lookup.Result<String> odabraniDatum = null;
-    private Lookup.Result<Sifarnik> odabranaSifra = null;
+
     // pomoćne varijable
-    private Firma firmaLookup;
-    private Orgjed orgJedLookup;
-    private Radnik radnikLookup;
-    private String datumLookup;
-    private Sifarnik sifarnikLookup;
-    //
-    private Statusi statusi;
+    //<editor-fold defaultstate="collapsed" desc="Firma Bind">
+    private Firma firma_bind;
+
+    public static final String PROP_FIRMA_BIND = "firma_bind";
+
+    /**
+     * Get the value of firma_bind
+     *
+     * @return the value of firma_bind
+     */
+    public Firma getFirma_bind() {
+        return firma_bind;
+    }
+
+    /**
+     * Set the value of firma_bind
+     *
+     * @param firma_bind new value of firma_bind
+     */
+    public void setFirma_bind(Firma firma_bind) {
+        Firma oldFirma_bind = this.firma_bind;
+        this.firma_bind = firma_bind;
+        propertyChangeSupport.firePropertyChange(PROP_FIRMA_BIND, oldFirma_bind, firma_bind);
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="OrgJed Bind">
+    private Orgjed orgJed_bind;
+
+    public static final String PROP_ORGJED_BIND = "orgJed_bind";
+
+    /**
+     * Get the value of orgJed_bind
+     *
+     * @return the value of orgJed_bind
+     */
+    public Orgjed getOrgJed_bind() {
+        return orgJed_bind;
+    }
+
+    /**
+     * Set the value of orgJed_bind
+     *
+     * @param orgJed_bind new value of orgJed_bind
+     */
+    public void setOrgJed_bind(Orgjed orgJed_bind) {
+        Orgjed oldOrgJed_bind = this.orgJed_bind;
+        this.orgJed_bind = orgJed_bind;
+        propertyChangeSupport.firePropertyChange(PROP_ORGJED_BIND, oldOrgJed_bind, orgJed_bind);
+    }
+
+    private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+//</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Radnik Bind">
+    private Radnik radnik_bind;
+
+    public static final String PROP_RADNIK_BIND = "radnik_bind";
+
+    /**
+     * Get the value of radnik_bind
+     *
+     * @return the value of radnik_bind
+     */
+    public Radnik getRadnik_bind() {
+        return radnik_bind;
+    }
+
+    /**
+     * Set the value of radnik_bind
+     *
+     * @param radnik_bind new value of radnik_bind
+     */
+    public void setRadnik_bind(Radnik radnik_bind) {
+        Radnik oldRadnik_bind = this.radnik_bind;
+        this.radnik_bind = radnik_bind;
+        propertyChangeSupport.firePropertyChange(PROP_RADNIK_BIND, oldRadnik_bind, radnik_bind);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Datum Bind">
+    private String datum_bind;
+
+    public static final String PROP_DATUM_BIND = "datum_bind";
+
+    /**
+     * Get the value of datum_bind
+     *
+     * @return the value of datum_bind
+     */
+    public String getDatum_bind() {
+        return datum_bind;
+    }
+
+    /**
+     * Set the value of datum_bind
+     *
+     * @param datum_bind new value of datum_bind
+     */
+    public void setDatum_bind(String datum_bind) {
+        String oldDatum_bind = this.datum_bind;
+        this.datum_bind = datum_bind;
+        propertyChangeSupport.firePropertyChange(PROP_DATUM_BIND, oldDatum_bind, datum_bind);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Statusi Bind">
+    private Statusi statusi_bind;
+
+    public static final String PROP_STATUSI_BIND = "statusi_bind";
+
+    /**
+     * Get the value of statusi_bind
+     *
+     * @return the value of statusi_bind
+     */
+    public Statusi getStatusi_bind() {
+        return statusi_bind;
+    }
+
+    /**
+     * Set the value of statusi_bind
+     *
+     * @param statusi_bind new value of statusi_bind
+     */
+    public void setStatusi_bind(Statusi statusi_bind) {
+        Statusi oldStatusi_bind = this.statusi_bind;
+        this.statusi_bind = statusi_bind;
+        propertyChangeSupport.firePropertyChange(PROP_STATUSI_BIND, oldStatusi_bind, statusi_bind);
+    }
+//</editor-fold>
     //
     private Node evidencijeRadnikaRoot = null;
     private RADDANZaDatumChildFactory evidencijeChildFactory = null;
@@ -110,7 +257,7 @@ public final class RadnikTopComponent extends TopComponent
         setToolTipText(Bundle.HINT_RadnikTopComponent());
 
         resetKontola();
-        initOutLineViewEvidencijeRadnikaZaDan(radnikLookup, datumLookup);
+        initOutLineViewEvidencijeRadnikaZaDan(radnik_bind, datum_bind);
 
         // is = Lookup.getDefault().lookup(ISifarnik.class);
     }
@@ -193,6 +340,7 @@ public final class RadnikTopComponent extends TopComponent
         jTextField_STATUS_NALOGA_OPIS.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jTextField_STATUS_NALOGA_OPIS.setFocusable(false);
 
+        jButton_EVIDENCIJA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/ok.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_EVIDENCIJA, org.openide.util.NbBundle.getMessage(RadnikTopComponent.class, "RadnikTopComponent.jButton_EVIDENCIJA.text")); // NOI18N
         jButton_EVIDENCIJA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,7 +353,10 @@ public final class RadnikTopComponent extends TopComponent
             }
         });
 
+        jButton_EVIDENCIJA_ODUSTAJANJE.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/error_circle.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_EVIDENCIJA_ODUSTAJANJE, org.openide.util.NbBundle.getMessage(RadnikTopComponent.class, "RadnikTopComponent.jButton_EVIDENCIJA_ODUSTAJANJE.text")); // NOI18N
+        jButton_EVIDENCIJA_ODUSTAJANJE.setToolTipText(org.openide.util.NbBundle.getMessage(RadnikTopComponent.class, "RadnikTopComponent.jButton_EVIDENCIJA_ODUSTAJANJE.toolTipText")); // NOI18N
+        jButton_EVIDENCIJA_ODUSTAJANJE.setPreferredSize(new java.awt.Dimension(155, 31));
         jButton_EVIDENCIJA_ODUSTAJANJE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_EVIDENCIJA_ODUSTAJANJEActionPerformed(evt);
@@ -282,9 +433,9 @@ public final class RadnikTopComponent extends TopComponent
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton_EVIDENCIJA, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton_EVIDENCIJA)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton_EVIDENCIJA_ODUSTAJANJE, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton_EVIDENCIJA_ODUSTAJANJE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jSeparator7, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -325,21 +476,21 @@ public final class RadnikTopComponent extends TopComponent
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jButton_EVIDENCIJA)
-                    .addComponent(jButton_EVIDENCIJA_ODUSTAJANJE))
+                    .addComponent(jButton_EVIDENCIJA_ODUSTAJANJE, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(outlineViewEvidencijeRadnikaZaDan, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
+                .addComponent(outlineViewEvidencijeRadnikaZaDan, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBox_STATUSIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_STATUSIActionPerformed
         // TODO add your handling code here:
-        statusi = (Statusi) jComboBox_STATUSI.getSelectedItem();
+        statusi_bind = (Statusi) jComboBox_STATUSI.getSelectedItem();
 
-        jTextField_SIFRA_STATUSA_NALOGA.setText(statusi.getIDStatus().toString());
-        jTextField_STATUS_NALOGA_OPIS.setText(statusi.getZnacenje());
+        jTextField_SIFRA_STATUSA_NALOGA.setText(statusi_bind.getIDStatus().toString());
+        jTextField_STATUS_NALOGA_OPIS.setText(statusi_bind.getZnacenje());
     }//GEN-LAST:event_jComboBox_STATUSIActionPerformed
 
     private void jButton_EVIDENCIJAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_EVIDENCIJAActionPerformed
@@ -348,13 +499,14 @@ public final class RadnikTopComponent extends TopComponent
         try {
             Nalog = (jTextField_RADNI_NALOG.getText().isEmpty() ? "" : jTextField_RADNI_NALOG.getText());
 
-            if (proveraZaUpis(radnikLookup, datumLookup, statusi, Nalog)) {
-                ERSQuery.evidentirajAktivnostRadnika4(radnikLookup, statusi, Nalog);
+            if (proveraZaUpis(radnik_bind, datum_bind, statusi_bind, Nalog)) {
+                ERSQuery.evidentirajAktivnostRadnika4(radnik_bind, statusi_bind, Nalog);
             }
 
-            refreshOutlineViewEvidencija(radnikLookup, datumLookup);
+            refreshOutlineViewEvidencija(radnik_bind, datum_bind);
         } catch (Exception e) {
             Display.obavestenjeBaloncic("Greška.", "Greška Prilikom Upisa. Opis Greške: " + e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+
         } finally {
             resetKontola();
         }
@@ -364,12 +516,11 @@ public final class RadnikTopComponent extends TopComponent
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             try {
-                statusi = ERSQuery.statusPoID(Integer.parseInt(jTextField_SIFRA_STATUSA.getText()));
+                statusi_bind = ERSQuery.statusPoID(Integer.parseInt(jTextField_SIFRA_STATUSA.getText()));
 
-                jTextField_SIFRA_STATUSA_NALOGA.setText(statusi.getStatus());
-                jTextField_STATUS_NALOGA_OPIS.setText(statusi.getZnacenje());
+                displayStatusUI(statusi_bind);
 
-                if (statusi.getUnosNaloga()) {
+                if (statusi_bind.getUnosNaloga()) {
                     jTextField_RADNI_NALOG.setEnabled(true);
                     jTextField_RADNI_NALOG.requestFocus();
                 } else {
@@ -384,8 +535,8 @@ public final class RadnikTopComponent extends TopComponent
                 jButton_EVIDENCIJA_ODUSTAJANJE.setEnabled(true);
             } catch (NullPointerException e1) {
             } catch (NumberFormatException e) {
-                jTextField_SIFRA_STATUSA.setText("");
-                jTextField_STATUS_NALOGA_OPIS.setText("");
+
+                displayStatusUI(null);
 
                 jButton_EVIDENCIJA.setEnabled(false);
                 jButton_EVIDENCIJA_ODUSTAJANJE.setEnabled(true);
@@ -407,8 +558,9 @@ public final class RadnikTopComponent extends TopComponent
 
                 if (r.isRadnik()) {
                     if (r.getAktivan()) {
-                        radnikLookup = r;
-                        setOdabraniRadnik(r, datumLookup);
+                        radnik_bind = r;
+                        setUpRadnik(r);
+                        displayUI();
 
                         jTextField_SIFRA_RADNIKA.setEnabled(false);
                         jButton_EVIDENCIJA_ODUSTAJANJE.setEnabled(true);
@@ -496,22 +648,15 @@ public final class RadnikTopComponent extends TopComponent
     private org.openide.explorer.view.OutlineView outlineViewEvidencijeRadnikaZaDan;
     // End of variables declaration//GEN-END:variables
 
+    //<editor-fold defaultstate="collapsed" desc="Lookup">
     @Override
     public void componentOpened() {
         odabraneFirme = Utilities.actionsGlobalContext().lookupResult(Firma.class);
         odabraneOrgJed = Utilities.actionsGlobalContext().lookupResult(Orgjed.class);
         odabraniRadnici = Utilities.actionsGlobalContext().lookupResult(Radnik.class);
-        odabranaSifra = Utilities.actionsGlobalContext().lookupResult(Sifarnik.class);
-
-        /*odabraniDatum = WindowManager
-         .getDefault()
-         .findTopComponent("PretrazivacTopComponent")
-         .getLookup()
-         .lookupResult(String.class);
-         */
         odabraniDatum = Utilities.actionsGlobalContext().lookupResult(String.class);
 
-        LookupListener ll1 = new LookupListener() {
+        odabraneFirme.addLookupListener(new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result f = (Lookup.Result) le.getSource();
@@ -519,22 +664,14 @@ public final class RadnikTopComponent extends TopComponent
 
                 if (!firme.isEmpty()) {
                     for (Firma f1 : firme) {
-                        //firmaLookup = (Firma) f1;
-                        firmaLookup = f1;
-
-                        setFirmaIOrgJed(firmaLookup, null);
-                        setOdabraniRadnik(null, datumLookup);
+                        setFirma_bind(f1);
+                        displayFirmaUI(firma_bind);
                     }
                 }
             }
-        };
+        });
 
-        odabraneFirme.addLookupListener(ll1);
-
-        ll1.resultChanged(
-                new LookupEvent(odabraneFirme));
-
-        LookupListener ll2 = new LookupListener() {
+        odabraneOrgJed.addLookupListener(new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result o = (Lookup.Result) le.getSource();
@@ -542,22 +679,16 @@ public final class RadnikTopComponent extends TopComponent
 
                 if (!orgJedinice.isEmpty()) {
                     for (Orgjed o1 : orgJedinice) {
-                        //orgJedLookup = (Orgjed) o1;
-                        orgJedLookup = o1;
+                        setOrgJed_bind(o1);
+                        setFirma_bind(o1.getFKIDFirma());
 
-                        setFirmaIOrgJed(orgJedLookup.getFKIDFirma(), orgJedLookup);
-                        setOdabraniRadnik(null, datumLookup);
+                        displayOrgJedUI(o1);
                     }
                 }
             }
-        };
+        });
 
-        odabraneOrgJed.addLookupListener(ll2);
-
-        ll2.resultChanged(
-                new LookupEvent(odabraneOrgJed));
-
-        LookupListener ll3 = new LookupListener() {
+        odabraniRadnici.addLookupListener(new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -565,20 +696,19 @@ public final class RadnikTopComponent extends TopComponent
 
                 if (!radnici.isEmpty()) {
                     for (Radnik r1 : radnici) {
-                        //radnikLookup = (Radnik) r1;
-                        radnikLookup = r1;
-                        setOdabraniRadnik(radnikLookup, datumLookup);
+                        setUpRadnik(r1);
 
-                        refreshOutlineViewEvidencija(radnikLookup, datumLookup);
+                        displayRadnikUI(r1);
+                        displayOrgJedUI(orgJed_bind);
+                        displayFirmaUI(firma_bind);
+
+                        refreshOutlineViewEvidencija(radnik_bind, datum_bind);
                     }
                 }
             }
-        };
+        });
 
-        odabraniRadnici.addLookupListener(ll3);
-        ll3.resultChanged(new LookupEvent(odabraniRadnici));
-
-        LookupListener ll4 = new LookupListener() {
+        odabraniDatum.addLookupListener(new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -586,28 +716,10 @@ public final class RadnikTopComponent extends TopComponent
 
                 if (!datumi.isEmpty()) {
                     for (String d1 : datumi) {
-                        datumLookup = d1;
-                        refreshOutlineViewEvidencija(radnikLookup, datumLookup);
+                        setDatum_bind(d1);
+
+                        refreshOutlineViewEvidencija(radnik_bind, datum_bind);
                     }
-                }
-            }
-        };
-
-        odabraniDatum.addLookupListener(ll4);
-        ll4.resultChanged(new LookupEvent(odabraniDatum));
-
-        odabranaSifra.addLookupListener(new LookupListener() {
-
-            @Override
-            public void resultChanged(LookupEvent le) {
-
-                Lookup.Result lr = (Lookup.Result) le.getSource();
-                Collection<Sifarnik> sifre = lr.allInstances();
-
-                for (Sifarnik ss : sifre) {
-                    sifarnikLookup = ss;
-                    // jTextField_STATUS_NALOGA_OPIS.setText(sifarnikLookup.toString());
-                    jTextField_STATUS_NALOGA_OPIS.setText("!!!!!!!!!!!!!");
                 }
             }
         });
@@ -648,23 +760,9 @@ public final class RadnikTopComponent extends TopComponent
     public ExplorerManager getExplorerManager() {
         return em;
     }
+//</editor-fold>
 
-    private void setOdabraniRadnik(Radnik r1, String datum) {
-        jTextField_SIFRA_RADNIKA.setText(r1 == null ? "" : Long.toString(r1.getIDRadnik()));
-        jTextField_RADNIK.setText(r1 == null ? "" : r1.getIme() + " " + r1.getPrezime());
-
-        if (r1 != null) {
-            setFirmaIOrgJed(r1.getFKIDOrgjed().getFKIDFirma(), r1.getFKIDOrgjed());
-        }
-    }
-
-    private void setFirmaIOrgJed(Firma firma, Orgjed orgjed) {
-        jTextField_FIRMA.setText(firma == null ? "" : firma.getNaziv());
-        jTextField_ORGJED.setText(orgjed == null ? "" : orgjed.getNaziv());
-        // jTextField_ORGJED_ID.setText(orgjed == null ? "" : orgjed.getSifra());
-    }
-
-    private boolean proveraZaUpis(Radnik radnik, String datumLookup, Statusi status, String nalog)
+    private boolean proveraZaUpis(Radnik radnik, String datum_bind, Statusi status, String nalog)
             throws DatumException, NoResultException, NumberFormatException, NalogException, Exception {
 
         boolean UpisStatusaIspravan = false;
@@ -675,7 +773,7 @@ public final class RadnikTopComponent extends TopComponent
             UpisStatusaIspravan = true;
         }
 
-        if (datumLookup.isEmpty()) {
+        if (datum_bind.isEmpty()) {
             throw new DatumException("Mora se izabrati datum !");
         } else {
             UpisStatusaIspravan = true;
@@ -697,15 +795,11 @@ public final class RadnikTopComponent extends TopComponent
     }
 
     @Override
-    protected void componentShowing() {
-        jTextField_SIFRA_RADNIKA.requestFocus();
+    public void requestActive() {
+        QSRadnik();
     }
 
-    @Override
-    public void requestFocus() {
-        jTextField_SIFRA_RADNIKA.requestFocus();
-    }
-
+    //<editor-fold defaultstate="collapsed" desc="UI kontrole">
     private void resetKontola() {
         jTextField_FIRMA.setText("");
         jTextField_ORGJED.setText("");
@@ -727,19 +821,53 @@ public final class RadnikTopComponent extends TopComponent
         jTextField_SIFRA_RADNIKA.requestFocus();
     }
 
-    @Override
-    public void requestActive() {
-        QSRadnik();
+    private void displayUI() {
+        displayRadnikUI(radnik_bind);
+        displayOrgJedUI(orgJed_bind);
+        displayFirmaUI(firma_bind);
     }
+
+    private void displayFirmaUI(Firma firma) {
+        jTextField_FIRMA.setText(firma == null ? "" : firma_bind.getNaziv());
+    }
+
+    private void displayOrgJedUI(Orgjed orgjed) {
+        jTextField_ORGJED.setText(orgjed == null ? "" : orgjed.getNaziv());
+    }
+
+    private void displayRadnikUI(Radnik r1) {
+        jTextField_SIFRA_RADNIKA.setText(r1 != null ? Long.toString(r1.getIDRadnik()) : "");
+        jTextField_RADNIK.setText(r1 != null ? r1.getIme() + " " + r1.getPrezime() : "");
+    }
+
+    private void displayStatusUI(Statusi status) {
+        jTextField_SIFRA_STATUSA_NALOGA.setText(status != null ? status.getStatus() : "");
+        jTextField_STATUS_NALOGA_OPIS.setText(status != null ? status.getZnacenje() : "");
+    }
+
+    private void setUpRadnik(Radnik r1) {
+        setRadnik_bind(r1);
+        setOrgJed_bind(radnik_bind.getFKIDOrgjed());
+        setFirma_bind(orgJed_bind.getFKIDFirma());
+
+    }
+    //</editor-fold>
 
     private void QSRadnik() {
         IRadnik ir = Lookup.getDefault().lookup(IRadnik.class);
-        if (ir.getRadnik() != null) {
-            radnikLookup = ir.getRadnik();
 
-            setOdabraniRadnik(radnikLookup, datumLookup);
-            jTextField_SIFRA_RADNIKAKeyReleased(new KeyEvent(this, 1, 1, 0x1, VK_ENTER,Character.MIN_VALUE));
-            refreshOutlineViewEvidencija(radnikLookup, datumLookup);
+        setDatum_bind(datum_bind
+                == null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : datum_bind);
+
+        if (ir.getRadnik()
+                != null) {
+            Radnik r = ir.getRadnik();
+
+            setUpRadnik(r);
+            displayUI();
+
+            jTextField_SIFRA_RADNIKAKeyReleased(new KeyEvent(this, 1, 1, 0x1, VK_ENTER, Character.MIN_VALUE));
+            refreshOutlineViewEvidencija(radnik_bind, datum_bind);
         }
     }
 }

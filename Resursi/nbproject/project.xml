@@ -94,6 +94,7 @@
             </test-dependencies>
             <public-packages>
                 <package>ERS.SearchProviders</package>
+                <package>ERS.SearchProviders.Radnik</package>
                 <package>ERS.SearchProviders.Sifarnik</package>
                 <package>Exceptions</package>
                 <package>Resursi</package>

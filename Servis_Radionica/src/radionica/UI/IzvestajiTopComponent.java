@@ -12,7 +12,6 @@ import izvestaji.resursi.generatori.ReportGenerator;
 import java.util.Collection;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
-import org.openide.awt.ActionReference;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -33,7 +32,9 @@ import org.openide.windows.WindowManager;
         persistenceType = TopComponent.PERSISTENCE_ALWAYS)
 @TopComponent.Registration(mode = "editor", openAtStartup = false, position = 1100)
 @ActionID(category = "Window", id = "izvestaji.mesecni.radnik.IzvestajMesecniRadnikTopComponent")
-@ActionReference(path = "Menu/Izveštaji", position = 30000)
+
+// Izbacujemo iz glavnog menija stavku Izveštaji !
+// @ActionReference(path = "Menu/Izveštaji", position = 30000)
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_IzvestajMesecniRadnikAction",
         preferredID = "IzvestajMesecniRadnikTopComponent")
@@ -88,12 +89,6 @@ public final class IzvestajiTopComponent extends TopComponent
         jCheckBox_SAMO_RADNICI = new javax.swing.JCheckBox();
         jCheckBox_NEAKTIVNI_RADNICI = new javax.swing.JCheckBox();
         jCheckBox_OSTALI_NALOZI = new javax.swing.JCheckBox();
-        jLabel9 = new javax.swing.JLabel();
-        jButton_Efikasnost_Servisa_Izvestaj = new javax.swing.JButton();
-        jPanel_Klijent = new javax.swing.JPanel();
-        jRadioButton_Efikasnost_ElektroMehanika = new javax.swing.JRadioButton();
-        jRadioButton_Efikasnost_Limarija = new javax.swing.JRadioButton();
-        jRadioButton_Efikasnost_SveJedinice = new javax.swing.JRadioButton();
         jPanel_Klijent1 = new javax.swing.JPanel();
         jRadioButton_Radnik_Clocking = new javax.swing.JRadioButton();
         jRadioButton_Radnik_Analiza = new javax.swing.JRadioButton();
@@ -151,49 +146,6 @@ public final class IzvestajiTopComponent extends TopComponent
         jCheckBox_OSTALI_NALOZI.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_OSTALI_NALOZI, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jCheckBox_OSTALI_NALOZI.text")); // NOI18N
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel9, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jLabel9.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(jButton_Efikasnost_Servisa_Izvestaj, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jButton_Efikasnost_Servisa_Izvestaj.text")); // NOI18N
-        jButton_Efikasnost_Servisa_Izvestaj.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton_Efikasnost_Servisa_IzvestajActionPerformed(evt);
-            }
-        });
-
-        jPanel_Klijent.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jPanel_Klijent.border.title"))); // NOI18N
-
-        buttonGroup_Efikasnost.add(jRadioButton_Efikasnost_ElektroMehanika);
-        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Efikasnost_ElektroMehanika, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jRadioButton_Efikasnost_ElektroMehanika.text")); // NOI18N
-
-        buttonGroup_Efikasnost.add(jRadioButton_Efikasnost_Limarija);
-        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Efikasnost_Limarija, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jRadioButton_Efikasnost_Limarija.text")); // NOI18N
-
-        buttonGroup_Efikasnost.add(jRadioButton_Efikasnost_SveJedinice);
-        jRadioButton_Efikasnost_SveJedinice.setSelected(true);
-        org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Efikasnost_SveJedinice, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jRadioButton_Efikasnost_SveJedinice.text")); // NOI18N
-
-        javax.swing.GroupLayout jPanel_KlijentLayout = new javax.swing.GroupLayout(jPanel_Klijent);
-        jPanel_Klijent.setLayout(jPanel_KlijentLayout);
-        jPanel_KlijentLayout.setHorizontalGroup(
-            jPanel_KlijentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_KlijentLayout.createSequentialGroup()
-                .addGroup(jPanel_KlijentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jRadioButton_Efikasnost_Limarija)
-                    .addComponent(jRadioButton_Efikasnost_SveJedinice)
-                    .addComponent(jRadioButton_Efikasnost_ElektroMehanika))
-                .addContainerGap(35, Short.MAX_VALUE))
-        );
-        jPanel_KlijentLayout.setVerticalGroup(
-            jPanel_KlijentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel_KlijentLayout.createSequentialGroup()
-                .addComponent(jRadioButton_Efikasnost_SveJedinice, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton_Efikasnost_ElektroMehanika, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jRadioButton_Efikasnost_Limarija, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
         jPanel_Klijent1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jPanel_Klijent1.border.title"))); // NOI18N
 
         buttonGroup_Efikasnost.add(jRadioButton_Radnik_Clocking);
@@ -250,7 +202,7 @@ public final class IzvestajiTopComponent extends TopComponent
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jTextField_DATUMDO)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jTextField_DATUMOD))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,23 +232,17 @@ public final class IzvestajiTopComponent extends TopComponent
                         .addGap(16, 16, 16))))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel_Klijent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_Efikasnost_Servisa_Izvestaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(46, 46, 46)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton_Efikasnost_Radnika_Izvestaj, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(210, Short.MAX_VALUE))))
+                .addComponent(jSeparator2))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSeparator8))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton_Efikasnost_Radnika_Izvestaj, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,75 +282,17 @@ public final class IzvestajiTopComponent extends TopComponent
                         .addComponent(jCheckBox_OSTALI_NALOZI)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jLabel10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel_Klijent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton_Efikasnost_Servisa_Izvestaj)
-                    .addComponent(jButton_Efikasnost_Radnika_Izvestaj))
+                .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(1, 1, 1)
+                .addComponent(jButton_Efikasnost_Radnika_Izvestaj)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton_Efikasnost_Servisa_IzvestajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Efikasnost_Servisa_IzvestajActionPerformed
-        // TODO add your handling code here:
-        if (jRadioButton_Efikasnost_SveJedinice.isSelected()) {
-            try {
-
-                new ReportGenerator()
-                        .generisanjeIzvestaja_EfikasnostServisa(ds.getYMDDatumOD(),
-                                ds.getYMDDatumDO(),
-                                jCheckBox_SAMO_RADNICI.isSelected(),
-                                jCheckBox_OSTALI_NALOZI.isSelected(),
-                                firma.getIDFirma());
-
-            } catch (NullPointerException npe) {
-                Display.obavestenjeBaloncic("Greška.", "Izabrati firmu i datume.", Display.TIP_OBAVESTENJA.GRESKA);
-            } catch (Exception e) {
-                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-            }
-        } else if (jRadioButton_Efikasnost_ElektroMehanika.isSelected()) {
-            try {
-                new ReportGenerator()
-                        .generisanjeIzvestaja_EfikasnostServisa_MehLim(
-                                ds.getYMDDatumOD(),
-                                ds.getYMDDatumDO(),
-                                jCheckBox_SAMO_RADNICI.isSelected(),
-                                jCheckBox_OSTALI_NALOZI.isSelected(),
-                                firma.getIDFirma(),
-                                true);
-
-            } catch (NullPointerException npe) {
-                Display.obavestenjeBaloncic("Greška.", "Izabrati firmu i datume.", Display.TIP_OBAVESTENJA.GRESKA);
-            } catch (Exception e) {
-                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-            }
-        } else if (jRadioButton_Efikasnost_Limarija.isSelected()) {
-            try {
-                new ReportGenerator()
-                        .generisanjeIzvestaja_EfikasnostServisa_MehLim(
-                                ds.getYMDDatumOD(),
-                                ds.getYMDDatumDO(),
-                                jCheckBox_SAMO_RADNICI.isSelected(),
-                                jCheckBox_OSTALI_NALOZI.isSelected(),
-                                firma.getIDFirma(),
-                                false);
-
-            } catch (NullPointerException npe) {
-                Display.obavestenjeBaloncic("Greška.", "Izabrati firmu i datume.", Display.TIP_OBAVESTENJA.GRESKA);
-            } catch (Exception e) {
-                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-            }
-        }
-    }//GEN-LAST:event_jButton_Efikasnost_Servisa_IzvestajActionPerformed
 
     private void jButton_Efikasnost_Radnika_IzvestajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Efikasnost_Radnika_IzvestajActionPerformed
         // TODO add your handling code here:
@@ -461,7 +349,6 @@ public final class IzvestajiTopComponent extends TopComponent
     private javax.swing.ButtonGroup buttonGroup_Efikasnost;
     private javax.swing.ButtonGroup buttonGroup_Majstori;
     private javax.swing.JButton jButton_Efikasnost_Radnika_Izvestaj;
-    private javax.swing.JButton jButton_Efikasnost_Servisa_Izvestaj;
     private javax.swing.JCheckBox jCheckBox_AKTIVNI_RADNICI;
     private javax.swing.JCheckBox jCheckBox_NEAKTIVNI_RADNICI;
     private javax.swing.JCheckBox jCheckBox_OSTALI_NALOZI;
@@ -470,12 +357,7 @@ public final class IzvestajiTopComponent extends TopComponent
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JPanel jPanel_Klijent;
     private javax.swing.JPanel jPanel_Klijent1;
-    private javax.swing.JRadioButton jRadioButton_Efikasnost_ElektroMehanika;
-    private javax.swing.JRadioButton jRadioButton_Efikasnost_Limarija;
-    private javax.swing.JRadioButton jRadioButton_Efikasnost_SveJedinice;
     private javax.swing.JRadioButton jRadioButton_Radnik_Analiza;
     private javax.swing.JRadioButton jRadioButton_Radnik_Clocking;
     private javax.swing.JRadioButton jRadioButton_Radnik_Savetnici;

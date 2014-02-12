@@ -20,7 +20,7 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" pref="467" max="32767" attributes="0"/>
+                      <Component id="jScrollPane1" pref="531" max="32767" attributes="0"/>
                   </Group>
                   <Component id="mainPanel" max="32767" attributes="0"/>
               </Group>
@@ -58,9 +58,9 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="midPanel" max="32767" attributes="0"/>
-                      <Component id="leftPanel" pref="194" max="32767" attributes="0"/>
-                      <Component id="rightPanel" alignment="1" max="32767" attributes="0"/>
+                      <Component id="midPanel" min="-2" pref="288" max="-2" attributes="0"/>
+                      <Component id="leftPanel" min="-2" pref="288" max="-2" attributes="0"/>
+                      <Component id="rightPanel" alignment="1" min="-2" pref="288" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
               </Group>

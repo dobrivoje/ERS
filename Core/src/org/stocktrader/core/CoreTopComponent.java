@@ -7,6 +7,7 @@ package org.stocktrader.core;
 
 import javax.swing.JScrollPane;
 import org.dobrivoje.javafx.generators.BarChartGenerator2;
+import org.dobrivoje.javafx.generators.LineChartGenerator1;
 import org.dobrivoje.javafx.generators.StackedBarChartGenerator2;
 import org.dobrivoje.javafx.generators.StackedBarChartGenerator3;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -43,7 +44,8 @@ public final class CoreTopComponent extends TopComponent {
 
     private static final BarChartGenerator2 bCG2 = new BarChartGenerator2();
     private static final StackedBarChartGenerator2 stackedBCG2 = new StackedBarChartGenerator2();
-    private static final StackedBarChartGenerator3 stackedBCG3 = new StackedBarChartGenerator3();
+    //
+    private static final LineChartGenerator1 lcg1 = new LineChartGenerator1();
     
     public CoreTopComponent() {
         initComponents();
@@ -56,8 +58,15 @@ public final class CoreTopComponent extends TopComponent {
         stackedBCG2.barChartSetUpPanel(midPanel);
         stackedBCG2.createFXObject();
         
-        stackedBCG3.barChartSetUpPanel(rightPanel);
-        stackedBCG3.createFXObject();
+        lcg1.lineChartSetUpPanel(rightPanel);
+        lcg1.setSerijaNaslov("Februar 2014");
+        lcg1.setLineChartTite("Kretanje RN");
+        lcg1.setxOsaNaslov("x osa naslov");
+        lcg1.setyOsaNaslov("y osa naslov");
+        
+        lcg1.setKljucevi(INFSYS.queries.INFSistemQuery.daniZa_brRN_U_Periodu("2014-1-1", "2014-1-31"));
+        lcg1.setVrednosti(INFSYS.queries.INFSistemQuery.brRN_U_Periodu("2014-1-1", "2014-1-31"));
+        lcg1.createFXObject();
     }
 
     /**

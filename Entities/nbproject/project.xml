@@ -31,12 +31,12 @@
                 <binary-origin>release/modules/ext/JavaLibraryERS.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/JavaLibraryCENOVNIK_RD.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/JavaLibraryCENOVNIK_RD.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
                 <runtime-relative-path>ext/JavaLibraryINFSISTEM.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/JavaLibraryINFSISTEM.jar</binary-origin>
+            </class-path-extension>
+            <class-path-extension>
+                <runtime-relative-path>ext/JavaLibraryCENOVNIK_RD.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/JavaLibraryCENOVNIK_RD.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

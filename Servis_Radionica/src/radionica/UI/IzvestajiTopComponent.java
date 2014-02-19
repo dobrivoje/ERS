@@ -101,10 +101,10 @@ public final class IzvestajiTopComponent extends TopComponent
         org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jLabel3.text_1")); // NOI18N
 
         jTextField_KOMPANIJA.setEditable(false);
-        jTextField_KOMPANIJA.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_KOMPANIJA.text_1")); // NOI18N
+        jTextField_KOMPANIJA.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_KOMPANIJA.text")); // NOI18N
 
         jTextField_FIRMA.setEditable(false);
-        jTextField_FIRMA.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_FIRMA.text_1")); // NOI18N
+        jTextField_FIRMA.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_DATUMOD.text")); // NOI18N
 
         jTextField_ORGJED.setEditable(false);
         jTextField_ORGJED.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_ORGJED.text_1")); // NOI18N
@@ -113,10 +113,10 @@ public final class IzvestajiTopComponent extends TopComponent
         jTextField_IME.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_IME.text")); // NOI18N
 
         jTextField_PREZIME.setEditable(false);
-        jTextField_PREZIME.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_PREZIME.text")); // NOI18N
+        jTextField_PREZIME.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_DATUMOD.text")); // NOI18N
 
         jTextField_SIFRA_RADNIKA.setEditable(false);
-        jTextField_SIFRA_RADNIKA.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_SIFRA_RADNIKA.text")); // NOI18N
+        jTextField_SIFRA_RADNIKA.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_ORGJED.text_1")); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel4, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jLabel4.text_1")); // NOI18N
@@ -128,7 +128,7 @@ public final class IzvestajiTopComponent extends TopComponent
         org.openide.awt.Mnemonics.setLocalizedText(jLabel7, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jLabel7.text")); // NOI18N
 
         jTextField_DATUMDO.setEditable(false);
-        jTextField_DATUMDO.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_DATUMDO.text")); // NOI18N
+        jTextField_DATUMDO.setText(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jTextField_DATUMOD.text")); // NOI18N
 
         jCheckBox_AKTIVNI_RADNICI.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jCheckBox_AKTIVNI_RADNICI.setSelected(true);
@@ -199,20 +199,6 @@ public final class IzvestajiTopComponent extends TopComponent
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField_DATUMDO)
-                                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField_DATUMOD))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 169, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jCheckBox_AKTIVNI_RADNICI)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jCheckBox_NEAKTIVNI_RADNICI))
-                                        .addComponent(jCheckBox_SAMO_RADNICI, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jCheckBox_OSTALI_NALOZI, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addComponent(jSeparator3)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -229,7 +215,24 @@ public final class IzvestajiTopComponent extends TopComponent
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jTextField_SIFRA_RADNIKA, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(jTextField_ORGJED, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(16, 16, 16))))
+                        .addGap(16, 16, 16))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField_DATUMDO)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextField_DATUMOD))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jCheckBox_AKTIVNI_RADNICI)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jCheckBox_NEAKTIVNI_RADNICI)
+                                .addGap(16, 16, 16))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jCheckBox_SAMO_RADNICI, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jCheckBox_OSTALI_NALOZI))
+                                .addContainerGap())))))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jSeparator2))
@@ -240,9 +243,10 @@ public final class IzvestajiTopComponent extends TopComponent
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton_Efikasnost_Radnika_Izvestaj, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jButton_Efikasnost_Radnika_Izvestaj, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(0, 125, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -292,6 +296,9 @@ public final class IzvestajiTopComponent extends TopComponent
                 .addComponent(jSeparator8, javax.swing.GroupLayout.PREFERRED_SIZE, 2, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
+
+        jLabel3.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jLabel3.text_1")); // NOI18N
+        jTextField_KOMPANIJA.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiOrgJedTopComponent.jTextField_KOMPANIJA.text")); // NOI18N
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton_Efikasnost_Radnika_IzvestajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_Efikasnost_Radnika_IzvestajActionPerformed

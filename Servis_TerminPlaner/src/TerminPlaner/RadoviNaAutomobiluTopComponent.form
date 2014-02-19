@@ -108,7 +108,7 @@
                   <Group type="102" attributes="0">
                       <Component id="jPanel_Automobil1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="beanTreeView" pref="401" max="32767" attributes="0"/>
+                      <Component id="beanTreeView" pref="409" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Component id="jPanel_NacinPretrage1" min="-2" pref="165" max="-2" attributes="0"/>
@@ -964,9 +964,6 @@
                   <ResourceString bundle="TerminPlaner/Bundle.properties" key="RadoviNaAutomobiluTopComponent.jRadioButton_PoRegBroju.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jRadioButton_PoRegBrojuActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1223,9 +1220,6 @@
                   <ResourceString bundle="TerminPlaner/Bundle.properties" key="RadoviNaAutomobiluTopComponent.jCheckBox_FA_Regularna.toolTipText" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox_FA_RegularnaActionPerformed"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -1233,9 +1227,6 @@
     </Container>
     <Component class="javax.swing.JButton" name="jButton_Trazi">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/ikonice/errors_warnings_info/info.gif"/>
-        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.i18n.form.FormI18nStringEditor">
           <ResourceString bundle="TerminPlaner/Bundle.properties" key="RadoviNaAutomobiluTopComponent.text" replaceFormat="org.openide.util.NbBundle.getMessage({sourceFileName}.class, &quot;{key}&quot;)"/>
         </Property>

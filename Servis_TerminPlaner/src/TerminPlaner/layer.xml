@@ -18,7 +18,7 @@
         <folder name="Servisi Stranke">
             <attr name="command" stringvalue="s"/>
             <attr name="position" intvalue="0"/>
-            <file name="TerminPlaner-QuickSearch-ServisiKlijenataQS.instance">
+            <file name="TerminPlaner-QuickSearch-QS_ServisiKlijenata.instance">
                 <attr name="displayName" bundlevalue="TerminPlaner.Bundle#QuickSearch/TerminPlaner-QuickSearch-ServisiKlijenataQS.instance"/>
             </file>
         </folder>

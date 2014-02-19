@@ -5,35 +5,18 @@
 package TerminPlaner;
 
 import INFSYS.queries.INFSistemQuery;
-import TerminPlaner.QuickSearch.NalogDelimicanOpisQS;
-import TerminPlaner.QuickSearch.ServisiKlijenataQS;
+import TerminPlaner.QuickSearch.ISifra;
 import com.dobrivoje.utilities.datumi.DatumSelektor;
 import com.dobrivoje.utilities.icons.icon_renderer.INodeIconRenderer;
 import com.dobrivoje.utilities.icons.icon_renderer.IconRenderer;
 import com.dobrivoje.utilities.icons.icon_renderer.IconType;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.Automobil.TABLICE;
-import com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA;
-import com.dobrivoje.utilities.infsistem.Pretraga.DATUM_PRETRAGE;
-import com.dobrivoje.utilities.infsistem.Pretraga.NACIN_PRETRAGE;
-import com.dobrivoje.utilities.infsistem.Pretraga.RADNI_NALOG_NACIN_PRETRAGE;
 import com.dobrivoje.utilities.infsistem.Pretraga.SIFARNIK_PRETRAGA;
 import com.dobrivoje.utilities.warnings.Display;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.ProfCentar.RADDAN;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.Univerzalne.RACUNI;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.Univerzalne.RADOVI;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.Univerzalne.STRANKE;
-import static com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA.MATBR;
-import static com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA.NAZIV;
-import static com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA.PIB;
-import static com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA.REGISTRACIJA;
-import static com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA.SASIJA;
-import static com.dobrivoje.utilities.infsistem.Pretraga.AUTO_PRETRAGA.SIFRA;
-import static com.dobrivoje.utilities.infsistem.Pretraga.DATUM_PRETRAGE.BEZ_DATUMA;
-import static com.dobrivoje.utilities.infsistem.Pretraga.NACIN_PRETRAGE.DELIMICNO;
-import static com.dobrivoje.utilities.infsistem.Pretraga.NACIN_PRETRAGE.KOMPLETNO;
-import static com.dobrivoje.utilities.infsistem.Pretraga.RADNI_NALOG_NACIN_PRETRAGE.FAKTURISAN;
-import static com.dobrivoje.utilities.infsistem.Pretraga.RADNI_NALOG_NACIN_PRETRAGE.RADNI_NALOG;
-import static com.dobrivoje.utilities.infsistem.Pretraga.RADNI_NALOG_NACIN_PRETRAGE.STORNO;
 import static com.dobrivoje.utilities.warnings.Display.TIP_OBAVESTENJA.GRESKA;
 import ent.infsistem.Nald001;
 import ent.infsistem.Sifarnik;
@@ -87,17 +70,10 @@ import org.openide.windows.WindowManager;
 public final class RadoviNaAutomobiluTopComponent extends TopComponent
         implements ExplorerManager.Provider, LookupListener, INodeIconRenderer {
 
-    // definicije pretrage
-    //<editor-fold defaultstate="collapsed" desc="Pretraga,...">
-    private AUTO_PRETRAGA AutoPretraga;
-    private RADNI_NALOG_NACIN_PRETRAGE RN_Nacin_Pretrage;
-    private NACIN_PRETRAGE NacinPretrage;
-    private DATUM_PRETRAGE DatumPretrage;
-    //</editor-fold>
-    private String datumLookup;
-    private Nald001 nalog;
-    private static Sifarnik sifra;
-    private DatumSelektor ds; // = DatumSelektor.getDafault();
+    private String datum_bind;
+    private Nald001 nalog_bind;
+    private Sifarnik sifra_bind;
+    private DatumSelektor ds;
     //
     private Lookup.Result<String> odabraniDatum;
     private Lookup.Result<Nald001> odabraniNalog;
@@ -125,13 +101,8 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
         associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
 
-        AutoPretraga = SASIJA;
-        NacinPretrage = KOMPLETNO;
-        DatumPretrage = BEZ_DATUMA;
-        RN_Nacin_Pretrage = RADNI_NALOG;
-
-        datumLookup = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        RN_ZA_DATUM_Refresh(datumLookup);
+        datum_bind = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        RN_ZA_DATUM_Refresh(datum_bind);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Node Factories">
@@ -729,11 +700,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
         buttonGroup_StaTrebaTraziti.add(jRadioButton_PoRegBroju);
         org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_PoRegBroju, org.openide.util.NbBundle.getMessage(RadoviNaAutomobiluTopComponent.class, "RadoviNaAutomobiluTopComponent.jRadioButton_PoRegBroju.text")); // NOI18N
-        jRadioButton_PoRegBroju.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton_PoRegBrojuActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel_AutomobilLayout = new javax.swing.GroupLayout(jPanel_Automobil);
         jPanel_Automobil.setLayout(jPanel_AutomobilLayout);
@@ -874,11 +840,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
         jCheckBox_FA_Regularna.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(jCheckBox_FA_Regularna, org.openide.util.NbBundle.getMessage(RadoviNaAutomobiluTopComponent.class, "RadoviNaAutomobiluTopComponent.jCheckBox_FA_Regularna.text")); // NOI18N
         jCheckBox_FA_Regularna.setToolTipText(org.openide.util.NbBundle.getMessage(RadoviNaAutomobiluTopComponent.class, "RadoviNaAutomobiluTopComponent.jCheckBox_FA_Regularna.toolTipText")); // NOI18N
-        jCheckBox_FA_Regularna.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox_FA_RegularnaActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel_NaloziFaktureLayout = new javax.swing.GroupLayout(jPanel_NaloziFakture);
         jPanel_NaloziFakture.setLayout(jPanel_NaloziFaktureLayout);
@@ -931,7 +892,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jButton_Trazi.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/info.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_Trazi, org.openide.util.NbBundle.getMessage(RadoviNaAutomobiluTopComponent.class, "RadoviNaAutomobiluTopComponent.text")); // NOI18N
         jButton_Trazi.setName(""); // NOI18N
         jButton_Trazi.addActionListener(new java.awt.event.ActionListener() {
@@ -1002,7 +962,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel_Automobil1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(beanTreeView, javax.swing.GroupLayout.DEFAULT_SIZE, 401, Short.MAX_VALUE))
+                        .addComponent(beanTreeView, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel_NacinPretrage1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1139,62 +1099,48 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
         }
     }//GEN-LAST:event_jTextField_PojamZaPretraguKeyReleased
 
-    private void jRadioButton_PoRegBrojuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_PoRegBrojuActionPerformed
-        // TODO add your handling code here:
-        AutoPretraga = REGISTRACIJA;
-    }//GEN-LAST:event_jRadioButton_PoRegBrojuActionPerformed
-
     private void jRadioButton_PoBrojuSasijeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_PoBrojuSasijeActionPerformed
         // TODO add your handling code here:
-        AutoPretraga = SASIJA;
         jRadioButton_Pretraga_KompletnaActionPerformed(null);
     }//GEN-LAST:event_jRadioButton_PoBrojuSasijeActionPerformed
 
     private void jRadioButton_Pretraga_KompletnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Pretraga_KompletnaActionPerformed
         // TODO add your handling code here:
         jRadioButton_Pretraga_Kompletna.setSelected(true);
-        NacinPretrage = KOMPLETNO;
     }//GEN-LAST:event_jRadioButton_Pretraga_KompletnaActionPerformed
 
     private void jRadioButton_Pretraga_DelimicnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Pretraga_DelimicnaActionPerformed
         // TODO add your handling code here:
         jRadioButton_Pretraga_Delimicna.setSelected(true);
-        NacinPretrage = DELIMICNO;
     }//GEN-LAST:event_jRadioButton_Pretraga_DelimicnaActionPerformed
 
     private void jRadioButton_Pretraga_BezDatumaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Pretraga_BezDatumaActionPerformed
         // TODO add your handling code here:
-        DatumPretrage = DATUM_PRETRAGE.BEZ_DATUMA;
         jRadioButton_Pretraga_BezDatuma.setSelected(true);
     }//GEN-LAST:event_jRadioButton_Pretraga_BezDatumaActionPerformed
 
     private void jRadioButton_Pretraga_SaDatumomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_Pretraga_SaDatumomActionPerformed
         // TODO add your handling code here:
-        DatumPretrage = DATUM_PRETRAGE.PO_DATUMU;
         jRadioButton_Pretraga_SaDatumom.setSelected(true);
     }//GEN-LAST:event_jRadioButton_Pretraga_SaDatumomActionPerformed
 
     private void jRadioButton_PoSifriKlijentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_PoSifriKlijentaActionPerformed
         // TODO add your handling code here:
-        AutoPretraga = SIFRA;
         jRadioButton_Pretraga_KompletnaActionPerformed(null);
     }//GEN-LAST:event_jRadioButton_PoSifriKlijentaActionPerformed
 
     private void jRadioButton_PoMatBrojuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_PoMatBrojuActionPerformed
         // TODO add your handling code here:
-        AutoPretraga = MATBR;
         jRadioButton_Pretraga_KompletnaActionPerformed(null);
     }//GEN-LAST:event_jRadioButton_PoMatBrojuActionPerformed
 
     private void jRadioButton_PoPIBuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_PoPIBuActionPerformed
         // TODO add your handling code here:
-        AutoPretraga = PIB;
         jRadioButton_Pretraga_KompletnaActionPerformed(null);
     }//GEN-LAST:event_jRadioButton_PoPIBuActionPerformed
 
     private void jRadioButton_PoNazivuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_PoNazivuActionPerformed
         // TODO add your handling code here:
-        AutoPretraga = NAZIV;
         jRadioButton_Pretraga_DelimicnaActionPerformed(null);
     }//GEN-LAST:event_jRadioButton_PoNazivuActionPerformed
 
@@ -1211,7 +1157,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
     private void jCheckBox_StornoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_StornoActionPerformed
         // TODO add your handling code here:
         if (jCheckBox_Storno.isSelected()) {
-            RN_Nacin_Pretrage = STORNO;
             jRadioButton_Faktura.setSelected(true);
             jRadioButton_Pretraga_SaDatumom.setSelected(true);
         }
@@ -1219,7 +1164,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
     private void jRadioButton_FakturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_FakturaActionPerformed
         // TODO add your handling code here:
-        RN_Nacin_Pretrage = FAKTURISAN;
         jRadioButton_Pretraga_Kompletna.setSelected(true);
         // jRadioButton_Pretraga_KompletnaActionPerformed(null);
         // jRadioButton_Pretraga_BezDatumaActionPerformed(null);
@@ -1227,13 +1171,8 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
     private void jRadioButton_NalogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_NalogActionPerformed
         // TODO add your handling code here:
-        RN_Nacin_Pretrage = RADNI_NALOG;
         jRadioButton_Pretraga_Kompletna.setSelected(true);
     }//GEN-LAST:event_jRadioButton_NalogActionPerformed
-
-    private void jCheckBox_FA_RegularnaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_FA_RegularnaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox_FA_RegularnaActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.openide.explorer.view.BeanTreeView beanTreeView;
@@ -1309,10 +1248,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
     @Override
     public void componentOpened() {
 
-        odabraniDatum = Utilities
-                .actionsGlobalContext()
-                .lookupResult(String.class);
-
+        odabraniDatum = Utilities.actionsGlobalContext().lookupResult(String.class);
         odabraniDatum.addLookupListener(
                 new LookupListener() {
                     @Override
@@ -1321,39 +1257,29 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                         Collection<String> datumi = lr.allInstances();
 
                         for (String d : datumi) {
-                            if (!datumLookup.equals(d)) {
-                                datumLookup = d;
-                                RN_ZA_DATUM_Refresh(datumLookup);
+                            if (!datum_bind.equals(d)) {
+                                datum_bind = d;
+                                RN_ZA_DATUM_Refresh(datum_bind);
                             }
                         }
                     }
                 });
 
-        odabranaSifra = Utilities
-                .actionsGlobalContext()
-                .lookupResult(Sifarnik.class);
-
+        odabranaSifra = Utilities.actionsGlobalContext().lookupResult(Sifarnik.class);
         odabranaSifra.addLookupListener(
                 new LookupListener() {
                     @Override
                     public void resultChanged(LookupEvent le) {
                         Lookup.Result lr = (Lookup.Result) le.getSource();
-                        Collection<? extends Sifarnik> sifre = lr.allInstances();
+                        Collection<Sifarnik> sifre = lr.allInstances();
 
                         if (!sifre.isEmpty()) {
                             for (Sifarnik n : sifre) {
-                                sifra = n;
+                                sifra_bind = n;
                             }
 
                             clearUIComponents();
-
-                            jTextField_Naziv.setText(sifra.getIme());
-                            jTextField_Adresa.setText(sifra.getAdresa());
-                            jCheckBox_FizickoLice.setSelected(
-                                    sifra.getFizickoLice() ? sifra.getFizickoLice() : false);
-                            jTextField_Sifra_Fakturisanja.setText(sifra.getKupac().toString());
-
-                            jTextField_Naziv_Faktura.setText(sifra.getIme());
+                            setKlijentUI();
                         }
                     }
                 });
@@ -1373,40 +1299,40 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
                         if (!nalozi.isEmpty()) {
                             for (Nald001 n : nalozi) {
-                                nalog = n;
+                                nalog_bind = n;
                             }
 
                             try {
                                 jTextArea_RADOVI.setText(
-                                        nalog.getUradi().isEmpty() || nalog.getUradi() == null
-                                        ? nalog.getUradjeno() : nalog.getUradi());
+                                        nalog_bind.getUradi().isEmpty() || nalog_bind.getUradi() == null
+                                        ? nalog_bind.getUradjeno() : nalog_bind.getUradi());
                             } catch (NullPointerException npe) {
                                 jTextArea_RADOVI.setText("nema podataka o radovima,...");
                             }
 
-                            jTextField_KM.setText(nalog.getKm().toString());
+                            jTextField_KM.setText(nalog_bind.getKm().toString());
 
                             jTextField_Naziv.setText(
-                                    (nalog.getIme() != null ? nalog.getIme() + " " : "")
-                                    + (nalog.getPrezime() != null ? nalog.getPrezime() : ""));
+                                    (nalog_bind.getIme() != null ? nalog_bind.getIme() + " " : "")
+                                    + (nalog_bind.getPrezime() != null ? nalog_bind.getPrezime() : ""));
 
                             jTextField_Adresa.setText(
-                                    (nalog.getAdresa() != null && !nalog.getAdresa().isEmpty()
-                                    ? nalog.getAdresa() : ""));
+                                    (nalog_bind.getAdresa() != null && !nalog_bind.getAdresa().isEmpty()
+                                    ? nalog_bind.getAdresa() : ""));
 
-                            jTextField_Model.setText(nalog.getFamilija());
-                            jTextField_RegBroj.setText(nalog.getRegistrac());
-                            jTextField_Tip.setText(nalog.getTip());
+                            jTextField_Model.setText(nalog_bind.getFamilija());
+                            jTextField_RegBroj.setText(nalog_bind.getRegistrac());
+                            jTextField_Tip.setText(nalog_bind.getTip());
 
-                            jTextField_Sasija.setText(nalog.getSasija());
+                            jTextField_Sasija.setText(nalog_bind.getSasija());
 
                             jTextField_Sifra_Fakturisanja.setText(
-                                    (nalog.getKupac() != null && !nalog.getKupac().isEmpty()
-                                    ? nalog.getKupac() : ""));
+                                    (nalog_bind.getKupac() != null && !nalog_bind.getKupac().isEmpty()
+                                    ? nalog_bind.getKupac() : ""));
 
                             try {
                                 jTextField_Naziv_Faktura.setText(INFSistemQuery.KupacPoSifri(
-                                                Integer.parseInt(nalog.getKupac())).getIme());
+                                                Integer.parseInt(nalog_bind.getKupac())).getIme());
                             } catch (NumberFormatException | NullPointerException | NoResultException e) {
                                 jTextField_Naziv_Faktura.setText("Ne postoji šifra kupca.");
                             }
@@ -1518,43 +1444,34 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
         RNRoot.setIconBaseWithExtension(URL);
     }
 
-    private void QSSifarnikPretraga() {
-        if ((sifra = ServisiKlijenataQS.getSifra()) != null) {
+    @Override
+    public void requestActive() {
+        QSSifarnikPretraga();
+    }
 
+    private void setKlijentUI() {
+        jTextField_Naziv.setText(sifra_bind.getIme());
+        jTextField_Adresa.setText(sifra_bind.getAdresa());
+        jCheckBox_FizickoLice.setSelected(
+                sifra_bind.getFizickoLice() ? sifra_bind.getFizickoLice() : false);
+        jTextField_Sifra_Fakturisanja.setText(sifra_bind.getKupac().toString());
+
+        jTextField_Naziv_Faktura.setText(sifra_bind.getIme());
+    }
+
+    private void QSSifarnikPretraga() {
+        ISifra is = Lookup.getDefault().lookup(ISifra.class);
+
+        if (is.getSifra() != null) {
+            sifra_bind = is.getSifra();
+            
             jRadioButton_PoSifriKlijenta.setSelected(true);
-            jTextField_PojamZaPretragu.setText(Integer.toString(sifra.getKupac()));
+            jTextField_PojamZaPretragu.setText(Integer.toString(sifra_bind.getKupac()));
 
             jButton_TraziActionPerformed(null);
 
             clearUIComponents();
-
-            jTextField_Naziv.setText(sifra.getIme());
-            jTextField_Adresa.setText(sifra.getAdresa());
-            jCheckBox_FizickoLice.setSelected(
-                    sifra.getFizickoLice() ? sifra.getFizickoLice() : false);
-            jTextField_Sifra_Fakturisanja.setText(sifra.getKupac().toString());
-
-            jTextField_Naziv_Faktura.setText(sifra.getIme());
+            setKlijentUI();
         }
-    }
-
-    private void QSNalogOpisPretraga() {
-        if ((nalog = NalogDelimicanOpisQS.getNalog()) != null) {
-
-            jRadioButton_Nalog.setSelected(true);
-            jRadioButton_Pretraga_Kompletna.setSelected(true);
-            jRadioButton_Pretraga_BezDatuma.setSelected(true);
-            jTextField_PojamZaPretragu.setText(nalog.getRadnal());
-
-            jButton_TraziActionPerformed(null);
-
-            // clearUIComponents();
-        }
-    }
-
-    @Override
-    public void requestActive() {
-        QSSifarnikPretraga();
-        QSNalogOpisPretraga();
     }
 }

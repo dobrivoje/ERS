@@ -37,7 +37,7 @@ public class Display {
                 p = "ikonice/errors_warnings_info/error-triangle.gif";
                 break;
             case INFORMATIVNO:
-                p = "ikonice/errors_warnings_info/info.gif";
+                p = "ikonice/errors_warnings_info/info3.tr.24x24.gif";
                 break;
             case UPOZORENJE:
                 p = "ikonice/errors_warnings_info/warning-triangle.gif";

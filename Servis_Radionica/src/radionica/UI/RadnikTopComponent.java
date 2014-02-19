@@ -856,11 +856,9 @@ public final class RadnikTopComponent extends TopComponent
     private void QSRadnik() {
         IRadnik ir = Lookup.getDefault().lookup(IRadnik.class);
 
-        setDatum_bind(datum_bind
-                == null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : datum_bind);
+        setDatum_bind(datum_bind== null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : datum_bind);
 
-        if (ir.getRadnik()
-                != null) {
+        if (ir.getRadnik() != null) {
             Radnik r = ir.getRadnik();
 
             setUpRadnik(r);

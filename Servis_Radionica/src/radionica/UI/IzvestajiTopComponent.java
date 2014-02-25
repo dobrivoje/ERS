@@ -149,6 +149,7 @@ public final class IzvestajiTopComponent extends TopComponent
         jPanel_Klijent1.setBorder(javax.swing.BorderFactory.createTitledBorder(org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jPanel_Klijent1.border.title"))); // NOI18N
 
         buttonGroup_Efikasnost.add(jRadioButton_Radnik_Clocking);
+        jRadioButton_Radnik_Clocking.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(jRadioButton_Radnik_Clocking, org.openide.util.NbBundle.getMessage(IzvestajiTopComponent.class, "IzvestajiTopComponent.jRadioButton_Radnik_Clocking.text")); // NOI18N
 
         buttonGroup_Efikasnost.add(jRadioButton_Radnik_Analiza);
@@ -246,7 +247,7 @@ public final class IzvestajiTopComponent extends TopComponent
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jButton_Efikasnost_Radnika_Izvestaj, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel_Klijent1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(0, 125, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -74,7 +74,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     //
     private static EntityManager em;
     //
-    private static LineChartGenerator1 lcg1;
+    private static final LineChartGenerator1 lcg1 = LineChartGenerator1.getDefault();
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -259,8 +259,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         initComponents();
         setName(Bundle.CTL_ManagementPodatakaTopComponent());
         setToolTipText(Bundle.HINT_ManagementPodatakaTopComponent());
-
-        lcg1 = new LineChartGenerator1();
 
         lcg1.lineChartSetUpPanel(jPanel_Kompanija_DG);
         lcg1.setSerijaNaslov("Februar 2014");
@@ -922,11 +920,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                         .addGroup(jPanel_OrgJedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                             .addComponent(jTextField_ORGJED_Kompanija)
-                                                            .addComponent(jTextField_ORGJED_Firma)))
+                                                            .addComponent(jTextField_ORGJED_Firma)
+                                                            .addComponent(jTextField_ORGJED_Naziv)))
                                                     .addGroup(jPanel_OrgJedLayout.createSequentialGroup()
                                                         .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(0, 0, Short.MAX_VALUE))
-                                                    .addComponent(jTextField_ORGJED_Naziv))
+                                                        .addGap(0, 0, Short.MAX_VALUE)))
                                                 .addGap(8, 8, 8)
                                                 .addGroup(jPanel_OrgJedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                     .addComponent(jComboBox_ORGJED_Firma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -935,8 +933,9 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(22, 22, 22))
                             .addGroup(jPanel_OrgJedLayout.createSequentialGroup()
-                                .addComponent(jTextField_ORGJED_Sifra, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(60, 60, 60)
+                                .addGap(71, 71, 71)
+                                .addComponent(jTextField_ORGJED_Sifra, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(6, 6, 6)
                                 .addComponent(jCheckBox_ORGJED_Mehanika)
                                 .addContainerGap(342, Short.MAX_VALUE))))))
         );

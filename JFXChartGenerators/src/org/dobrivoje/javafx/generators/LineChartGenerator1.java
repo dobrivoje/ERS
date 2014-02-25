@@ -6,7 +6,9 @@
 package org.dobrivoje.javafx.generators;
 
 import java.awt.BorderLayout;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -22,24 +24,35 @@ import javax.swing.JPanel;
  */
 public class LineChartGenerator1 {
 
-    private List<Integer> kljucevi;
-    private List<Long> vrednosti;
+    private static final LineChartGenerator1 instance = new LineChartGenerator1();
+
+    private static List<Integer> kljucevi;
+    private static List<Long> vrednosti;
+    private static final Map<Integer, Long> map = new HashMap<>();
     //
-    private String serijaNaslov;
-    private String lineChartTite;
-    private String xOsaNaslov;
-    private String yOsaNaslov;
+    private static String serijaNaslov;
+    private static String lineChartTite;
+    private static String xOsaNaslov;
+    private static String yOsaNaslov;
     //
-    private Chart chart;
-    private final JFXPanel lineChartFxPanel;
+    private static Chart chart;
+    private static Scene scene;
+    private static final XYChart.Series serija = new XYChart.Series();
+    private static final JFXPanel lineChartFxPanel = new JFXPanel();
     //
-    private final NumberAxis xAxis = new NumberAxis();
-    private final NumberAxis yAxis = new NumberAxis();
-    private final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+    private final NumberAxis xAxis;
+    private final NumberAxis yAxis;
+    private final LineChart<Number, Number> lineChart;
 
     //<editor-fold defaultstate="collapsed" desc="...">
-    public LineChartGenerator1() {
-        this.lineChartFxPanel = new JFXPanel();
+    private LineChartGenerator1() {
+        xAxis = new NumberAxis();
+        yAxis = new NumberAxis();
+        lineChart = new LineChart<>(xAxis, yAxis);
+    }
+
+    public static LineChartGenerator1 getDefault() {
+        return instance;
     }
 
     public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
@@ -48,7 +61,10 @@ public class LineChartGenerator1 {
 
     private void createScene() {
         chart = createLineChart();
-        lineChartFxPanel.setScene(new Scene(chart));
+        scene = (scene == null ? new Scene(chart) : scene);
+
+        scene.setRoot(chart);
+        lineChartFxPanel.setScene(scene);
     }
 
     public void createFXObject() {
@@ -65,10 +81,10 @@ public class LineChartGenerator1 {
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
     private LineChart createLineChart() {
         lineChart.setTitle(lineChartTite);
+        lineChart.setCreateSymbols(false);
+
         xAxis.setLabel(xOsaNaslov);
         yAxis.setLabel(yOsaNaslov);
-
-        lineChart.setCreateSymbols(false);
 
         xAxis.setTickUnit(1);
         xAxis.setLowerBound(1);
@@ -76,36 +92,17 @@ public class LineChartGenerator1 {
 
         yAxis.setTickUnit(5);
 
-        XYChart.Series serija1 = new XYChart.Series();
-        serija1.setName(serijaNaslov);
+        serija.setName(serijaNaslov);
 
         for (int i = 0; i < kljucevi.size(); i++) {
-            serija1.getData().add(new XYChart.Data(kljucevi.get(i), vrednosti.get(i)));
+            serija.getData().add(new XYChart.Data(kljucevi.get(i), vrednosti.get(i)));
         }
+        
+        kljucevi.clear();
+        vrednosti.clear();
 
-        lineChart.getData().add(serija1);
-
-        return lineChart;
-    }
-
-    private LineChart createLineChart_Interval() {
-        lineChart.setTitle(lineChartTite);
-        xAxis.setLabel(xOsaNaslov);
-        yAxis.setLabel(yOsaNaslov);
-
-        xAxis.setLowerBound(1);
-        xAxis.setUpperBound(31);
-        xAxis.setTickUnit(1);
-
-        XYChart.Series serija1 = new XYChart.Series();
-        serija1.setName(serijaNaslov);
-
-        for (int i = 0; i < kljucevi.size(); i++) {
-            serija1.getData().add(new XYChart.Data(kljucevi.get(i), vrednosti.get(i)));
-        }
-
-        lineChart.getData().add(serija1);
-
+        lineChart.getData().add(serija);
+        
         return lineChart;
     }
 

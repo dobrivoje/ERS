@@ -45,8 +45,8 @@ public final class CoreTopComponent extends TopComponent {
     private static final BarChartGenerator2 bCG2 = new BarChartGenerator2();
     private static final StackedBarChartGenerator2 stackedBCG2 = new StackedBarChartGenerator2();
     //
-    private static final LineChartGenerator1 lcg1 = new LineChartGenerator1();
-    
+    private static final LineChartGenerator1 lcg1 = LineChartGenerator1.getDefault();
+
     public CoreTopComponent() {
         initComponents();
         setName(Bundle.CTL_CoreTopComponent());
@@ -54,16 +54,16 @@ public final class CoreTopComponent extends TopComponent {
 
         bCG2.barChartSetUpPanel(leftPanel);
         bCG2.createFXObject();
-        
+
         stackedBCG2.barChartSetUpPanel(midPanel);
         stackedBCG2.createFXObject();
-        
+
         lcg1.lineChartSetUpPanel(rightPanel);
-        lcg1.setSerijaNaslov("Februar 2014");
+        lcg1.setSerijaNaslov("Januar 2014");
         lcg1.setLineChartTite("Kretanje RN");
         lcg1.setxOsaNaslov("x osa naslov");
         lcg1.setyOsaNaslov("y osa naslov");
-        
+
         lcg1.setKljucevi(INFSYS.queries.INFSistemQuery.daniZa_brRN_U_Periodu("2014-1-1", "2014-1-31"));
         lcg1.setVrednosti(INFSYS.queries.INFSistemQuery.brRN_U_Periodu("2014-1-1", "2014-1-31"));
         lcg1.createFXObject();
@@ -82,6 +82,7 @@ public final class CoreTopComponent extends TopComponent {
         leftPanel = new javax.swing.JPanel();
         midPanel = new javax.swing.JPanel();
         rightPanel = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new JScrollPane(jTable1);
         jTable1 = new javax.swing.JTable();
 
@@ -94,26 +95,39 @@ public final class CoreTopComponent extends TopComponent {
         rightPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         rightPanel.setLayout(new java.awt.BorderLayout());
 
+        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(CoreTopComponent.class, "CoreTopComponent.jButton1.text")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
         mainPanel.setLayout(mainPanelLayout);
         mainPanelLayout.setHorizontalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 168, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(223, 223, 223))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(midPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(leftPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rightPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(8, 8, 8))
+                    .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(6, 6, 6))
         );
 
         jScrollPane1.setBorder(null);
@@ -139,7 +153,7 @@ public final class CoreTopComponent extends TopComponent {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 514, Short.MAX_VALUE))
                     .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(12, 12, 12))
         );
@@ -148,11 +162,18 @@ public final class CoreTopComponent extends TopComponent {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        componentOpened();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JPanel leftPanel;
@@ -164,7 +185,8 @@ public final class CoreTopComponent extends TopComponent {
     //<editor-fold defaultstate="collapsed" desc="NB Defaults">
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        bCG2.createFXObject();
+        stackedBCG2.createFXObject();
     }
 
     @Override
@@ -183,5 +205,6 @@ public final class CoreTopComponent extends TopComponent {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
-//</editor-fold>
+
+    //</editor-fold>
 }

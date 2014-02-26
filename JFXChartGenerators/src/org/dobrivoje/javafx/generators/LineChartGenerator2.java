@@ -6,12 +6,14 @@
 package org.dobrivoje.javafx.generators;
 
 import java.awt.BorderLayout;
+import java.util.HashMap;
+import java.util.Map;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.Chart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javax.swing.JPanel;
@@ -20,57 +22,63 @@ import javax.swing.JPanel;
  *
  * @author root
  */
-public class BarChartGenerator2 {
+public class LineChartGenerator2 {
 
-    // Definicije kategorija - Ovo ćemo dinamički uzeti iz ERS baze.
+    private static final LineChartGenerator2 instance = new LineChartGenerator2();
+    private static final Map<Integer, Integer> rd = new HashMap<>();
+
     private static final String[] zemlje = new String[]{"Austria", "brazil", "France", "Italy", "USA"};
     //
     private Chart chart;
-    private final JFXPanel barChartFxPanel;
+    private static final CategoryAxis xAxis = new CategoryAxis();
+    private static final NumberAxis yAxis = new NumberAxis();
+    private static final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+    private final JFXPanel lineChartFxPanel;
     //
     private static final XYChart.Series serije[] = new XYChart.Series[3];
 
-    public BarChartGenerator2() {
-        this.barChartFxPanel = new JFXPanel();
+    private LineChartGenerator2() {
+        this.lineChartFxPanel = new JFXPanel();
     }
 
-    public void barChartSetUpPanel(JPanel panelToEmbedFXObject) {
-        panelToEmbedFXObject.add(barChartFxPanel, BorderLayout.CENTER);
+    public static LineChartGenerator2 getDefault() {
+        return instance;
+    }
+
+    public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
+        panelToEmbedFXObject.add(lineChartFxPanel, BorderLayout.CENTER);
     }
 
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
-    private BarChart createBarChart() {
-        final NumberAxis xAxis = new NumberAxis();
-        final CategoryAxis yAxis = new CategoryAxis();
-        final BarChart<Number, String> bc = new BarChart<>(xAxis, yAxis);
+    private LineChart createLineChart() {
+        lineChart.setCreateSymbols(false);
 
-        bc.setTitle("Country Summary");
-        xAxis.setLabel("Value");
-        xAxis.setTickLabelRotation(45);
-        yAxis.setLabel("Country");
-        yAxis.setTickLabelRotation(45);
+        lineChart.setTitle("Izveštaj za Zemlje - " + zemlje.toString());
+        xAxis.setLabel("Zemlja");
+        xAxis.setTickLabelRotation(90);
+        yAxis.setLabel("Vrednosti");
 
         int god = 2003;
 
         for (int i = 0; i < serije.length; i++) {
             serije[i] = new XYChart.Series();
             serije[i].setName(Integer.toString(god++));
-            
+
             for (String zemlja : zemlje) {
-                serije[i].getData().add(new XYChart.Data(Math.random() * 25000, zemlja));
+                serije[i].getData().add(new XYChart.Data(zemlja, Math.random() * 25000));
             }
-            
-            bc.getData().add(serije[i]);
+
+            lineChart.getData().add(serije[i]);
         }
 
-        return bc;
+        return lineChart;
     }
     //</editor-fold>
 
     private void createScene() {
         try {
-            chart = createBarChart();
-            barChartFxPanel.setScene(new Scene(chart));
+            chart = createLineChart();
+            lineChartFxPanel.setScene(new Scene(chart));
         } catch (Exception e) {
         }
     }
@@ -84,4 +92,9 @@ public class BarChartGenerator2 {
             }
         });
     }
+
+    public JFXPanel getLineChartFxPanel() {
+        return lineChartFxPanel;
+    }
+
 }

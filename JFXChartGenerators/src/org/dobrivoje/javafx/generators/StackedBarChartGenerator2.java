@@ -69,11 +69,14 @@ public class StackedBarChartGenerator2 {
     //</editor-fold>
 
     private void createScene() {
-        chart = createStackedBarChart();
-        barChartFxPanel.setScene(new Scene(chart));
+        try {
+            chart = createStackedBarChart();
+            barChartFxPanel.setScene(new Scene(chart));
+        } catch (Exception e) {
+        }
     }
 
-    public void createFXObject() {
+    public synchronized void createFXObject() {
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
             @Override

@@ -9,13 +9,11 @@ import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import java.text.ParseException;
 import javax.swing.JScrollPane;
 import org.dobrivoje.javafx.generators.BarChartGenerator2;
-import org.dobrivoje.javafx.generators.LineChartGenerator1;
+import org.dobrivoje.javafx.generators.LineChartGenerator2;
 import org.dobrivoje.javafx.generators.StackedBarChartGenerator2;
-import org.dobrivoje.javafx.generators.StackedBarChartGenerator3;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
@@ -48,7 +46,7 @@ public final class CoreTopComponent extends TopComponent {
     private static final BarChartGenerator2 bCG2 = new BarChartGenerator2();
     private static final StackedBarChartGenerator2 stackedBCG2 = new StackedBarChartGenerator2();
     //
-    private static final LineChartGenerator1 lcg1 = LineChartGenerator1.getDefault();
+    private static final LineChartGenerator2 lcg = LineChartGenerator2.getDefault();
 
     public CoreTopComponent() {
         initComponents();
@@ -61,17 +59,8 @@ public final class CoreTopComponent extends TopComponent {
         stackedBCG2.barChartSetUpPanel(midPanel);
         stackedBCG2.createFXObject();
 
-        lcg1.lineChartSetUpPanel(rightPanel);
-        lcg1.setSerijaNaslov("Januar 2014");
-        lcg1.setLineChartTite("Kretanje RN");
-        lcg1.setxOsaNaslov("x osa naslov");
-        lcg1.setyOsaNaslov("y osa naslov");
-
-        try {
-            lcg1.setRd(Br_RNFA_Mesec_LineChartData("2014-2-2", 1));
-            lcg1.createFXObject();
-        } catch (ParseException ex) {
-        }
+        lcg.lineChartSetUpPanel(rightPanel);
+        lcg.createFXObject();
     }
 
     /**
@@ -193,6 +182,7 @@ public final class CoreTopComponent extends TopComponent {
     public void componentOpened() {
         bCG2.createFXObject();
         stackedBCG2.createFXObject();
+        lcg.createFXObject();
     }
 
     @Override

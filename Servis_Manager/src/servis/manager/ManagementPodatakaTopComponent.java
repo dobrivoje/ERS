@@ -6,6 +6,7 @@
 package servis.manager;
 
 import ERS.queries.ERSQuery;
+import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
@@ -20,6 +21,7 @@ import ent.TipRadnika;
 import izvestaji.resursi.generatori.ReportGenerator;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.ParseException;
 import java.util.Collection;
 import javax.persistence.EntityManager;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -1917,9 +1919,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     //</editor-fold>
 
     private void setFX_KretanjeRN(DatumSelektor d1, LineChartGenerator1 lcg) {
-        lcg.setKljucevi(INFSYS.queries.INFSistemQuery.daniZa_brRN_U_Periodu(d1.getYMDDatumOD(), d1.getYMDDatumDO()));
-        lcg.setVrednosti(INFSYS.queries.INFSistemQuery.brRN_U_Periodu(d1.getYMDDatumOD(), d1.getYMDDatumDO()));
-        lcg.createFXObject();
+        try {
+            lcg.setRd(Br_RNFA_Mesec_LineChartData(kalendar_bind, 1));
+            lcg.createFXObject();
+        } catch (ParseException ex) {
+        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="ne koristi se...">

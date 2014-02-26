@@ -7,7 +7,6 @@ package org.dobrivoje.javafx.generators;
 
 import java.awt.BorderLayout;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
@@ -26,8 +25,7 @@ public class LineChartGenerator1 {
 
     private static final LineChartGenerator1 instance = new LineChartGenerator1();
 
-    private static List<Integer> kljucevi;
-    private static List<Long> vrednosti;
+    private static Map<Integer, Integer> rd = new HashMap<>();
     private static final Map<Integer, Long> map = new HashMap<>();
     //
     private static String serijaNaslov;
@@ -94,33 +92,27 @@ public class LineChartGenerator1 {
 
         serija.setName(serijaNaslov);
 
-        for (int i = 0; i < kljucevi.size(); i++) {
-            serija.getData().add(new XYChart.Data(kljucevi.get(i), vrednosti.get(i)));
+        for (Map.Entry<Integer, Integer> entry : rd.entrySet()) {
+            serija.getData().add(new XYChart.Data(entry.getKey(), entry.getKey()));
         }
-        
-        kljucevi.clear();
-        vrednosti.clear();
 
         lineChart.getData().add(serija);
-        
+
         return lineChart;
     }
 
     //<editor-fold defaultstate="collapsed" desc="getters/setters">
-    public List<Long> getVrednosti() {
-        return vrednosti;
+    
+    public void setRd(Map<Integer, Integer> rd) {
+        LineChartGenerator1.rd = rd;
     }
-
-    public void setVrednosti(List<Long> vrednosti) {
-        this.vrednosti = vrednosti;
-    }
-
+    
     public String getLineChartTite() {
         return lineChartTite;
     }
 
     public void setLineChartTite(String lineChartTite) {
-        this.lineChartTite = lineChartTite;
+        LineChartGenerator1.lineChartTite = lineChartTite;
     }
 
     public String getxOsaNaslov() {
@@ -128,7 +120,7 @@ public class LineChartGenerator1 {
     }
 
     public void setxOsaNaslov(String xOsaNaslov) {
-        this.xOsaNaslov = xOsaNaslov;
+        LineChartGenerator1.xOsaNaslov = xOsaNaslov;
     }
 
     public String getyOsaNaslov() {
@@ -136,15 +128,7 @@ public class LineChartGenerator1 {
     }
 
     public void setyOsaNaslov(String yOsaNaslov) {
-        this.yOsaNaslov = yOsaNaslov;
-    }
-
-    public List getRadniNalozi() {
-        return vrednosti;
-    }
-
-    public void setRadniNalozi(List radniNalozi) {
-        this.vrednosti = radniNalozi;
+        LineChartGenerator1.yOsaNaslov = yOsaNaslov;
     }
 
     public String getSerijaNaslov() {
@@ -152,15 +136,7 @@ public class LineChartGenerator1 {
     }
 
     public void setSerijaNaslov(String serijaNaslov) {
-        this.serijaNaslov = serijaNaslov;
-    }
-
-    public List<Integer> getKljucevi() {
-        return kljucevi;
-    }
-
-    public void setKljucevi(List<Integer> kljucevi) {
-        this.kljucevi = kljucevi;
+        LineChartGenerator1.serijaNaslov = serijaNaslov;
     }
     //</editor-fold>
 

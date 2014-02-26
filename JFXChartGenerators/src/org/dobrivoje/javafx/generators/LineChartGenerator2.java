@@ -25,20 +25,14 @@ import javax.swing.JPanel;
 public class LineChartGenerator2 {
 
     private static final LineChartGenerator2 instance = new LineChartGenerator2();
-    private static final Map<Integer, Integer> rd = new HashMap<>();
-
     private static final String[] zemlje = new String[]{"Austria", "brazil", "France", "Italy", "USA"};
     //
     private Chart chart;
-    private static final CategoryAxis xAxis = new CategoryAxis();
-    private static final NumberAxis yAxis = new NumberAxis();
-    private static final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-    private final JFXPanel lineChartFxPanel;
+    private static final JFXPanel lineChartFxPanel = new JFXPanel();
     //
     private static final XYChart.Series serije[] = new XYChart.Series[3];
 
     private LineChartGenerator2() {
-        this.lineChartFxPanel = new JFXPanel();
     }
 
     public static LineChartGenerator2 getDefault() {
@@ -50,13 +44,16 @@ public class LineChartGenerator2 {
     }
 
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
-    private LineChart createLineChart() {
+    private synchronized LineChart createLineChart() {
+        final CategoryAxis xAxis = new CategoryAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setCreateSymbols(false);
 
-        lineChart.setTitle("Izveštaj za Zemlje - " + zemlje.toString());
-        xAxis.setLabel("Zemlja");
+        lineChart.setTitle("Izveštaj za Države");
+        xAxis.setLabel("Države");
         xAxis.setTickLabelRotation(90);
-        yAxis.setLabel("Vrednosti");
+        yAxis.setLabel("Dug");
 
         int god = 2003;
 
@@ -65,7 +62,7 @@ public class LineChartGenerator2 {
             serije[i].setName(Integer.toString(god++));
 
             for (String zemlja : zemlje) {
-                serije[i].getData().add(new XYChart.Data(zemlja, Math.random() * 25000));
+                serije[i].getData().add(new XYChart.Data(zemlja, Math.random() * 2000));
             }
 
             lineChart.getData().add(serije[i]);
@@ -91,9 +88,5 @@ public class LineChartGenerator2 {
                 createScene();
             }
         });
-    }
-
-    public JFXPanel getLineChartFxPanel() {
-        return lineChartFxPanel;
     }
 }

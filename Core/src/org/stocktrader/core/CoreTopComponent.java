@@ -7,13 +7,14 @@ package org.stocktrader.core;
 
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import java.text.ParseException;
-import javax.swing.JScrollPane;
 import org.dobrivoje.javafx.generators.BarChartGenerator2;
 import org.dobrivoje.javafx.generators.LineChartGenerator2;
+import org.dobrivoje.javafx.generators.LineChartGenerator3;
 import org.dobrivoje.javafx.generators.StackedBarChartGenerator2;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.awt.StatusDisplayer;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
@@ -46,7 +47,9 @@ public final class CoreTopComponent extends TopComponent {
     private static final BarChartGenerator2 bCG2 = new BarChartGenerator2();
     private static final StackedBarChartGenerator2 stackedBCG2 = new StackedBarChartGenerator2();
     //
-    private static final LineChartGenerator2 lcg = LineChartGenerator2.getDefault();
+    private static final LineChartGenerator2 lcg2 = LineChartGenerator2.getDefault();
+    private static final LineChartGenerator3 lcg3 = LineChartGenerator3.getDefault();
+    private static final String[] dattt = new String[]{"2011-3-1", "2013-6-1", "2010-11-1", "2008-5-1", "2009-3-1", "2010-11-1", "2013-7-1"};
 
     public CoreTopComponent() {
         initComponents();
@@ -59,8 +62,23 @@ public final class CoreTopComponent extends TopComponent {
         stackedBCG2.barChartSetUpPanel(midPanel);
         stackedBCG2.createFXObject();
 
-        lcg.lineChartSetUpPanel(rightPanel);
-        lcg.createFXObject();
+        lcg2.lineChartSetUpPanel(rightPanel);
+        lcg2.createFXObject();
+
+        lcg3.lineChartSetUpPanel(downPanel);
+        try {
+            lcg3.setSerije(
+                    Br_RNFA_Mesec_LineChartData("2010-6-1", 1),
+                    Br_RNFA_Mesec_LineChartData("2010-6-1", 2),
+                    Br_RNFA_Mesec_LineChartData("2010-6-1", 3)
+            );
+
+            lcg3.setSerijeNazivi("RN !", "FA.");
+            lcg3.createFXObject();
+        } catch (ParseException ex) {
+        } catch (NullPointerException n) {
+            StatusDisplayer.getDefault().setStatusText("NULL !");
+        }
     }
 
     /**
@@ -77,8 +95,7 @@ public final class CoreTopComponent extends TopComponent {
         midPanel = new javax.swing.JPanel();
         rightPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new JScrollPane(jTable1);
-        jTable1 = new javax.swing.JTable();
+        downPanel = new javax.swing.JPanel();
 
         leftPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         leftPanel.setLayout(new java.awt.BorderLayout());
@@ -102,62 +119,50 @@ public final class CoreTopComponent extends TopComponent {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 176, Short.MAX_VALUE))
+                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(223, 223, 223))
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         mainPanelLayout.setVerticalGroup(
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                    .addComponent(midPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
                 .addGap(6, 6, 6))
         );
 
-        jScrollPane1.setBorder(null);
-
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-
-            }
-        ));
-        jTable1.setCellSelectionEnabled(true);
-        jTable1.setGridColor(new java.awt.Color(102, 102, 255));
-        jScrollPane1.setViewportView(jTable1);
+        downPanel.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        downPanel.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE))
-                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(12, 12, 12))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(downPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(downPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -168,9 +173,8 @@ public final class CoreTopComponent extends TopComponent {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel downPanel;
     private javax.swing.JButton jButton1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel midPanel;
@@ -182,7 +186,21 @@ public final class CoreTopComponent extends TopComponent {
     public void componentOpened() {
         bCG2.createFXObject();
         stackedBCG2.createFXObject();
-        lcg.createFXObject();
+        lcg2.createFXObject();
+
+        try {
+            lcg3.setSerije(
+                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length*Math.random())], 1),
+                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length*Math.random())], 2),
+                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length*Math.random())], 3)
+            );
+
+            lcg3.setSerijeNazivi("RN !", "FA", "ST");
+            lcg3.createFXObject();
+        } catch (ParseException ex) {
+        } catch (NullPointerException n) {
+            StatusDisplayer.getDefault().setStatusText("NULL !");
+        }
     }
 
     @Override

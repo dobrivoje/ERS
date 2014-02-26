@@ -11,7 +11,6 @@ import java.util.Map;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -25,16 +24,14 @@ import javax.swing.JPanel;
 public class LineChartGenerator3 {
 
     private static final LineChartGenerator3 instance = new LineChartGenerator3();
-    private static final Map<Integer, Integer> rd = new HashMap<>();
-    private static final String[] kategorije = new String[]{"RN", "FA", "ST.Faktura"};
+    //
+    private Map<Integer, Integer>[] SERIJA;
+    private String[] SERIJA_NAZIV;
 
     private static Chart chart;
-    private static final CategoryAxis xAxis = new CategoryAxis();
-    private static final NumberAxis yAxis = new NumberAxis();
-    private static final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
     private final JFXPanel lineChartFxPanel;
     //
-    private static final XYChart.Series serije[] = new XYChart.Series[kategorije.length];
+    private static XYChart.Series[] serije;
 
     //<editor-fold defaultstate="collapsed" desc="init">
     private LineChartGenerator3() {
@@ -48,10 +45,26 @@ public class LineChartGenerator3 {
     public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
         panelToEmbedFXObject.add(lineChartFxPanel, BorderLayout.CENTER);
     }
-//</editor-fold>
 
+    public void setSerije(Map<Integer, Integer>... Serije) {
+        serije = new XYChart.Series[Serije.length];
+        
+        SERIJA = new HashMap[Serije.length];
+        System.arraycopy(Serije, 0, SERIJA, 0, Serije.length);
+    }
+
+    public void setSerijeNazivi(String... Nazivi) {
+        SERIJA_NAZIV = new String[Nazivi.length];
+        System.arraycopy(Nazivi, 0, SERIJA_NAZIV, 0, Nazivi.length);
+    }
+
+    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
     private LineChart createLineChart() {
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+
         lineChart.setCreateSymbols(false);
 
         lineChart.setTitle("Dinamika Naloga");
@@ -59,12 +72,12 @@ public class LineChartGenerator3 {
         xAxis.setTickLabelRotation(45);
         yAxis.setLabel("Br. Naloga");
 
-        for (int i = 0; i < serije.length; i++) {
-            serije[i] = new XYChart.Series();
-            serije[i].setName(kategorije[i]);
+        for (int i = 0; i < SERIJA.length; i++) {
+            serije[i] = new XYChart.Series<>();
+            serije[i].setName(SERIJA_NAZIV[i]);
 
-            for (int kk = 0; kk < 30; kk++) {
-                serije[i].getData().add(new XYChart.Data(kk, Math.random() * 25000));
+            for (Map.Entry<Integer, Integer> e : SERIJA[i].entrySet()) {
+                serije[i].getData().add(new XYChart.Data(e.getKey(), e.getValue()));
             }
 
             lineChart.getData().add(serije[i]);

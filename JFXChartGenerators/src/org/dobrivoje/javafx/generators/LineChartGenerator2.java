@@ -96,5 +96,4 @@ public class LineChartGenerator2 {
     public JFXPanel getLineChartFxPanel() {
         return lineChartFxPanel;
     }
-
 }

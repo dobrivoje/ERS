@@ -37,16 +37,9 @@ public class LineChartGenerator1 {
     private static Scene scene;
     private static final XYChart.Series serija = new XYChart.Series();
     private static final JFXPanel lineChartFxPanel = new JFXPanel();
-    //
-    private final NumberAxis xAxis;
-    private final NumberAxis yAxis;
-    private final LineChart<Number, Number> lineChart;
 
     //<editor-fold defaultstate="collapsed" desc="...">
     private LineChartGenerator1() {
-        xAxis = new NumberAxis();
-        yAxis = new NumberAxis();
-        lineChart = new LineChart<>(xAxis, yAxis);
     }
 
     public static LineChartGenerator1 getDefault() {
@@ -78,6 +71,10 @@ public class LineChartGenerator1 {
 
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
     private LineChart createLineChart() {
+        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis yAxis = new NumberAxis();
+        final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+
         lineChart.setTitle(lineChartTite);
         lineChart.setCreateSymbols(false);
 
@@ -102,11 +99,10 @@ public class LineChartGenerator1 {
     }
 
     //<editor-fold defaultstate="collapsed" desc="getters/setters">
-    
     public void setRd(Map<Integer, Integer> rd) {
         LineChartGenerator1.rd = rd;
     }
-    
+
     public String getLineChartTite() {
         return lineChartTite;
     }

@@ -35,7 +35,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
-import org.dobrivoje.javafx.generators.LineChartGenerator1;
+import org.dobrivoje.javafx.generators.LineChartGenerator3;
 import servis.manager.QuickSearch.IRadnik;
 
 /**
@@ -73,10 +73,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private Lookup.Result<String> kalendarLookup;
     //
     private DatumSelektor ds;
-    //
     private static EntityManager em;
-    //
-    private static final LineChartGenerator1 lcg1 = LineChartGenerator1.getDefault();
+    private static final LineChartGenerator3 lcg3 = LineChartGenerator3.getDefault();
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -262,11 +260,18 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         setName(Bundle.CTL_ManagementPodatakaTopComponent());
         setToolTipText(Bundle.HINT_ManagementPodatakaTopComponent());
 
-        lcg1.lineChartSetUpPanel(jPanel_Kompanija_DG);
-        lcg1.setSerijaNaslov("Februar 2014");
-        lcg1.setLineChartTite("Radni Nalozi u Periodu");
-        lcg1.setxOsaNaslov("Dani u Mesecu");
-        lcg1.setyOsaNaslov("Broj Naloga");
+        kalendar_bind = DatumSelektor.getDafault().getYMDDatumOD();
+        lcg3.lineChartSetUpPanel(jPanel_Kompanija_DG);
+
+        try {
+            lcg3.setSerije(Br_RNFA_Mesec_LineChartData(kalendar_bind, 1));
+            lcg3.setSerijeNazivi("RN.");
+            lcg3.setLineChartTite("Radni Nalozi - Dinamika");
+            lcg3.setSerijeNazivi("Radni Nalog");
+            lcg3.setxOsaNaslov("Dani u Mesecu");
+            lcg3.setyOsaNaslov("Broj Naloga");
+        } catch (ParseException | NullPointerException ex) {
+        }
     }
 
     /**
@@ -1818,7 +1823,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 if (!datumi.isEmpty()) {
                     for (DatumSelektor d1 : datumi) {
                         setDateUI(d1);
-                        setFX_KretanjeRN(d1, lcg1);
                         ds = d1;
                     }
                 }
@@ -1835,7 +1839,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 if (!k.isEmpty()) {
                     for (String d1 : k) {
                         setKalendar(d1);
-                        //setFX_KretanjeRN(d1, lcg1);
+                        setFX_KretanjeRN(d1, lcg3);
                     }
                 }
             }
@@ -1918,11 +1922,15 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    private void setFX_KretanjeRN(DatumSelektor d1, LineChartGenerator1 lcg) {
+    private void setFX_KretanjeRN(String Datum, LineChartGenerator3 lcg) {
         try {
-            lcg.setRd(Br_RNFA_Mesec_LineChartData(kalendar_bind, 1));
+            lcg3.setSerije(Br_RNFA_Mesec_LineChartData(Datum, 1));
+            lcg3.setSerijeNazivi("RN");
             lcg.createFXObject();
         } catch (ParseException ex) {
+            Display.obavestenjeBaloncic("Greška.", "Datum nije u pravilnoj formi.", Display.TIP_OBAVESTENJA.GRESKA);
+        } catch (NullPointerException ex) {
+            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
         }
     }
 
@@ -1943,8 +1951,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     public void resultChanged(LookupEvent le) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    //</editor-fold>
 
-//</editor-fold>
     @Override
     public void requestActive() {
         QSRadnik();

@@ -27,13 +27,17 @@ public class LineChartGenerator3 {
     //
     private Map<Integer, Integer>[] SERIJA;
     private String[] SERIJA_NAZIV;
-
+    //
+    private static String LineChartTite;
+    private static String xOsaNaslov;
+    private static String yOsaNaslov;
+    //
     private static Chart chart;
     private final JFXPanel lineChartFxPanel;
     //
     private static XYChart.Series[] serije;
 
-    //<editor-fold defaultstate="collapsed" desc="init">
+    //<editor-fold defaultstate="collapsed" desc="Init, getters/setters">
     private LineChartGenerator3() {
         this.lineChartFxPanel = new JFXPanel();
     }
@@ -48,9 +52,12 @@ public class LineChartGenerator3 {
 
     public void setSerije(Map<Integer, Integer>... Serije) {
         serije = new XYChart.Series[Serije.length];
-        
         SERIJA = new HashMap[Serije.length];
-        System.arraycopy(Serije, 0, SERIJA, 0, Serije.length);
+
+        int i = 0;
+        for (Map<Integer, Integer> map : Serije) {
+            SERIJA[i++] = new HashMap<>(map);
+        }
     }
 
     public void setSerijeNazivi(String... Nazivi) {
@@ -58,7 +65,19 @@ public class LineChartGenerator3 {
         System.arraycopy(Nazivi, 0, SERIJA_NAZIV, 0, Nazivi.length);
     }
 
+    public void setLineChartTite(String LineChartTite) {
+        LineChartGenerator3.LineChartTite = LineChartTite;
+    }
+
+    public void setxOsaNaslov(String xOsaNaslov) {
+        LineChartGenerator3.xOsaNaslov = xOsaNaslov;
+    }
+
+    public void setyOsaNaslov(String yOsaNaslov) {
+        LineChartGenerator3.yOsaNaslov = yOsaNaslov;
+    }
     //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
     private LineChart createLineChart() {
         final NumberAxis xAxis = new NumberAxis();
@@ -67,10 +86,10 @@ public class LineChartGenerator3 {
 
         lineChart.setCreateSymbols(false);
 
-        lineChart.setTitle("Dinamika Naloga");
-        xAxis.setLabel("Dani u Mesecu");
+        lineChart.setTitle(LineChartTite);
+        xAxis.setLabel(xOsaNaslov);
         xAxis.setTickLabelRotation(45);
-        yAxis.setLabel("Br. Naloga");
+        yAxis.setLabel(yOsaNaslov);
 
         for (int i = 0; i < SERIJA.length; i++) {
             serije[i] = new XYChart.Series<>();
@@ -105,6 +124,5 @@ public class LineChartGenerator3 {
             }
         });
     }
-//</editor-fold>
-
+    //</editor-fold>
 }

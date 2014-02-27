@@ -32,7 +32,7 @@
           <Group type="102" attributes="0">
               <Component id="mainPanel" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="downPanel" pref="146" max="32767" attributes="0"/>
+              <Component id="downPanel" pref="155" max="32767" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -46,11 +46,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="leftPanel" pref="193" max="32767" attributes="0"/>
+                  <Component id="leftPanel" pref="182" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="midPanel" pref="192" max="32767" attributes="0"/>
+                  <Component id="midPanel" pref="181" max="32767" attributes="0"/>
                   <EmptySpace min="-2" max="-2" attributes="0"/>
-                  <Component id="rightPanel" pref="192" max="32767" attributes="0"/>
+                  <Component id="rightPanel" pref="181" max="32767" attributes="0"/>
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
@@ -64,7 +64,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="rightPanel" pref="175" max="32767" attributes="0"/>
+                      <Component id="rightPanel" pref="177" max="32767" attributes="0"/>
                       <Component id="midPanel" alignment="0" max="32767" attributes="0"/>
                       <Component id="leftPanel" alignment="0" max="32767" attributes="0"/>
                   </Group>

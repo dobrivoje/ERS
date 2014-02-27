@@ -17,7 +17,6 @@
             </module-dependencies>
             <public-packages>
                 <package>org.dobrivoje.javafx.generators</package>
-                <package>org.dobrivoje.tablemodels</package>
             </public-packages>
         </data>
     </configuration>

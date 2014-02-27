@@ -73,7 +73,7 @@ public final class CoreTopComponent extends TopComponent {
                     Br_RNFA_Mesec_LineChartData("2010-6-1", 3)
             );
 
-            lcg3.setSerijeNazivi("RN !", "FA.");
+            lcg3.setSerijeNazivi("RN !", "FA.", "...");
             lcg3.createFXObject();
         } catch (ParseException ex) {
         } catch (NullPointerException n) {
@@ -119,11 +119,11 @@ public final class CoreTopComponent extends TopComponent {
             mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+                .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
+                .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -134,7 +134,7 @@ public final class CoreTopComponent extends TopComponent {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, mainPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(mainPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                    .addComponent(rightPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                     .addComponent(midPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(leftPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -162,7 +162,7 @@ public final class CoreTopComponent extends TopComponent {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(downPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+                .addComponent(downPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -190,9 +190,9 @@ public final class CoreTopComponent extends TopComponent {
 
         try {
             lcg3.setSerije(
-                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length*Math.random())], 1),
-                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length*Math.random())], 2),
-                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length*Math.random())], 3)
+                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length * Math.random())], 1),
+                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length * Math.random())], 2),
+                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length * Math.random())], 3)
             );
 
             lcg3.setSerijeNazivi("RN !", "FA", "ST");
@@ -219,6 +219,5 @@ public final class CoreTopComponent extends TopComponent {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
     }
-
     //</editor-fold>
 }

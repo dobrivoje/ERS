@@ -6,11 +6,11 @@
 package org.stocktrader.core;
 
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
+import JFXChartGenerators.BarChartGenerator2;
+import JFXChartGenerators.LineChartGenerator2;
+import JFXChartGenerators.LineChartGenerator3;
+import JFXChartGenerators.StackedBarChartGenerator2;
 import java.text.ParseException;
-import org.dobrivoje.javafx.generators.BarChartGenerator2;
-import org.dobrivoje.javafx.generators.LineChartGenerator2;
-import org.dobrivoje.javafx.generators.LineChartGenerator3;
-import org.dobrivoje.javafx.generators.StackedBarChartGenerator2;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;

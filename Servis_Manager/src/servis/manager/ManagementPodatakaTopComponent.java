@@ -35,7 +35,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
-import org.dobrivoje.javafx.generators.LineChartGenerator3;
+import JFXChartGenerators.LineChartGenerator3;
 import servis.manager.QuickSearch.IRadnik;
 
 /**

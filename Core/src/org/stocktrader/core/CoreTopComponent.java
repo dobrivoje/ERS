@@ -11,6 +11,7 @@ import JFXChartGenerators.LineChartGenerator2;
 import JFXChartGenerators.LineChartGenerator3;
 import JFXChartGenerators.StackedBarChartGenerator2;
 import java.text.ParseException;
+import java.util.Map;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -51,7 +52,7 @@ public final class CoreTopComponent extends TopComponent {
     private static final LineChartGenerator3 lcg3 = LineChartGenerator3.getDefault();
     private static final String[] dattt = new String[]{"2011-3-1", "2013-6-1", "2010-11-1", "2008-5-1", "2009-3-1", "2010-11-1", "2013-7-1"};
 
-    public CoreTopComponent() {
+    public CoreTopComponent() throws ParseException {
         initComponents();
         setName(Bundle.CTL_CoreTopComponent());
         setToolTipText(Bundle.HINT_CoreTopComponent());

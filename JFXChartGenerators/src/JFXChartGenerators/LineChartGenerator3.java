@@ -8,6 +8,7 @@ package JFXChartGenerators;
 import java.awt.BorderLayout;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -52,11 +53,11 @@ public class LineChartGenerator3 {
 
     public void setSerije(Map<Integer, Integer>... Serije) {
         serije = new XYChart.Series[Serije.length];
-        SERIJA = new HashMap[Serije.length];
+        SERIJA = new TreeMap[Serije.length];
 
         int i = 0;
         for (Map<Integer, Integer> map : Serije) {
-            SERIJA[i++] = new HashMap<>(map);
+            SERIJA[i++] = new TreeMap<>(map);
         }
     }
 
@@ -80,7 +81,7 @@ public class LineChartGenerator3 {
 
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
     private LineChart createLineChart() {
-        final NumberAxis xAxis = new NumberAxis();
+        final NumberAxis xAxis = new NumberAxis(1,31,1);
         final NumberAxis yAxis = new NumberAxis();
         final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
@@ -88,8 +89,14 @@ public class LineChartGenerator3 {
 
         lineChart.setTitle(LineChartTite);
         xAxis.setLabel(xOsaNaslov);
+        xAxis.setTickMarkVisible(false);
+        xAxis.setTickLength(xAxis.getTickLength());
         xAxis.setTickLabelRotation(45);
+        
         yAxis.setLabel(yOsaNaslov);
+        yAxis.setTickUnit(5);
+        yAxis.setTickLength(yAxis.getTickLength());
+        yAxis.setTickMarkVisible(false);
 
         for (int i = 0; i < SERIJA.length; i++) {
             serije[i] = new XYChart.Series<>();
@@ -115,7 +122,7 @@ public class LineChartGenerator3 {
         }
     }
 
-    public synchronized void createFXObject() {
+    public void createFXObject() {
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
             @Override

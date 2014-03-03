@@ -80,7 +80,7 @@ public class LineChartGenerator2 {
         }
     }
 
-    public synchronized void createFXObject() {
+    public void createFXObject() {
         Platform.setImplicitExit(false);
         Platform.runLater(new Runnable() {
             @Override

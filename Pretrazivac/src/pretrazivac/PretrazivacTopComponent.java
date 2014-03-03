@@ -15,6 +15,7 @@ import com.dobrivoje.utilities.warnings.Display;
 import ent.Firma;
 import ent.Kompanija;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import node_klase.firma.AktivnaFirmaChildFactory;
 import node_klase.firma.AktivnaFirmaZaDatumChildFactory;
@@ -34,6 +35,7 @@ import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
+import pretrazivac.beans.Kalendar;
 
 /**
  * Top component which displays something.
@@ -60,13 +62,18 @@ public final class PretrazivacTopComponent extends TopComponent
         implements ExplorerManager.Provider, INodeIconRenderer {
 
     private final ExplorerManager em = new ExplorerManager();
+
     private final InstanceContent ic = new InstanceContent();
     private final InstanceContent ic2 = new InstanceContent();
+    private final InstanceContent ic3 = new InstanceContent();
+
     private final DatumSelektor sd = DatumSelektor.getDafault();
     //
     private AbstractNode root;
     // pomoćni datum,...
     private String datum;
+    private final Calendar calendar = Calendar.getInstance();
+    private Kalendar kalendar;
     //
     private Kompanija kompanija;
 
@@ -157,10 +164,16 @@ public final class PretrazivacTopComponent extends TopComponent
         setToolTipText(Bundle.HINT_PretrazivacTopComponent());
         putClientProperty(TopComponent.PROP_KEEP_PREFERRED_SIZE_WHEN_SLIDED_IN, Boolean.TRUE);
 
+        calendar.setTime(jCalendar1.getDate());
+        // Pazi na msesec : mesec počinje od nule !!!
+        kalendar = new Kalendar(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
+
         associateLookup(
                 new ProxyLookup(
                         ExplorerUtils.createLookup(em, getActionMap()),
-                        new AbstractLookup(ic)));
+                        new AbstractLookup(ic),
+                        new AbstractLookup(ic3))
+        );
 
         jCalendar1PropertyChange(null);
 
@@ -323,7 +336,16 @@ public final class PretrazivacTopComponent extends TopComponent
         } catch (NullPointerException e) {
         }
 
-        StatusDisplayer.getDefault().setStatusText(datum.toString());
+        // Ako se ne očisti ic3, ic3 se gomila i raste, a treba nam samo poslednji podatak !
+        ic3.set(Collections.emptyList(), null);
+        calendar.setTime(jCalendar1.getDate());
+        kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
+        if (kalendar.getNoviUpis()) {
+            ic3.add(kalendar);
+        }
+
+        // StatusDisplayer.getDefault().setStatusText(datum.toString());
+        StatusDisplayer.getDefault().setStatusText(kalendar.toString());
     }//GEN-LAST:event_jCalendar1PropertyChange
 
     private void jDateChooser_Datum_ODPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser_Datum_ODPropertyChange

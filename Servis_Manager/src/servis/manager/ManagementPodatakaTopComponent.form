@@ -80,35 +80,45 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jPanel_Kompanija_DG" pref="599" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jSeparator6" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jLabel20" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jPanel_Kompanija_DG" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="jSeparator6" alignment="0" max="32767" attributes="0"/>
                                       <Group type="102" alignment="0" attributes="0">
-                                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                              <Component id="jLabel24" alignment="1" pref="67" max="32767" attributes="0"/>
-                                              <Component id="jLabel21" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jLabel28" alignment="1" pref="67" max="32767" attributes="0"/>
-                                              <Component id="jLabel29" alignment="1" pref="67" max="32767" attributes="0"/>
-                                          </Group>
-                                          <EmptySpace max="-2" attributes="0"/>
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jTextField_KOMPANIJA_Naziv" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
-                                              <Component id="jTextField_KOMPANIJA_Adresa" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
-                                              <Component id="jTextField_KOMPANIJA_Grad" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
-                                              <Component id="jTextField_KOMPANIJA__Vlasnik" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
+                                              <Component id="jLabel20" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Group type="102" alignment="0" attributes="0">
+                                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                                      <Component id="jLabel24" alignment="1" pref="67" max="32767" attributes="0"/>
+                                                      <Component id="jLabel21" alignment="0" max="32767" attributes="0"/>
+                                                      <Component id="jLabel28" alignment="1" pref="67" max="32767" attributes="0"/>
+                                                      <Component id="jLabel29" alignment="1" pref="67" max="32767" attributes="0"/>
+                                                  </Group>
+                                                  <EmptySpace max="-2" attributes="0"/>
+                                                  <Group type="103" groupAlignment="0" attributes="0">
+                                                      <Component id="jTextField_KOMPANIJA_Naziv" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
+                                                      <Component id="jTextField_KOMPANIJA_Adresa" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
+                                                      <Component id="jTextField_KOMPANIJA_Grad" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
+                                                      <Component id="jTextField_KOMPANIJA__Vlasnik" alignment="0" min="-2" pref="247" max="-2" attributes="0"/>
+                                                  </Group>
+                                              </Group>
                                           </Group>
+                                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                                          <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jPanel6" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabel22" min="-2" pref="86" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace min="0" pref="96" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jLabel22" min="-2" pref="86" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="jPanel_Kompanija_DL" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Component id="jPanel_Kompanija_DD" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -146,9 +156,19 @@
                       <Component id="jSeparator6" min="-2" pref="5" max="-2" attributes="0"/>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel22" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jPanel_Kompanija_DG" pref="223" max="32767" attributes="0"/>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Component id="jPanel_Kompanija_DG" pref="182" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jPanel_Kompanija_DL" pref="83" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="jPanel_Kompanija_DD" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -278,6 +298,28 @@
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel_Kompanija_DG">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel_Kompanija_DL">
+              <Properties>
+                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                  <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+                    <EtchetBorder/>
+                  </Border>
+                </Property>
+              </Properties>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel_Kompanija_DD">
               <Properties>
                 <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                   <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
@@ -1309,7 +1351,7 @@
                           <Component id="jButton_Efikasnost_Radnika_Izvestaj" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jButton_Barkod" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="86" max="32767" attributes="0"/>
+                      <EmptySpace pref="135" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

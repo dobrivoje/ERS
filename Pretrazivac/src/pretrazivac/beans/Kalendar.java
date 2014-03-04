@@ -27,7 +27,7 @@ public class Kalendar {
         return Godina;
     }
 
-    public final void setGodina(int godina) {
+    public void setGodina(int godina) {
         if (this.Godina != godina) {
             this.Godina = godina;
             this.noviUpisG = true;
@@ -40,7 +40,7 @@ public class Kalendar {
         return Mesec;
     }
 
-    public final void setMesec(int mesec) {
+    public void setMesec(int mesec) {
         if (this.Mesec != mesec) {
             this.Mesec = mesec;
             this.noviUpisM = true;

@@ -24,6 +24,11 @@
                 <package>org.eclipse.persistence</package>
                 <package>org.eclipse.persistence.annotations</package>
                 <package>org.eclipse.persistence.config</package>
+                <package>org.eclipse.persistence.core.descriptors</package>
+                <package>org.eclipse.persistence.core.mappings</package>
+                <package>org.eclipse.persistence.core.mappings.converters</package>
+                <package>org.eclipse.persistence.core.queries</package>
+                <package>org.eclipse.persistence.core.sessions</package>
                 <package>org.eclipse.persistence.dbws</package>
                 <package>org.eclipse.persistence.descriptors</package>
                 <package>org.eclipse.persistence.descriptors.changetracking</package>
@@ -32,9 +37,6 @@
                 <package>org.eclipse.persistence.descriptors.partitioning</package>
                 <package>org.eclipse.persistence.dynamic</package>
                 <package>org.eclipse.persistence.eis</package>
-                <package>org.eclipse.persistence.eis.adapters.aq</package>
-                <package>org.eclipse.persistence.eis.adapters.jms</package>
-                <package>org.eclipse.persistence.eis.adapters.xmlfile</package>
                 <package>org.eclipse.persistence.eis.interactions</package>
                 <package>org.eclipse.persistence.eis.mappings</package>
                 <package>org.eclipse.persistence.exceptions</package>
@@ -44,16 +46,16 @@
                 <package>org.eclipse.persistence.history</package>
                 <package>org.eclipse.persistence.indirection</package>
                 <package>org.eclipse.persistence.internal.codegen</package>
+                <package>org.eclipse.persistence.internal.core.databaseaccess</package>
+                <package>org.eclipse.persistence.internal.core.descriptors</package>
+                <package>org.eclipse.persistence.internal.core.helper</package>
+                <package>org.eclipse.persistence.internal.core.queries</package>
+                <package>org.eclipse.persistence.internal.core.sessions</package>
                 <package>org.eclipse.persistence.internal.databaseaccess</package>
                 <package>org.eclipse.persistence.internal.dbws</package>
                 <package>org.eclipse.persistence.internal.descriptors</package>
                 <package>org.eclipse.persistence.internal.descriptors.changetracking</package>
                 <package>org.eclipse.persistence.internal.dynamic</package>
-                <package>org.eclipse.persistence.internal.eis.adapters.aq</package>
-                <package>org.eclipse.persistence.internal.eis.adapters.jms</package>
-                <package>org.eclipse.persistence.internal.eis.adapters.xmlfile</package>
-                <package>org.eclipse.persistence.internal.eis.cobol</package>
-                <package>org.eclipse.persistence.internal.eis.cobol.helper</package>
                 <package>org.eclipse.persistence.internal.expressions</package>
                 <package>org.eclipse.persistence.internal.helper</package>
                 <package>org.eclipse.persistence.internal.helper.linkedlist</package>
@@ -61,12 +63,37 @@
                 <package>org.eclipse.persistence.internal.identitymaps</package>
                 <package>org.eclipse.persistence.internal.indirection</package>
                 <package>org.eclipse.persistence.internal.jaxb</package>
+                <package>org.eclipse.persistence.internal.jaxb.json.schema</package>
+                <package>org.eclipse.persistence.internal.jaxb.json.schema.model</package>
                 <package>org.eclipse.persistence.internal.jaxb.many</package>
                 <package>org.eclipse.persistence.internal.jpa</package>
+                <package>org.eclipse.persistence.internal.jpa.config</package>
+                <package>org.eclipse.persistence.internal.jpa.config.additionalcriteria</package>
+                <package>org.eclipse.persistence.internal.jpa.config.cache</package>
+                <package>org.eclipse.persistence.internal.jpa.config.changetracking</package>
+                <package>org.eclipse.persistence.internal.jpa.config.classes</package>
+                <package>org.eclipse.persistence.internal.jpa.config.columns</package>
+                <package>org.eclipse.persistence.internal.jpa.config.converters</package>
+                <package>org.eclipse.persistence.internal.jpa.config.copypolicy</package>
+                <package>org.eclipse.persistence.internal.jpa.config.inheritance</package>
+                <package>org.eclipse.persistence.internal.jpa.config.listeners</package>
+                <package>org.eclipse.persistence.internal.jpa.config.locking</package>
+                <package>org.eclipse.persistence.internal.jpa.config.mappings</package>
+                <package>org.eclipse.persistence.internal.jpa.config.metadata</package>
+                <package>org.eclipse.persistence.internal.jpa.config.multitenant</package>
+                <package>org.eclipse.persistence.internal.jpa.config.nosql</package>
+                <package>org.eclipse.persistence.internal.jpa.config.partitioning</package>
+                <package>org.eclipse.persistence.internal.jpa.config.persistenceunit</package>
+                <package>org.eclipse.persistence.internal.jpa.config.queries</package>
+                <package>org.eclipse.persistence.internal.jpa.config.sequencing</package>
+                <package>org.eclipse.persistence.internal.jpa.config.structures</package>
+                <package>org.eclipse.persistence.internal.jpa.config.tables</package>
+                <package>org.eclipse.persistence.internal.jpa.config.transformers</package>
+                <package>org.eclipse.persistence.internal.jpa.config.xml</package>
                 <package>org.eclipse.persistence.internal.jpa.deployment</package>
-                <package>org.eclipse.persistence.internal.jpa.deployment.osgi</package>
                 <package>org.eclipse.persistence.internal.jpa.deployment.xml.parser</package>
                 <package>org.eclipse.persistence.internal.jpa.jdbc</package>
+                <package>org.eclipse.persistence.internal.jpa.jpql</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.accessors</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.accessors.classes</package>
@@ -78,26 +105,27 @@
                 <package>org.eclipse.persistence.internal.jpa.metadata.columns</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.converters</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.copypolicy</package>
+                <package>org.eclipse.persistence.internal.jpa.metadata.graphs</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.inheritance</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.listeners</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.locking</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.mappings</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.multitenant</package>
+                <package>org.eclipse.persistence.internal.jpa.metadata.nosql</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.partitioning</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.queries</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.sequencing</package>
+                <package>org.eclipse.persistence.internal.jpa.metadata.sop</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.structures</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.tables</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.transformers</package>
                 <package>org.eclipse.persistence.internal.jpa.metadata.xml</package>
                 <package>org.eclipse.persistence.internal.jpa.metamodel</package>
-                <package>org.eclipse.persistence.internal.jpa.modelgen</package>
-                <package>org.eclipse.persistence.internal.jpa.modelgen.objects</package>
-                <package>org.eclipse.persistence.internal.jpa.modelgen.visitors</package>
                 <package>org.eclipse.persistence.internal.jpa.parsing</package>
                 <package>org.eclipse.persistence.internal.jpa.parsing.jpql</package>
                 <package>org.eclipse.persistence.internal.jpa.parsing.jpql.antlr</package>
                 <package>org.eclipse.persistence.internal.jpa.querydef</package>
+                <package>org.eclipse.persistence.internal.jpa.rs.metadata.model</package>
                 <package>org.eclipse.persistence.internal.jpa.transaction</package>
                 <package>org.eclipse.persistence.internal.jpa.weaving</package>
                 <package>org.eclipse.persistence.internal.libraries.antlr.runtime</package>
@@ -117,11 +145,14 @@
                 <package>org.eclipse.persistence.internal.oxm.accessor</package>
                 <package>org.eclipse.persistence.internal.oxm.conversion</package>
                 <package>org.eclipse.persistence.internal.oxm.documentpreservation</package>
+                <package>org.eclipse.persistence.internal.oxm.mappings</package>
                 <package>org.eclipse.persistence.internal.oxm.record</package>
                 <package>org.eclipse.persistence.internal.oxm.record.deferred</package>
+                <package>org.eclipse.persistence.internal.oxm.record.json</package>
                 <package>org.eclipse.persistence.internal.oxm.record.namespaces</package>
                 <package>org.eclipse.persistence.internal.oxm.schema</package>
                 <package>org.eclipse.persistence.internal.oxm.schema.model</package>
+                <package>org.eclipse.persistence.internal.oxm.unmapped</package>
                 <package>org.eclipse.persistence.internal.platform.database</package>
                 <package>org.eclipse.persistence.internal.platform.database.oracle</package>
                 <package>org.eclipse.persistence.internal.platform.database.oracle.xdb</package>
@@ -129,6 +160,7 @@
                 <package>org.eclipse.persistence.internal.security</package>
                 <package>org.eclipse.persistence.internal.sequencing</package>
                 <package>org.eclipse.persistence.internal.sessions</package>
+                <package>org.eclipse.persistence.internal.sessions.cdi</package>
                 <package>org.eclipse.persistence.internal.sessions.coordination</package>
                 <package>org.eclipse.persistence.internal.sessions.coordination.broadcast</package>
                 <package>org.eclipse.persistence.internal.sessions.coordination.corba</package>
@@ -166,18 +198,43 @@
                 <package>org.eclipse.persistence.jaxb.javamodel.oxm</package>
                 <package>org.eclipse.persistence.jaxb.javamodel.reflection</package>
                 <package>org.eclipse.persistence.jaxb.javamodel.xjc</package>
+                <package>org.eclipse.persistence.jaxb.json</package>
                 <package>org.eclipse.persistence.jaxb.metadata</package>
+                <package>org.eclipse.persistence.jaxb.rs</package>
                 <package>org.eclipse.persistence.jaxb.xjc</package>
                 <package>org.eclipse.persistence.jaxb.xmlmodel</package>
                 <package>org.eclipse.persistence.jpa</package>
+                <package>org.eclipse.persistence.jpa.config</package>
                 <package>org.eclipse.persistence.jpa.dynamic</package>
-                <package>org.eclipse.persistence.jpa.internal.jpql</package>
-                <package>org.eclipse.persistence.jpa.internal.jpql.parser</package>
-                <package>org.eclipse.persistence.jpa.internal.jpql.util</package>
                 <package>org.eclipse.persistence.jpa.jpql</package>
-                <package>org.eclipse.persistence.jpa.jpql.spi</package>
+                <package>org.eclipse.persistence.jpa.jpql.parser</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.model</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.model.query</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.resolver</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.spi</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility.filter</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility.iterable</package>
+                <package>org.eclipse.persistence.jpa.jpql.tools.utility.iterator</package>
+                <package>org.eclipse.persistence.jpa.jpql.utility</package>
+                <package>org.eclipse.persistence.jpa.jpql.utility.filter</package>
+                <package>org.eclipse.persistence.jpa.jpql.utility.iterable</package>
+                <package>org.eclipse.persistence.jpa.jpql.utility.iterator</package>
                 <package>org.eclipse.persistence.jpa.metadata</package>
-                <package>org.eclipse.persistence.jpa.osgi</package>
+                <package>org.eclipse.persistence.jpa.rs</package>
+                <package>org.eclipse.persistence.jpa.rs.config</package>
+                <package>org.eclipse.persistence.jpa.rs.eventlistener</package>
+                <package>org.eclipse.persistence.jpa.rs.exceptions</package>
+                <package>org.eclipse.persistence.jpa.rs.logging</package>
+                <package>org.eclipse.persistence.jpa.rs.logging.i18n</package>
+                <package>org.eclipse.persistence.jpa.rs.resources</package>
+                <package>org.eclipse.persistence.jpa.rs.resources.common</package>
+                <package>org.eclipse.persistence.jpa.rs.resources.unversioned</package>
+                <package>org.eclipse.persistence.jpa.rs.util</package>
+                <package>org.eclipse.persistence.jpa.rs.util.list</package>
+                <package>org.eclipse.persistence.jpa.rs.util.metadatasources</package>
+                <package>org.eclipse.persistence.jpa.rs.util.xmladapters</package>
                 <package>org.eclipse.persistence.logging</package>
                 <package>org.eclipse.persistence.mappings</package>
                 <package>org.eclipse.persistence.mappings.converters</package>
@@ -200,15 +257,18 @@
                 <package>org.eclipse.persistence.oxm.unmapped</package>
                 <package>org.eclipse.persistence.platform.database</package>
                 <package>org.eclipse.persistence.platform.database.converters</package>
+                <package>org.eclipse.persistence.platform.database.events</package>
                 <package>org.eclipse.persistence.platform.database.jdbc</package>
                 <package>org.eclipse.persistence.platform.database.oracle</package>
                 <package>org.eclipse.persistence.platform.database.oracle.annotations</package>
                 <package>org.eclipse.persistence.platform.database.oracle.converters</package>
+                <package>org.eclipse.persistence.platform.database.oracle.dcn</package>
                 <package>org.eclipse.persistence.platform.database.oracle.jdbc</package>
                 <package>org.eclipse.persistence.platform.database.oracle.plsql</package>
                 <package>org.eclipse.persistence.platform.database.oracle.ucp</package>
                 <package>org.eclipse.persistence.platform.database.partitioning</package>
                 <package>org.eclipse.persistence.platform.server</package>
+                <package>org.eclipse.persistence.platform.server.glassfish</package>
                 <package>org.eclipse.persistence.platform.server.jboss</package>
                 <package>org.eclipse.persistence.platform.server.oc4j</package>
                 <package>org.eclipse.persistence.platform.server.sap</package>
@@ -249,13 +309,18 @@
                 <package>org.eclipse.persistence.sessions.remote.corba.sun</package>
                 <package>org.eclipse.persistence.sessions.remote.rmi</package>
                 <package>org.eclipse.persistence.sessions.remote.rmi.iiop</package>
+                <package>org.eclipse.persistence.sessions.serializers</package>
+                <package>org.eclipse.persistence.sessions.serializers.kryo</package>
                 <package>org.eclipse.persistence.sessions.server</package>
                 <package>org.eclipse.persistence.tools</package>
                 <package>org.eclipse.persistence.tools.file</package>
                 <package>org.eclipse.persistence.tools.profiler</package>
+                <package>org.eclipse.persistence.tools.profiler.oracle</package>
                 <package>org.eclipse.persistence.tools.schemaframework</package>
+                <package>org.eclipse.persistence.tools.tuning</package>
                 <package>org.eclipse.persistence.tools.weaving.jpa</package>
                 <package>org.eclipse.persistence.transaction</package>
+                <package>org.eclipse.persistence.transaction.glassfish</package>
                 <package>org.eclipse.persistence.transaction.jboss</package>
                 <package>org.eclipse.persistence.transaction.jotm</package>
                 <package>org.eclipse.persistence.transaction.oc4j</package>
@@ -266,16 +331,16 @@
                 <package>org.osgi.service.jpa</package>
             </public-packages>
             <class-path-extension>
-                <runtime-relative-path>ext/org.eclipse.persistence.jpa.jpql_1.0.1.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/org.eclipse.persistence.jpa.jpql_1.0.1.jar</binary-origin>
+                <runtime-relative-path>ext/org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/org.eclipse.persistence.jpa.jpql_2.5.1.v20130918-f2b9fc5.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/eclipselink-2.3.2.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/eclipselink-2.3.2.jar</binary-origin>
+                <runtime-relative-path>ext/javax.persistence_2.1.0.v201304241213.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/javax.persistence_2.1.0.v201304241213.jar</binary-origin>
             </class-path-extension>
             <class-path-extension>
-                <runtime-relative-path>ext/javax.persistence-2.0.3.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/javax.persistence-2.0.3.jar</binary-origin>
+                <runtime-relative-path>ext/eclipselink.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/eclipselink.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

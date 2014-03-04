@@ -73,7 +73,7 @@ public final class PretrazivacTopComponent extends TopComponent
     // pomoćni datum,...
     private String datum;
     private final Calendar calendar = Calendar.getInstance();
-    private Kalendar kalendar;
+    private final Kalendar kalendar;
     //
     private Kompanija kompanija;
 

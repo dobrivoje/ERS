@@ -6,7 +6,6 @@
 package JFXChartGenerators;
 
 import java.awt.BorderLayout;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import javafx.application.Platform;

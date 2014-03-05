@@ -292,7 +292,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         setName(Bundle.CTL_ManagementPodatakaTopComponent());
         setToolTipText(Bundle.HINT_ManagementPodatakaTopComponent());
 
-        kalendarDatum_bind = DatumSelektor.getDafault().getYMDDatumOD();
+        setKalendarDatum(DatumSelektor.getDafault().getYMDDatumOD());
+        setKalendar(new Kalendar(DatumSelektor.getDafault().getGodinaOD(), DatumSelektor.getDafault().getMesecOD()));
 
         lineChartGenerator.lineChartSetUpPanel(jPanel_Kompanija_DG);
         setFX_KretanjeRN(kalendarDatum_bind, lineChartGenerator);
@@ -1902,10 +1903,10 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
-                Collection<String> k = lr.allInstances();
+                Collection<String> d = lr.allInstances();
 
-                if (!k.isEmpty()) {
-                    for (String d1 : k) {
+                if (!d.isEmpty()) {
+                    for (String d1 : d) {
                         setKalendarDatum(d1);
                         setFX_KretanjeRN(d1, lineChartGenerator);
                         // setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
@@ -1930,6 +1931,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         datumiLookup = null;
         kalendarDatumLookup.removeLookupListener(this);
         kalendarDatumLookup = null;
+        kalendarLookup.removeLookupListener(this);
+        kalendarLookup = null;
     }
     //</editor-fold>
 

@@ -6,6 +6,8 @@
 package JFXChartGenerators;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javafx.application.Platform;
@@ -23,7 +25,7 @@ import javax.swing.JPanel;
  */
 public class LineChartGenerator4 {
 
-    private Map<Integer, Integer>[] SERIJA;
+    private List<Map<Integer, Integer>> SERIJA;
     private String[] SERIJA_NAZIV;
     //
     private String LineChartTite;
@@ -41,16 +43,28 @@ public class LineChartGenerator4 {
     }
 
     public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
-        panelToEmbedFXObject.add(lineChartFxPanel, BorderLayout.CENTER);
+        panelToEmbedFXObject.add(this.lineChartFxPanel, BorderLayout.CENTER);
     }
 
     public void setSerije(Map<Integer, Integer>... Serije) {
         serije = new XYChart.Series[Serije.length];
-        SERIJA = new TreeMap[Serije.length];
+
+        //SERIJA = new TreeMap[Serije.length];
+        SERIJA = new ArrayList<>();
 
         int i = 0;
         for (Map<Integer, Integer> map : Serije) {
-            SERIJA[i++] = new TreeMap<>(map);
+            //SERIJA[i++] = new TreeMap<>(map);
+            SERIJA.add(new TreeMap<>(map));
+        }
+    }
+
+    public void setSerije(List<Map<Integer, Integer>> Serije) {
+        serije = new XYChart.Series[Serije.size()];
+        SERIJA = new ArrayList<>();
+
+        for (Map<Integer, Integer> map : Serije) {
+            SERIJA.add(map);
         }
     }
 
@@ -91,15 +105,18 @@ public class LineChartGenerator4 {
         yAxis.setTickLength(yAxis.getTickLength());
         yAxis.setTickMarkVisible(false);
 
-        for (int i = 0; i < SERIJA.length; i++) {
+        int i = 0;
+        for (Map<Integer, Integer> s : SERIJA) {
+            //for (int i = 0; i < SERIJA.size(); i++) {
             serije[i] = new XYChart.Series<>();
             serije[i].setName(SERIJA_NAZIV[i]);
 
-            for (Map.Entry<Integer, Integer> e : SERIJA[i].entrySet()) {
+            for (Map.Entry<Integer, Integer> e : s.entrySet()) {
+                //for (Map.Entry<Integer, Integer> e : SERIJA[i].entrySet()) {
                 serije[i].getData().add(new XYChart.Data(e.getKey(), e.getValue()));
             }
 
-            lineChart.getData().add(serije[i]);
+            lineChart.getData().add(serije[i++]);
         }
 
         return lineChart;

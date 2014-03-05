@@ -130,7 +130,10 @@ public final class PretrazivacTopComponent extends TopComponent
         // Postavi naziv kompanije, naziv može da se uzme iz bilo koje aktivne firme,...
 
         kompanija = ERSQuery.AktivneFirme(aktivne).iterator().next().getFkIdk();
-        ic2.add(kompanija);
+
+        // ic2.add(kompanija);
+        // ic2.set(Collections.singleton(kompanija), null);
+
         setName(kompanija.getNazivKompanije());
 
         // Prikaži sve aktivne firme ! 
@@ -172,7 +175,8 @@ public final class PretrazivacTopComponent extends TopComponent
                 new ProxyLookup(
                         ExplorerUtils.createLookup(em, getActionMap()),
                         new AbstractLookup(ic),
-                        new AbstractLookup(ic3))
+                        new AbstractLookup(ic2)
+                )
         );
 
         jCalendar1PropertyChange(null);
@@ -194,6 +198,8 @@ public final class PretrazivacTopComponent extends TopComponent
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jEditorPane1 = new javax.swing.JEditorPane();
         beanTreeView_ERS_Radnici = new org.openide.explorer.view.BeanTreeView();
         jCalendar1 = new com.toedter.calendar.JCalendar();
         jDateChooser_Datum_OD = new com.toedter.calendar.JDateChooser();
@@ -206,6 +212,8 @@ public final class PretrazivacTopComponent extends TopComponent
         jLabel5 = new javax.swing.JLabel();
         jLabel_UK_BR_RADNIKA = new javax.swing.JLabel();
 
+        jScrollPane1.setViewportView(jEditorPane1);
+
         jCalendar1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jCalendar1PropertyChange(evt);
@@ -213,11 +221,6 @@ public final class PretrazivacTopComponent extends TopComponent
         });
 
         jDateChooser_Datum_OD.setDateFormatString(org.openide.util.NbBundle.getMessage(PretrazivacTopComponent.class, "PretrazivacTopComponent.jDateChooser_Datum_OD.dateFormatString")); // NOI18N
-        jDateChooser_Datum_OD.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDateChooser_Datum_ODFocusLost(evt);
-            }
-        });
         jDateChooser_Datum_OD.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jDateChooser_Datum_ODPropertyChange(evt);
@@ -225,11 +228,6 @@ public final class PretrazivacTopComponent extends TopComponent
         });
 
         jDateChooser_Datum_DO.setDateFormatString(org.openide.util.NbBundle.getMessage(PretrazivacTopComponent.class, "PretrazivacTopComponent.jDateChooser_Datum_DO.dateFormatString")); // NOI18N
-        jDateChooser_Datum_DO.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                jDateChooser_Datum_DOFocusLost(evt);
-            }
-        });
         jDateChooser_Datum_DO.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 jDateChooser_Datum_DOPropertyChange(evt);
@@ -323,10 +321,11 @@ public final class PretrazivacTopComponent extends TopComponent
 
     private void jCalendar1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendar1PropertyChange
         // TODO add your handling code here:
-        ic.set(Collections.emptyList(), null);
 
+        // ic.set(Collections.emptyList(), null);
         datum = new SimpleDateFormat("yyyy-MM-dd").format(jCalendar1.getDate());
-        ic.add(datum);
+        /// ic.set(Collections.singleton(datum), null);
+        ic2.set(Collections.singleton(datum), null);
 
         try {
             aktivnaFirmaRadniciZaDatum(datum);
@@ -336,16 +335,15 @@ public final class PretrazivacTopComponent extends TopComponent
         } catch (NullPointerException e) {
         }
 
-        // Ako se ne očisti ic3, ic3 se gomila i raste, a treba nam samo poslednji podatak !
-        ic3.set(Collections.emptyList(), null);
+        /*
         calendar.setTime(jCalendar1.getDate());
         kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
         if (kalendar.getNoviUpis()) {
-            ic3.add(kalendar);
+        ic3.set(Collections.singleton(kalendar), null);
         }
+        */
 
-        // StatusDisplayer.getDefault().setStatusText(datum.toString());
-        StatusDisplayer.getDefault().setStatusText(kalendar.toString());
+        StatusDisplayer.getDefault().setStatusText(datum.toString() + ",  " + kalendar.toString());
     }//GEN-LAST:event_jCalendar1PropertyChange
 
     private void jDateChooser_Datum_ODPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser_Datum_ODPropertyChange
@@ -354,8 +352,10 @@ public final class PretrazivacTopComponent extends TopComponent
 
         try {
             sd.setDatumOD(jDateChooser_Datum_OD.getDate());
-            ic.add(sd);
-
+            
+            // ic.add(sd);
+            ic.set(Collections.singleton(sd), null);
+            
         } catch (NullPointerException e1) {
         } catch (PomesaniDatumiException e1) {
             Display.obavestenjeBaloncic("Greška.", "Izabrati ispravno početni i krajnji datum.",
@@ -369,7 +369,9 @@ public final class PretrazivacTopComponent extends TopComponent
 
         try {
             sd.setDatumDO(jDateChooser_Datum_DO.getDate());
-            ic.add(sd);
+            
+            //ic.add(sd);
+            ic.set(Collections.singleton(sd), null);
 
         } catch (NullPointerException e1) {
         } catch (PomesaniDatumiException e1) {
@@ -379,25 +381,18 @@ public final class PretrazivacTopComponent extends TopComponent
         }
     }//GEN-LAST:event_jDateChooser_Datum_DOPropertyChange
 
-    private void jDateChooser_Datum_ODFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDateChooser_Datum_ODFocusLost
-        // TODO add your handling code here:
-        jDateChooser_Datum_OD.actionPerformed(null);
-    }//GEN-LAST:event_jDateChooser_Datum_ODFocusLost
-
-    private void jDateChooser_Datum_DOFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jDateChooser_Datum_DOFocusLost
-        // TODO add your handling code here:
-        jDateChooser_Datum_DO.actionPerformed(null);
-    }//GEN-LAST:event_jDateChooser_Datum_DOFocusLost
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private org.openide.explorer.view.BeanTreeView beanTreeView_ERS_Radnici;
     private com.toedter.calendar.JCalendar jCalendar1;
     private com.toedter.calendar.JDateChooser jDateChooser_Datum_DO;
     private com.toedter.calendar.JDateChooser jDateChooser_Datum_OD;
+    private javax.swing.JEditorPane jEditorPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel_UK_BR_RADNIKA;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator3;
     // End of variables declaration//GEN-END:variables

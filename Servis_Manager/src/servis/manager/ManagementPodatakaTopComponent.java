@@ -7,7 +7,7 @@ package servis.manager;
 
 import ERS.queries.ERSQuery;
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
-import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_ZaPeriod;
+import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled;
 import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
@@ -37,8 +37,6 @@ import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
 import JFXChartGenerators.LineChartGenerator4;
-import java.util.Map;
-import java.util.TreeMap;
 import pretrazivac.beans.Kalendar;
 import servis.manager.QuickSearch.IRadnik;
 
@@ -81,7 +79,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private Kalendar poslOdabraniKalendar;
     private static EntityManager em;
     private static final LineChartGenerator4 lineChartGenerator = new LineChartGenerator4();
-    private static final LineChartGenerator4 lcgFinAspekt = new LineChartGenerator4();
+    //private static final LineChartGenerator4 lcgFinAspekt = new LineChartGenerator4();
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -272,9 +270,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         lineChartGenerator.lineChartSetUpPanel(jPanel_Kompanija_DG);
         setFX_KretanjeRN(kalendar_bind, lineChartGenerator);
 
-        lcgFinAspekt.lineChartSetUpPanel(jPanel_Kompanija_DL);
-        setFX_KretanjeRN(kalendar_bind, lcgFinAspekt);
-
+        //lcgFinAspekt.lineChartSetUpPanel(jPanel_Kompanija_DL);
+        //setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
     }
 
     /**
@@ -1857,26 +1854,25 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             }
         });
 
-        /*
-         kalendarLookup = Utilities.actionsGlobalContext().lookupResult(Kalendar.class);
-         kalendarLookup.addLookupListener(new LookupListener() {
-         @Override
-         public void resultChanged(LookupEvent le) {
-         Lookup.Result lr = (Lookup.Result) le.getSource();
-         Collection<Kalendar> kalendari = lr.allInstances();
-        
-         if (!kalendari.isEmpty()) {
-         for (Kalendar k1 : kalendari) {
-         if (k1 != poslOdabraniKalendar) {
-         poslOdabraniKalendar = k1;
-         setFX_KretanjeRN(k1.getGodina(), k1.getMesec(), lcg3);
-         }
-         }
-         }
-         }
-         });
-        
-         */
+        kalendarLookup = Utilities.actionsGlobalContext().lookupResult(Kalendar.class);
+        kalendarLookup.addLookupListener(new LookupListener() {
+            @Override
+            public void resultChanged(LookupEvent le) {
+                Lookup.Result lr = (Lookup.Result) le.getSource();
+                Collection<Kalendar> kalendari = lr.allInstances();
+
+                if (!kalendari.isEmpty()) {
+                    for (Kalendar k1 : kalendari) {
+                        if (k1 != poslOdabraniKalendar) {
+                            poslOdabraniKalendar = k1;
+                            // setFX_KretanjeRN(k1.getGodina(), k1.getMesec(), lcg3);
+                            Display.obavestenjeBaloncic("Kalendar", k1.toString(), Display.TIP_OBAVESTENJA.INFORMATIVNO);
+                        }
+                    }
+                }
+            }
+        });
+
         kalendarDatumLookup = Utilities.actionsGlobalContext().lookupResult(String.class);
         kalendarDatumLookup.addLookupListener(new LookupListener() {
             @Override
@@ -1888,6 +1884,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     for (String d1 : k) {
                         setKalendar(d1);
                         setFX_KretanjeRN(d1, lineChartGenerator);
+                        // setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
                     }
                 }
             }
@@ -1972,13 +1969,13 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
     private void setFX_KretanjeRN(String Datum, LineChartGenerator4 lcg) {
         try {
-            lineChartGenerator.setSerije(
+            lcg.setSerije(
                     Br_RNFA_Mesec_LineChartData(Datum, 1),
                     Br_RNFA_Mesec_LineChartData(Datum, 2),
                     Br_RNFA_Mesec_LineChartData(Datum, 3)
             );
-            lineChartGenerator.setLineChartTite("Dinamika Rada Servisa");
-            lineChartGenerator.setSerijeNazivi("Radni Nalozi", "Fakture", "Storno Fakture");
+            lcg.setLineChartTite("Dinamika Rada Servisa");
+            lcg.setSerijeNazivi("Radni Nalozi", "Fakture", "Storno Fakture");
             lcg.createFXObject();
         } catch (ParseException ex) {
             Display.obavestenjeBaloncic("Greška.", "Datum nije u pravilnoj formi.", Display.TIP_OBAVESTENJA.GRESKA);
@@ -1988,12 +1985,10 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
 
     private void setFX_KretanjeRN_FinAspekt(int Godina, int Mesec, LineChartGenerator4 lcg) {
-        Map fa = new TreeMap();
-
         try {
-            lcg.setSerije(new TreeMap<Integer, Integer>());
+            lcg.setSerije(finansijskiAspekt_GodisnjiPregled(Godina, Mesec, 1));
 
-            lcg.setLineChartTite("Dinamika Fin. Servisa");
+            lcg.setLineChartTite("Finansijska Dinamika Servisa");
             lcg.setSerijeNazivi("Fakture", "Storno Fakture");
             lcg.createFXObject();
         } catch (NullPointerException ex) {

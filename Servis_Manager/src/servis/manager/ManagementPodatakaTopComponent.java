@@ -37,6 +37,7 @@ import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
 import JFXChartGenerators.LineChartGenerator4;
+import org.openide.awt.StatusDisplayer;
 import pretrazivac.beans.Kalendar;
 import servis.manager.QuickSearch.IRadnik;
 
@@ -74,9 +75,9 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private Lookup.Result<DatumSelektor> datumiLookup;
     private Lookup.Result<String> kalendarDatumLookup;
     private Lookup.Result<Kalendar> kalendarLookup;
-    //
+
     private DatumSelektor ds;
-    private Kalendar poslOdabraniKalendar;
+
     private static EntityManager em;
     private static final LineChartGenerator4 lineChartGenerator = new LineChartGenerator4();
     //private static final LineChartGenerator4 lcgFinAspekt = new LineChartGenerator4();
@@ -234,8 +235,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
 //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
-    private String kalendar_bind;
+    //<editor-fold defaultstate="collapsed" desc="Kalendar Datum Bind">
+    private String kalendarDatum_bind;
 
     public final String PROP_KALENDAR = "kalendar";
 
@@ -244,8 +245,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
      *
      * @return the value of kalendar_bind
      */
-    public String getKalendar() {
-        return kalendar_bind;
+    public String getKalendarDatum() {
+        return kalendarDatum_bind;
     }
 
     /**
@@ -253,10 +254,36 @@ public final class ManagementPodatakaTopComponent extends TopComponent
      *
      * @param kalendar new value of kalendar_bind
      */
-    public void setKalendar(String kalendar) {
-        String oldKalendar = this.kalendar_bind;
-        this.kalendar_bind = kalendar;
+    public void setKalendarDatum(String kalendar) {
+        String oldKalendar = this.kalendarDatum_bind;
+        this.kalendarDatum_bind = kalendar;
         propertyChangeSupport.firePropertyChange(PROP_KALENDAR, oldKalendar, kalendar);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
+    private Kalendar kalendar_bind;
+
+    public static final String PROP_KALENDAR_BIND = "kalendar_bind";
+
+    /**
+     * Get the value of kalendar_bind
+     *
+     * @return the value of kalendar_bind
+     */
+    public Kalendar getKalendar() {
+        return kalendar_bind;
+    }
+
+    /**
+     * Set the value of kalendar_bind
+     *
+     * @param kalendar_bind new value of kalendar_bind
+     */
+    public void setKalendar(Kalendar kalendar_bind) {
+        Kalendar oldKalendar_bind = this.kalendar_bind;
+        this.kalendar_bind = kalendar_bind;
+        propertyChangeSupport.firePropertyChange(PROP_KALENDAR_BIND, oldKalendar_bind, kalendar_bind);
     }
     //</editor-fold>
 
@@ -265,10 +292,10 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         setName(Bundle.CTL_ManagementPodatakaTopComponent());
         setToolTipText(Bundle.HINT_ManagementPodatakaTopComponent());
 
-        kalendar_bind = DatumSelektor.getDafault().getYMDDatumOD();
+        kalendarDatum_bind = DatumSelektor.getDafault().getYMDDatumOD();
 
         lineChartGenerator.lineChartSetUpPanel(jPanel_Kompanija_DG);
-        setFX_KretanjeRN(kalendar_bind, lineChartGenerator);
+        setFX_KretanjeRN(kalendarDatum_bind, lineChartGenerator);
 
         //lcgFinAspekt.lineChartSetUpPanel(jPanel_Kompanija_DL);
         //setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
@@ -1861,14 +1888,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 Lookup.Result lr = (Lookup.Result) le.getSource();
                 Collection<Kalendar> kalendari = lr.allInstances();
 
-                if (!kalendari.isEmpty()) {
-                    for (Kalendar k1 : kalendari) {
-                        if (k1 != poslOdabraniKalendar) {
-                            poslOdabraniKalendar = k1;
-                            // setFX_KretanjeRN(k1.getGodina(), k1.getMesec(), lcg3);
-                            Display.obavestenjeBaloncic("Kalendar", k1.toString(), Display.TIP_OBAVESTENJA.INFORMATIVNO);
-                        }
-                    }
+                for (Kalendar k1 : kalendari) {
+                    setKalendar(k1);
+                    // setFX_KretanjeRN(k1.getGodina(), k1.getMesec(), lcg3);
+
+                    StatusDisplayer.getDefault().setStatusText(kalendar_bind.toString());
                 }
             }
         });
@@ -1882,7 +1906,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
                 if (!k.isEmpty()) {
                     for (String d1 : k) {
-                        setKalendar(d1);
+                        setKalendarDatum(d1);
                         setFX_KretanjeRN(d1, lineChartGenerator);
                         // setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
                     }

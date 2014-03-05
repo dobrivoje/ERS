@@ -17,6 +17,7 @@ import ent.Kompanija;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import node_klase.firma.AktivnaFirmaChildFactory;
 import node_klase.firma.AktivnaFirmaZaDatumChildFactory;
 import node_klase.firma.FirmaPoIDChildFactory;
@@ -25,7 +26,6 @@ import node_klase.kompanija.KompanijaPoIDChildFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.awt.StatusDisplayer;
 import org.openide.explorer.ExplorerManager;
 import org.openide.explorer.ExplorerUtils;
 import org.openide.nodes.AbstractNode;
@@ -63,9 +63,9 @@ public final class PretrazivacTopComponent extends TopComponent
 
     private final ExplorerManager em = new ExplorerManager();
 
-    private final InstanceContent ic = new InstanceContent();
-    private final InstanceContent ic2 = new InstanceContent();
-    private final InstanceContent ic3 = new InstanceContent();
+    private final InstanceContent icDateChooser = new InstanceContent();
+    private final InstanceContent icDatumCalendar = new InstanceContent();
+    private final InstanceContent icKalendar = new InstanceContent();
 
     private final DatumSelektor sd = DatumSelektor.getDafault();
     //
@@ -73,6 +73,7 @@ public final class PretrazivacTopComponent extends TopComponent
     // pomoćni datum,...
     private String datum;
     private final Calendar calendar = Calendar.getInstance();
+    // Kalendar je klasa koja vraća samo godinu i mesec i sprečava ponovni upis iste godine i meseca!
     private final Kalendar kalendar;
     //
     private Kompanija kompanija;
@@ -130,10 +131,6 @@ public final class PretrazivacTopComponent extends TopComponent
         // Postavi naziv kompanije, naziv može da se uzme iz bilo koje aktivne firme,...
 
         kompanija = ERSQuery.AktivneFirme(aktivne).iterator().next().getFkIdk();
-
-        // ic2.add(kompanija);
-        // ic2.set(Collections.singleton(kompanija), null);
-
         setName(kompanija.getNazivKompanije());
 
         // Prikaži sve aktivne firme ! 
@@ -167,17 +164,18 @@ public final class PretrazivacTopComponent extends TopComponent
         setToolTipText(Bundle.HINT_PretrazivacTopComponent());
         putClientProperty(TopComponent.PROP_KEEP_PREFERRED_SIZE_WHEN_SLIDED_IN, Boolean.TRUE);
 
-        calendar.setTime(jCalendar1.getDate());
-        // Pazi na msesec : mesec počinje od nule !!!
-        kalendar = new Kalendar(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
-
         associateLookup(
                 new ProxyLookup(
                         ExplorerUtils.createLookup(em, getActionMap()),
-                        new AbstractLookup(ic),
-                        new AbstractLookup(ic2)
+                        new AbstractLookup(icDateChooser),
+                        new AbstractLookup(icDatumCalendar),
+                        new AbstractLookup(icKalendar)
                 )
         );
+
+        calendar.setTime(jCalendar1.getDate());
+        // Pazi na msesec : mesec počinje od nule !!!
+        kalendar = new Kalendar(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
 
         jCalendar1PropertyChange(null);
 
@@ -188,6 +186,30 @@ public final class PretrazivacTopComponent extends TopComponent
             initAktivneFirme(true);
         } catch (NullPointerException e) {
         }
+    }
+
+    /*
+     private void setUpKalendar() {
+     calendar.setTime(jCalendar1.getDate());
+     kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
+    
+     icKalendar.set(Collections.singleton(kalendar), null);
+     }
+    
+     private void setUpDatum() {
+     datum = new SimpleDateFormat("yyyy-MM-dd").format(jCalendar1.getDate());
+     icDatumCalendar.set(Collections.singleton(datum), null);
+     }
+     */
+    private void setUpDatumKalendar() {
+        Date date = jCalendar1.getDate();
+
+        calendar.setTime(date);
+        datum = new SimpleDateFormat("yyyy-MM-dd").format(date);
+        kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
+
+        icDatumCalendar.set(Collections.singleton(datum), null);
+        icKalendar.set(Collections.singleton(kalendar), null);
     }
 
     /**
@@ -321,41 +343,26 @@ public final class PretrazivacTopComponent extends TopComponent
 
     private void jCalendar1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jCalendar1PropertyChange
         // TODO add your handling code here:
-
-        // ic.set(Collections.emptyList(), null);
-        datum = new SimpleDateFormat("yyyy-MM-dd").format(jCalendar1.getDate());
-        /// ic.set(Collections.singleton(datum), null);
-        ic2.set(Collections.singleton(datum), null);
+        setUpDatumKalendar();
 
         try {
             aktivnaFirmaRadniciZaDatum(datum);
-
             // Prikaži koliko radnika se evidentiralo za datum...
             jLabel_UK_BR_RADNIKA.setText(Integer.toString(ERSQuery.radniciZaDatum(datum).size()));
         } catch (NullPointerException e) {
         }
 
-        /*
-        calendar.setTime(jCalendar1.getDate());
-        kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
-        if (kalendar.getNoviUpis()) {
-        ic3.set(Collections.singleton(kalendar), null);
-        }
-        */
-
-        StatusDisplayer.getDefault().setStatusText(datum.toString() + ",  " + kalendar.toString());
+        // StatusDisplayer.getDefault().setStatusText(datum.toString() + ",  " + kalendar.toString());
     }//GEN-LAST:event_jCalendar1PropertyChange
 
     private void jDateChooser_Datum_ODPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser_Datum_ODPropertyChange
         // TODO add your handling code here:
-        ic.set(Collections.emptyList(), null);
+        icDateChooser.set(Collections.emptyList(), null);
 
         try {
             sd.setDatumOD(jDateChooser_Datum_OD.getDate());
-            
-            // ic.add(sd);
-            ic.set(Collections.singleton(sd), null);
-            
+            icDateChooser.set(Collections.singleton(sd), null);
+
         } catch (NullPointerException e1) {
         } catch (PomesaniDatumiException e1) {
             Display.obavestenjeBaloncic("Greška.", "Izabrati ispravno početni i krajnji datum.",
@@ -365,13 +372,11 @@ public final class PretrazivacTopComponent extends TopComponent
 
     private void jDateChooser_Datum_DOPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser_Datum_DOPropertyChange
         // TODO add your handling code here:
-        ic.set(Collections.emptyList(), null);
+        icDateChooser.set(Collections.emptyList(), null);
 
         try {
             sd.setDatumDO(jDateChooser_Datum_DO.getDate());
-            
-            //ic.add(sd);
-            ic.set(Collections.singleton(sd), null);
+            icDateChooser.set(Collections.singleton(sd), null);
 
         } catch (NullPointerException e1) {
         } catch (PomesaniDatumiException e1) {

@@ -35,7 +35,6 @@ import org.openide.util.lookup.AbstractLookup;
 import org.openide.util.lookup.InstanceContent;
 import org.openide.util.lookup.ProxyLookup;
 import org.openide.windows.TopComponent;
-import pretrazivac.beans.Kalendar;
 
 /**
  * Top component which displays something.
@@ -65,7 +64,6 @@ public final class PretrazivacTopComponent extends TopComponent
 
     private final InstanceContent icDateChooser = new InstanceContent();
     private final InstanceContent icDatumCalendar = new InstanceContent();
-    private final InstanceContent icKalendar = new InstanceContent();
 
     private final DatumSelektor sd = DatumSelektor.getDafault();
     //
@@ -74,7 +72,7 @@ public final class PretrazivacTopComponent extends TopComponent
     private String datum;
     private final Calendar calendar = Calendar.getInstance();
     // Kalendar je klasa koja vraća samo godinu i mesec i sprečava ponovni upis iste godine i meseca!
-    private final Kalendar kalendar;
+    // private final Kalendar kalendar;
     //
     private Kompanija kompanija;
 
@@ -168,14 +166,13 @@ public final class PretrazivacTopComponent extends TopComponent
                 new ProxyLookup(
                         ExplorerUtils.createLookup(em, getActionMap()),
                         new AbstractLookup(icDateChooser),
-                        new AbstractLookup(icDatumCalendar),
-                        new AbstractLookup(icKalendar)
+                        new AbstractLookup(icDatumCalendar)
                 )
         );
 
         calendar.setTime(jCalendar1.getDate());
         // Pazi na msesec : mesec počinje od nule !!!
-        kalendar = new Kalendar(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
+        // kalendar = new Kalendar(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
 
         jCalendar1PropertyChange(null);
 
@@ -188,28 +185,15 @@ public final class PretrazivacTopComponent extends TopComponent
         }
     }
 
-    /*
-     private void setUpKalendar() {
-     calendar.setTime(jCalendar1.getDate());
-     kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
-    
-     icKalendar.set(Collections.singleton(kalendar), null);
-     }
-    
-     private void setUpDatum() {
-     datum = new SimpleDateFormat("yyyy-MM-dd").format(jCalendar1.getDate());
-     icDatumCalendar.set(Collections.singleton(datum), null);
-     }
-     */
     private void setUpDatumKalendar() {
         Date date = jCalendar1.getDate();
 
         calendar.setTime(date);
         datum = new SimpleDateFormat("yyyy-MM-dd").format(date);
-        kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
+        //kalendar.setGM(calendar.get(Calendar.YEAR), 1 + calendar.get(Calendar.MONTH));
 
         icDatumCalendar.set(Collections.singleton(datum), null);
-        icKalendar.set(Collections.singleton(kalendar), null);
+        // icKalendar.set(Collections.singleton(kalendar), null);
     }
 
     /**

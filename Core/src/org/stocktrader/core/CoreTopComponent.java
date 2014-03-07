@@ -6,12 +6,12 @@
 package org.stocktrader.core;
 
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
+import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled;
 import JFXChartGenerators.BarChartGenerator2;
 import JFXChartGenerators.LineChartGenerator2;
-import JFXChartGenerators.LineChartGenerator3;
+import JFXChartGenerators.LineChartGenerator31;
 import JFXChartGenerators.StackedBarChartGenerator2;
 import java.text.ParseException;
-import java.util.Map;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -49,7 +49,9 @@ public final class CoreTopComponent extends TopComponent {
     private static final StackedBarChartGenerator2 stackedBCG2 = new StackedBarChartGenerator2();
     //
     private static final LineChartGenerator2 lcg2 = LineChartGenerator2.getDefault();
-    private static final LineChartGenerator3 lcg3 = LineChartGenerator3.getDefault();
+    private static final LineChartGenerator31 lcg31 = new LineChartGenerator31();
+    
+    
     private static final String[] dattt = new String[]{"2011-3-1", "2013-6-1", "2010-11-1", "2008-5-1", "2009-3-1", "2010-11-1", "2013-7-1"};
 
     public CoreTopComponent() throws ParseException {
@@ -66,16 +68,16 @@ public final class CoreTopComponent extends TopComponent {
         lcg2.lineChartSetUpPanel(rightPanel);
         lcg2.createFXObject();
 
-        lcg3.lineChartSetUpPanel(downPanel);
+        lcg31.lineChartSetUpPanel(downPanel);
         try {
-            lcg3.setSerije(
+            lcg31.setSerije(
                     Br_RNFA_Mesec_LineChartData("2010-6-1", 1),
                     Br_RNFA_Mesec_LineChartData("2010-6-1", 2),
                     Br_RNFA_Mesec_LineChartData("2010-6-1", 3)
             );
 
-            lcg3.setSerijeNazivi("RN !", "FA.", "...");
-            lcg3.createFXObject();
+            lcg31.setSerijeNazivi("RN !", "FA.", "...");
+            lcg31.createFXObject();
         } catch (ParseException ex) {
         } catch (NullPointerException n) {
             StatusDisplayer.getDefault().setStatusText("NULL !");
@@ -190,15 +192,13 @@ public final class CoreTopComponent extends TopComponent {
         lcg2.createFXObject();
 
         try {
-            lcg3.setSerije(
-                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length * Math.random())], 1),
-                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length * Math.random())], 2),
-                    Br_RNFA_Mesec_LineChartData(dattt[(int) (dattt.length * Math.random())], 3)
+            lcg31.setSerije(
+                    finansijskiAspekt_GodisnjiPregled(2013, 12, 1).get(0),
+                    finansijskiAspekt_GodisnjiPregled(2013, 12, 1).get(1)
             );
 
-            lcg3.setSerijeNazivi("RN !", "FA", "ST");
-            lcg3.createFXObject();
-        } catch (ParseException ex) {
+            lcg31.setSerijeNazivi("RN !", "FA", "ST");
+            lcg31.createFXObject();
         } catch (NullPointerException n) {
             StatusDisplayer.getDefault().setStatusText("NULL !");
         }

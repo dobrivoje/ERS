@@ -8,6 +8,8 @@ package servis.manager;
 import ERS.queries.ERSQuery;
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled;
+import JFXChartGenerators.LineChartGenerator31;
+import JFXChartGenerators.LineChartGenerator4;
 import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
@@ -36,7 +38,6 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
-import JFXChartGenerators.LineChartGenerator4;
 import org.openide.awt.StatusDisplayer;
 import pretrazivac.beans.Kalendar;
 import servis.manager.QuickSearch.IRadnik;
@@ -79,8 +80,9 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private DatumSelektor ds;
 
     private static EntityManager em;
-    private static final LineChartGenerator4 lineChartGenerator = new LineChartGenerator4();
-    //private static final LineChartGenerator4 lcgFinAspekt = new LineChartGenerator4();
+    //private static final LineChartGenerator4 lineChartGenerator = new LineChartGenerator4();
+    private final LineChartGenerator31 lcgDinamikaNaloga1 = new LineChartGenerator31();
+    private final LineChartGenerator4 lcgDinamikaFin = new LineChartGenerator4();
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -295,11 +297,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         setKalendarDatum(DatumSelektor.getDafault().getYMDDatumOD());
         setKalendar(new Kalendar(DatumSelektor.getDafault().getGodinaOD(), DatumSelektor.getDafault().getMesecOD()));
 
-        lineChartGenerator.lineChartSetUpPanel(jPanel_Kompanija_DG);
-        setFX_KretanjeRN(kalendarDatum_bind, lineChartGenerator);
+        lcgDinamikaNaloga1.lineChartSetUpPanel(jPanel_Kompanija_DG);
+        setFX_KretanjeRN(kalendarDatum_bind, lcgDinamikaNaloga1);
 
-        //lcgFinAspekt.lineChartSetUpPanel(jPanel_Kompanija_DL);
-        //setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
+        lcgDinamikaFin.lineChartSetUpPanel(jPanel_Kompanija_DL);
+        setFX_KretanjeRN_FinAspekt(2014, 2, lcgDinamikaFin);
     }
 
     /**
@@ -549,15 +551,12 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel_Kompanija_DG, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+                .addComponent(jPanel_Kompanija_DG, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
-                        .addComponent(jPanel_Kompanija_DL, javax.swing.GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
-                        .addGap(12, 12, 12))
-                    .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
-                        .addComponent(jPanel_Kompanija_DD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
+                .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel_Kompanija_DD, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                    .addComponent(jPanel_Kompanija_DL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jTP_DataManagement.addTab(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Kompanija.TabConstraints.tabTitle"), jPanel_Kompanija); // NOI18N
@@ -1908,7 +1907,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 if (!d.isEmpty()) {
                     for (String d1 : d) {
                         setKalendarDatum(d1);
-                        setFX_KretanjeRN(d1, lineChartGenerator);
+                        setFX_KretanjeRN(d1, lcgDinamikaNaloga1);
                         // setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
                     }
                 }
@@ -1994,7 +1993,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    private void setFX_KretanjeRN(String Datum, LineChartGenerator4 lcg) {
+    private void setFX_KretanjeRN(String Datum, LineChartGenerator31 lcg) {
         try {
             lcg.setSerije(
                     Br_RNFA_Mesec_LineChartData(Datum, 1),
@@ -2018,8 +2017,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             lcg.setLineChartTite("Finansijska Dinamika Servisa");
             lcg.setSerijeNazivi("Fakture", "Storno Fakture");
             lcg.createFXObject();
+
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+        } catch (Exception e) {
+            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
         }
     }
 

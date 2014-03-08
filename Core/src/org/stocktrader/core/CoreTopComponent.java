@@ -8,8 +8,7 @@ package org.stocktrader.core;
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled;
 import JFXChartGenerators.BarChartGenerator2;
-import JFXChartGenerators.LineChartGenerator2;
-import JFXChartGenerators.LineChartGenerator31;
+import JFXChartGenerators.LineChartGenerator;
 import JFXChartGenerators.StackedBarChartGenerator2;
 import java.text.ParseException;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -48,10 +47,9 @@ public final class CoreTopComponent extends TopComponent {
     private static final BarChartGenerator2 bCG2 = new BarChartGenerator2();
     private static final StackedBarChartGenerator2 stackedBCG2 = new StackedBarChartGenerator2();
     //
-    private static final LineChartGenerator2 lcg2 = LineChartGenerator2.getDefault();
-    private static final LineChartGenerator31 lcg31 = new LineChartGenerator31();
-    
-    
+    private static final LineChartGenerator lcg2 = new LineChartGenerator();
+    private static final LineChartGenerator lcg31 = new LineChartGenerator();
+
     private static final String[] dattt = new String[]{"2011-3-1", "2013-6-1", "2010-11-1", "2008-5-1", "2009-3-1", "2010-11-1", "2013-7-1"};
 
     public CoreTopComponent() throws ParseException {

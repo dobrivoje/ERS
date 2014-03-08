@@ -6,10 +6,10 @@
 package servis.manager;
 
 import ERS.queries.ERSQuery;
+import INFSYS.queries.INFSistemQuery;
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
-import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled;
-import JFXChartGenerators.LineChartGenerator31;
-import JFXChartGenerators.LineChartGenerator4;
+import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_RadMat;
+import JFXChartGenerators.LineChartGenerator;
 import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
@@ -25,6 +25,8 @@ import izvestaji.resursi.generatori.ReportGenerator;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import javax.persistence.EntityManager;
 import org.netbeans.api.settings.ConvertAsProperties;
@@ -38,8 +40,6 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
-import org.openide.awt.StatusDisplayer;
-import pretrazivac.beans.Kalendar;
 import servis.manager.QuickSearch.IRadnik;
 
 /**
@@ -75,14 +75,14 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private Lookup.Result<Radnik> radnikLookup = null;
     private Lookup.Result<DatumSelektor> datumiLookup;
     private Lookup.Result<String> kalendarDatumLookup;
-    private Lookup.Result<Kalendar> kalendarLookup;
 
     private DatumSelektor ds;
 
     private static EntityManager em;
-    //private static final LineChartGenerator4 lineChartGenerator = new LineChartGenerator4();
-    private final LineChartGenerator31 lcgDinamikaNaloga1 = new LineChartGenerator31();
-    private final LineChartGenerator4 lcgDinamikaFin = new LineChartGenerator4();
+
+    private final LineChartGenerator lcgDinamikaNaloga = new LineChartGenerator();
+    private final LineChartGenerator lcgDinamikaFin = new LineChartGenerator();
+    private final LineChartGenerator lcgDinamikaFinStorno = new LineChartGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -237,55 +237,53 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
 //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Godina">
+    private int Godina;
+
+    public static final String PROP_GODINA = "Godina";
+
+    public int getGodina() {
+        return Godina;
+    }
+
+    public void setGodina(int Godina) {
+        int oldGodina = this.Godina;
+
+        if (oldGodina != Godina) {
+            this.Godina = Godina;
+            propertyChangeSupport.firePropertyChange(PROP_GODINA, oldGodina, Godina);
+        }
+    }
+
+    public void setGodina(String Godina) {
+        Calendar c = Calendar.getInstance();
+        int oldGodina = this.Godina;
+
+        try {
+            c.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(Godina));
+        } catch (ParseException ex) {
+        }
+
+        if (oldGodina != c.get(Calendar.YEAR)) {
+            this.Godina = c.get(Calendar.YEAR);
+            propertyChangeSupport.firePropertyChange(PROP_GODINA, oldGodina, Godina);
+        }
+    }
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Kalendar Datum Bind">
     private String kalendarDatum_bind;
 
     public final String PROP_KALENDAR = "kalendar";
 
-    /**
-     * Get the value of kalendar_bind
-     *
-     * @return the value of kalendar_bind
-     */
     public String getKalendarDatum() {
         return kalendarDatum_bind;
     }
 
-    /**
-     * Set the value of kalendar_bind
-     *
-     * @param kalendar new value of kalendar_bind
-     */
     public void setKalendarDatum(String kalendar) {
         String oldKalendar = this.kalendarDatum_bind;
         this.kalendarDatum_bind = kalendar;
         propertyChangeSupport.firePropertyChange(PROP_KALENDAR, oldKalendar, kalendar);
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
-    private Kalendar kalendar_bind;
-
-    public static final String PROP_KALENDAR_BIND = "kalendar_bind";
-
-    /**
-     * Get the value of kalendar_bind
-     *
-     * @return the value of kalendar_bind
-     */
-    public Kalendar getKalendar() {
-        return kalendar_bind;
-    }
-
-    /**
-     * Set the value of kalendar_bind
-     *
-     * @param kalendar_bind new value of kalendar_bind
-     */
-    public void setKalendar(Kalendar kalendar_bind) {
-        Kalendar oldKalendar_bind = this.kalendar_bind;
-        this.kalendar_bind = kalendar_bind;
-        propertyChangeSupport.firePropertyChange(PROP_KALENDAR_BIND, oldKalendar_bind, kalendar_bind);
     }
     //</editor-fold>
 
@@ -295,13 +293,15 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         setToolTipText(Bundle.HINT_ManagementPodatakaTopComponent());
 
         setKalendarDatum(DatumSelektor.getDafault().getYMDDatumOD());
-        setKalendar(new Kalendar(DatumSelektor.getDafault().getGodinaOD(), DatumSelektor.getDafault().getMesecOD()));
 
-        lcgDinamikaNaloga1.lineChartSetUpPanel(jPanel_Kompanija_DG);
-        setFX_KretanjeRN(kalendarDatum_bind, lcgDinamikaNaloga1);
+        lcgDinamikaNaloga.lineChartSetUpPanel(jPanel_Kompanija_DG);
+        setFX_KretanjeRN(kalendarDatum_bind, lcgDinamikaNaloga);
 
         lcgDinamikaFin.lineChartSetUpPanel(jPanel_Kompanija_DL);
-        setFX_KretanjeRN_FinAspekt(2014, 2, lcgDinamikaFin);
+        setFX_KretanjeRN_FinAspekt(2014, lcgDinamikaFin);
+
+        lcgDinamikaFinStorno.lineChartSetUpPanel(jPanel_Kompanija_DD);
+        setFX_KretanjeRN_FinAspektStorno(2014, lcgDinamikaFinStorno);
     }
 
     /**
@@ -1881,22 +1881,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             }
         });
 
-        kalendarLookup = Utilities.actionsGlobalContext().lookupResult(Kalendar.class);
-        kalendarLookup.addLookupListener(new LookupListener() {
-            @Override
-            public void resultChanged(LookupEvent le) {
-                Lookup.Result lr = (Lookup.Result) le.getSource();
-                Collection<Kalendar> kalendari = lr.allInstances();
-
-                for (Kalendar k1 : kalendari) {
-                    setKalendar(k1);
-                    // setFX_KretanjeRN(k1.getGodina(), k1.getMesec(), lcg3);
-
-                    StatusDisplayer.getDefault().setStatusText(kalendar_bind.toString());
-                }
-            }
-        });
-
         kalendarDatumLookup = Utilities.actionsGlobalContext().lookupResult(String.class);
         kalendarDatumLookup.addLookupListener(new LookupListener() {
             @Override
@@ -1907,8 +1891,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 if (!d.isEmpty()) {
                     for (String d1 : d) {
                         setKalendarDatum(d1);
-                        setFX_KretanjeRN(d1, lcgDinamikaNaloga1);
-                        // setFX_KretanjeRN_FinAspekt(2014, 2, lcgFinAspekt);
+                        setGodina(d1);
+
+                        setFX_KretanjeRN(d1, lcgDinamikaNaloga);
+                        setFX_KretanjeRN_FinAspekt(getGodina(), lcgDinamikaFin);
+                        setFX_KretanjeRN_FinAspektStorno(getGodina(), lcgDinamikaFinStorno);
                     }
                 }
             }
@@ -1930,8 +1917,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         datumiLookup = null;
         kalendarDatumLookup.removeLookupListener(this);
         kalendarDatumLookup = null;
-        kalendarLookup.removeLookupListener(this);
-        kalendarLookup = null;
     }
     //</editor-fold>
 
@@ -1993,14 +1978,14 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    private void setFX_KretanjeRN(String Datum, LineChartGenerator31 lcg) {
+    private void setFX_KretanjeRN(String Datum, LineChartGenerator lcg) {
         try {
             lcg.setSerije(
                     Br_RNFA_Mesec_LineChartData(Datum, 1),
                     Br_RNFA_Mesec_LineChartData(Datum, 2),
                     Br_RNFA_Mesec_LineChartData(Datum, 3)
             );
-            lcg.setLineChartTite("Dinamika Rada Servisa");
+            lcg.setLineChartTite("Dinamika Rada Servisa za " + String.valueOf(Godina) + " Godinu");
             lcg.setSerijeNazivi("Radni Nalozi", "Fakture", "Storno Fakture");
             lcg.createFXObject();
         } catch (ParseException ex) {
@@ -2010,12 +1995,29 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         }
     }
 
-    private void setFX_KretanjeRN_FinAspekt(int Godina, int Mesec, LineChartGenerator4 lcg) {
+    private void setFX_KretanjeRN_FinAspekt(int Godina, LineChartGenerator lcg) {
         try {
-            lcg.setSerije(finansijskiAspekt_GodisnjiPregled(Godina, Mesec, 1));
+            lcg.setSerije(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
 
-            lcg.setLineChartTite("Finansijska Dinamika Servisa");
-            lcg.setSerijeNazivi("Fakture", "Storno Fakture");
+            lcg.setLineChartTite("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
+            lcg.setSerijeNazivi("Radovi", "Materijal");
+            lcg.createFXObject();
+
+        } catch (NullPointerException ex) {
+            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+        } catch (Exception e) {
+            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+        }
+    }
+
+    private void setFX_KretanjeRN_FinAspektStorno(int Godina, LineChartGenerator lcg) {
+        try {
+            lcg.setSerije(
+                    INFSistemQuery.finansijskiAspekt_GodisnjiPregled_Storno(Godina)
+            );
+
+            lcg.setLineChartTite("Storniranja za " + String.valueOf(Godina) + " Godinu");
+            lcg.setSerijeNazivi("Radovi", "Materijal");
             lcg.createFXObject();
 
         } catch (NullPointerException ex) {

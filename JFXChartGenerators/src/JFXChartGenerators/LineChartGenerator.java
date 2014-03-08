@@ -6,6 +6,9 @@
 package JFXChartGenerators;
 
 import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import javafx.application.Platform;
@@ -21,91 +24,106 @@ import javax.swing.JPanel;
  *
  * @author root
  */
-public class LineChartGenerator3 {
+public class LineChartGenerator {
 
-    private static final LineChartGenerator3 instance = new LineChartGenerator3();
+    private List<Map<Integer, Integer>> FXSerije;
+    //private String[] FXSerije_Naziv;
+    private List<String> FXSerije_Naziv;
+
+    private String LineChartTite;
+    private String xOsaNaslov;
+    private String yOsaNaslov;
     //
-    private Map<Integer, Integer>[] SERIJA;
-    private String[] SERIJA_NAZIV;
-    //
-    private static String LineChartTite;
-    private static String xOsaNaslov;
-    private static String yOsaNaslov;
-    //
-    private static Chart chart;
+    private Chart chart;
     private final JFXPanel lineChartFxPanel;
-    //
-    private static XYChart.Series[] serije;
+
+    private List<XYChart.Series> fxSerija;
 
     //<editor-fold defaultstate="collapsed" desc="Init, getters/setters">
-    private LineChartGenerator3() {
+    public LineChartGenerator() {
         this.lineChartFxPanel = new JFXPanel();
     }
 
-    public static LineChartGenerator3 getDefault() {
-        return instance;
-    }
-
     public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
-        panelToEmbedFXObject.add(lineChartFxPanel, BorderLayout.CENTER);
+        panelToEmbedFXObject.add(this.lineChartFxPanel, BorderLayout.CENTER);
     }
 
-    public void setSerije(Map<Integer, Integer>... Serije) {
-        serije = new XYChart.Series[Serije.length];
-        SERIJA = new TreeMap[Serije.length];
+    public void setSerije(Map<Integer, Integer>... FXSerije) {
+        this.fxSerija = new ArrayList<>(FXSerije.length);
+        this.FXSerije = new ArrayList<>(FXSerije.length);
 
-        int i = 0;
-        for (Map<Integer, Integer> map : Serije) {
-            SERIJA[i++] = new TreeMap<>(map);
+        for (Map<Integer, Integer> map : FXSerije) {
+            this.FXSerije.add(new TreeMap<>(map));
         }
     }
 
+    public void setSerije(List<Map<Integer, Integer>> FXSerije) {
+        this.fxSerija = new ArrayList<>(FXSerije.size());
+        this.FXSerije = FXSerije;
+    }
+
     public void setSerijeNazivi(String... Nazivi) {
-        SERIJA_NAZIV = new String[Nazivi.length];
-        System.arraycopy(Nazivi, 0, SERIJA_NAZIV, 0, Nazivi.length);
+        this.FXSerije_Naziv = new ArrayList<>(Arrays.asList(Nazivi));
+    }
+
+    public void setSerijeNazivi(List<String> Nazivi) {
+        this.FXSerije_Naziv = Nazivi;
     }
 
     public void setLineChartTite(String LineChartTite) {
-        LineChartGenerator3.LineChartTite = LineChartTite;
+        this.LineChartTite = LineChartTite;
     }
 
     public void setxOsaNaslov(String xOsaNaslov) {
-        LineChartGenerator3.xOsaNaslov = xOsaNaslov;
+        this.xOsaNaslov = xOsaNaslov;
     }
 
     public void setyOsaNaslov(String yOsaNaslov) {
-        LineChartGenerator3.yOsaNaslov = yOsaNaslov;
+        this.yOsaNaslov = yOsaNaslov;
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="BarChart Creation">
     private LineChart createLineChart() {
-        final NumberAxis xAxis = new NumberAxis(1,31,1);
+        // Obavezno generiši onoliko podeljaka na X osi 
+        // koliko ih ima KAKSIMALNO u seriji,a to je ovde 31.
+        // Ako treba dinaički da se menja pogledaj ispod kako 
+        // da postaviš !
+        final NumberAxis xAxis = new NumberAxis(1, 31, 1);
         final NumberAxis yAxis = new NumberAxis();
+
         final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
         lineChart.setCreateSymbols(false);
-
         lineChart.setTitle(LineChartTite);
+
         xAxis.setLabel(xOsaNaslov);
         xAxis.setTickMarkVisible(false);
+        xAxis.setMinorTickCount(0);
         xAxis.setTickLength(xAxis.getTickLength());
-        xAxis.setTickLabelRotation(45);
-        
+
         yAxis.setLabel(yOsaNaslov);
-        yAxis.setTickUnit(5);
-        yAxis.setTickLength(yAxis.getTickLength());
         yAxis.setTickMarkVisible(false);
+        yAxis.setMinorTickCount(0);
+        yAxis.setTickLength(yAxis.getTickLength());
+        yAxis.setTickUnit(5);
+        
+        int i = 0;
+        XYChart.Series sTmp;
 
-        for (int i = 0; i < SERIJA.length; i++) {
-            serije[i] = new XYChart.Series<>();
-            serije[i].setName(SERIJA_NAZIV[i]);
+        for (Map<Integer, Integer> s : FXSerije) {
+            sTmp = new XYChart.Series<>();
+            sTmp.setName(FXSerije_Naziv.get(i++));
 
-            for (Map.Entry<Integer, Integer> e : SERIJA[i].entrySet()) {
-                serije[i].getData().add(new XYChart.Data(e.getKey(), e.getValue()));
+            // OVO JE TRIK KOJI DINAMIČKI ODREĐUJE DUŽINU X-OSE !!!
+            // JEEEEEEEEEEEEEEEEEEE !!!
+            xAxis.setUpperBound(s.entrySet().size());
+
+            for (Map.Entry<Integer, Integer> e : s.entrySet()) {
+                sTmp.getData().add(new XYChart.Data(e.getKey(), e.getValue()));
             }
 
-            lineChart.getData().add(serije[i]);
+            lineChart.getData().add(sTmp);
         }
 
         return lineChart;

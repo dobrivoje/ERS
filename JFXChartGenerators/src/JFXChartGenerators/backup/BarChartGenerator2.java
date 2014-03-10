@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JFXChartGenerators;
+package JFXChartGenerators.backup;
 
 import java.awt.BorderLayout;
 import javafx.application.Platform;

@@ -9,7 +9,9 @@ import ERS.queries.ERSQuery;
 import INFSYS.queries.INFSistemQuery;
 import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_RadMat;
+import JFXChartGenerators.AbstractChartGenerator;
 import JFXChartGenerators.LineChartGenerator;
+import JFXChartGenerators.StackedBarChartGenerator;
 import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
@@ -26,8 +28,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
@@ -80,9 +85,10 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
     private static EntityManager em;
 
-    private final LineChartGenerator lcgDinamikaNaloga = new LineChartGenerator();
-    private final LineChartGenerator lcgDinamikaFin = new LineChartGenerator();
-    private final LineChartGenerator lcgDinamikaFinStorno = new LineChartGenerator();
+    private final AbstractChartGenerator lcgDinamikaNaloga = new LineChartGenerator();
+    private final AbstractChartGenerator lcgDinamikaFin = new LineChartGenerator();
+    // private final AbstractChartGenerator lcgDinamikaFinStorno = new LineChartGenerator();
+    private final AbstractChartGenerator lcgTest = new StackedBarChartGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kompanija Bind">
     private Kompanija kompanija_bind;
@@ -300,8 +306,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         lcgDinamikaFin.lineChartSetUpPanel(jPanel_Kompanija_DL);
         setFX_KretanjeRN_FinAspekt(2014, lcgDinamikaFin);
 
-        lcgDinamikaFinStorno.lineChartSetUpPanel(jPanel_Kompanija_DD);
-        setFX_KretanjeRN_FinAspektStorno(2014, lcgDinamikaFinStorno);
+        lcgTest.lineChartSetUpPanel(jPanel_Kompanija_DD);
+        setFX_Test(2014, lcgTest);
     }
 
     /**
@@ -331,10 +337,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jSeparator6 = new javax.swing.JSeparator();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
-        jPanel_Kompanija_DG = new javax.swing.JPanel();
-        jPanel_Kompanija_DL = new javax.swing.JPanel();
-        jPanel_Kompanija_DD = new javax.swing.JPanel();
         jPanel_Firma = new javax.swing.JPanel();
         jTextField_FIRMA_Kompanija = new javax.swing.JTextField();
         jTextField_FIRMA_Naziv = new javax.swing.JTextField();
@@ -421,6 +423,10 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         jRadioButton_Radnik_Savetnici = new javax.swing.JRadioButton();
         jButton_Efikasnost_Radnika_Izvestaj = new javax.swing.JButton();
         jLabel_Naslov4 = new javax.swing.JLabel();
+        jPanelDinamikaPoslovanja = new javax.swing.JPanel();
+        jPanel_Kompanija_DG = new javax.swing.JPanel();
+        jPanel_Kompanija_DL = new javax.swing.JPanel();
+        jPanel_Kompanija_DD = new javax.swing.JPanel();
 
         jLabel_Naslov.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jLabel_Naslov, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel_Naslov.text")); // NOI18N
@@ -473,18 +479,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel29, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel29.text")); // NOI18N
 
-        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel22, org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jLabel22.text")); // NOI18N
-
-        jPanel_Kompanija_DG.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel_Kompanija_DG.setLayout(new java.awt.BorderLayout());
-
-        jPanel_Kompanija_DL.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel_Kompanija_DL.setLayout(new java.awt.BorderLayout());
-
-        jPanel_Kompanija_DD.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel_Kompanija_DD.setLayout(new java.awt.BorderLayout());
-
         javax.swing.GroupLayout jPanel_KompanijaLayout = new javax.swing.GroupLayout(jPanel_Kompanija);
         jPanel_Kompanija.setLayout(jPanel_KompanijaLayout);
         jPanel_KompanijaLayout.setHorizontalGroup(
@@ -492,34 +486,25 @@ public final class ManagementPodatakaTopComponent extends TopComponent
             .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel_Kompanija_DG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator6)
                     .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
                         .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jSeparator6)
-                                .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
-                                    .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel20)
-                                        .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
-                                            .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                                                .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
-                                                .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jTextField_KOMPANIJA_Naziv, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jTextField_KOMPANIJA_Adresa, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jTextField_KOMPANIJA_Grad, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jTextField_KOMPANIJA__Vlasnik, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGap(18, 18, 18)
-                                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 96, Short.MAX_VALUE))
-                    .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
-                        .addComponent(jPanel_Kompanija_DL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel_Kompanija_DD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(jLabel20)
+                            .addGroup(jPanel_KompanijaLayout.createSequentialGroup()
+                                .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+                                    .addComponent(jLabel29, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextField_KOMPANIJA_Naziv, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField_KOMPANIJA_Adresa, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField_KOMPANIJA_Grad, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextField_KOMPANIJA__Vlasnik, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 96, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel_KompanijaLayout.setVerticalGroup(
@@ -548,15 +533,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator6, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel_Kompanija_DG, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel_KompanijaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel_Kompanija_DD, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
-                    .addComponent(jPanel_Kompanija_DL, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addContainerGap(210, Short.MAX_VALUE))
         );
 
         jTP_DataManagement.addTab(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Kompanija.TabConstraints.tabTitle"), jPanel_Kompanija); // NOI18N
@@ -1324,10 +1301,48 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                 .addGroup(jPanel_RadnikLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton_Efikasnost_Radnika_Izvestaj)
                     .addComponent(jButton_Barkod))
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTP_DataManagement.addTab(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanel_Radnik.TabConstraints.tabTitle"), jPanel_Radnik); // NOI18N
+
+        jPanel_Kompanija_DG.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel_Kompanija_DG.setLayout(new java.awt.BorderLayout());
+
+        jPanel_Kompanija_DL.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel_Kompanija_DL.setLayout(new java.awt.BorderLayout());
+
+        jPanel_Kompanija_DD.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel_Kompanija_DD.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanelDinamikaPoslovanjaLayout = new javax.swing.GroupLayout(jPanelDinamikaPoslovanja);
+        jPanelDinamikaPoslovanja.setLayout(jPanelDinamikaPoslovanjaLayout);
+        jPanelDinamikaPoslovanjaLayout.setHorizontalGroup(
+            jPanelDinamikaPoslovanjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDinamikaPoslovanjaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel_Kompanija_DL, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel_Kompanija_DD, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanelDinamikaPoslovanjaLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(jPanel_Kompanija_DG, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(10, 10, 10))
+        );
+        jPanelDinamikaPoslovanjaLayout.setVerticalGroup(
+            jPanelDinamikaPoslovanjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelDinamikaPoslovanjaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel_Kompanija_DG, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanelDinamikaPoslovanjaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel_Kompanija_DL, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jPanel_Kompanija_DD, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        jTP_DataManagement.addTab(org.openide.util.NbBundle.getMessage(ManagementPodatakaTopComponent.class, "ManagementPodatakaTopComponent.jPanelDinamikaPoslovanja.TabConstraints.tabTitle"), jPanelDinamikaPoslovanja); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -1719,7 +1734,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
@@ -1738,6 +1752,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanelDinamikaPoslovanja;
     private javax.swing.JPanel jPanel_Barkod;
     private javax.swing.JPanel jPanel_Firma;
     private javax.swing.JPanel jPanel_Klijent;
@@ -1895,7 +1910,8 @@ public final class ManagementPodatakaTopComponent extends TopComponent
 
                         setFX_KretanjeRN(d1, lcgDinamikaNaloga);
                         setFX_KretanjeRN_FinAspekt(getGodina(), lcgDinamikaFin);
-                        setFX_KretanjeRN_FinAspektStorno(getGodina(), lcgDinamikaFinStorno);
+                        // setFX_KretanjeRN_FinAspektStorno(getGodina(), lcgDinamikaFinStorno);
+                        setFX_Test(getGodina(), lcgTest);
                     }
                 }
             }
@@ -1978,15 +1994,15 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    private void setFX_KretanjeRN(String Datum, LineChartGenerator lcg) {
+    private void setFX_KretanjeRN(String Datum, AbstractChartGenerator lcg) {
         try {
-            lcg.setSerije(
+            lcg.setUpSeries(
                     Br_RNFA_Mesec_LineChartData(Datum, 1),
                     Br_RNFA_Mesec_LineChartData(Datum, 2),
                     Br_RNFA_Mesec_LineChartData(Datum, 3)
             );
-            lcg.setLineChartTite("Dinamika Rada Servisa za " + String.valueOf(Godina) + " Godinu");
-            lcg.setSerijeNazivi("Radni Nalozi", "Fakture", "Storno Fakture");
+            lcg.setChartTitle("Dinamika Rada Servisa za " + String.valueOf(Godina) + " Godinu");
+            lcg.setSeriesTitles("Radni Nalozi", "Fakture", "Storno Fakture");
             lcg.createFXObject();
         } catch (ParseException ex) {
             Display.obavestenjeBaloncic("Greška.", "Datum nije u pravilnoj formi.", Display.TIP_OBAVESTENJA.GRESKA);
@@ -1995,12 +2011,12 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         }
     }
 
-    private void setFX_KretanjeRN_FinAspekt(int Godina, LineChartGenerator lcg) {
+    private void setFX_KretanjeRN_FinAspekt(int Godina, AbstractChartGenerator lcg) {
         try {
-            lcg.setSerije(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
+            lcg.setUpSeries(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
 
-            lcg.setLineChartTite("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
-            lcg.setSerijeNazivi("Radovi", "Materijal");
+            lcg.setChartTitle("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
+            lcg.setSeriesTitles("Radovi", "Materijal");
             lcg.createFXObject();
 
         } catch (NullPointerException ex) {
@@ -2010,14 +2026,29 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         }
     }
 
-    private void setFX_KretanjeRN_FinAspektStorno(int Godina, LineChartGenerator lcg) {
+    private void setFX_KretanjeRN_FinAspektStorno(int Godina, AbstractChartGenerator lcg) {
         try {
-            lcg.setSerije(
-                    INFSistemQuery.finansijskiAspekt_GodisnjiPregled_Storno(Godina)
-            );
+            lcg.setUpSeries(INFSistemQuery.finansijskiAspekt_GodisnjiPregled_Storno(Godina));
 
-            lcg.setLineChartTite("Storniranja za " + String.valueOf(Godina) + " Godinu");
-            lcg.setSerijeNazivi("Radovi", "Materijal");
+            lcg.setChartTitle("Storniranja za " + String.valueOf(Godina) + " Godinu");
+            lcg.setSeriesTitles("Radovi", "Materijal");
+            lcg.createFXObject();
+
+        } catch (NullPointerException ex) {
+            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+        } catch (Exception e) {
+            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+        }
+    }
+
+    private void setFX_Test(int Godina, AbstractChartGenerator lcg) {
+        List<Map<Object, Number>> lTest = new ArrayList<>();
+
+        try {
+            lcg.setUpSeries(/*null*/);
+
+            lcg.setChartTitle("Test");
+            lcg.setSeriesTitles("Serija1", "Serija2", "Serija3");
             lcg.createFXObject();
 
         } catch (NullPointerException ex) {

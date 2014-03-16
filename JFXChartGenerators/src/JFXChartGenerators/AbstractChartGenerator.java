@@ -85,7 +85,7 @@ public abstract class AbstractChartGenerator {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Scene Creator">
-    private synchronized void createScene() {
+    private void createScene() {
         try {
             chart = createCustomChart();
             chartFxPanel.setScene(new Scene(chart));

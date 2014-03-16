@@ -18,13 +18,10 @@
             <public-packages>
                 <package>ERS.Beans.FakturisaneUsluge</package>
                 <package>ERS.queries</package>
+                <package>INFSISTEM.BusinessBeans</package>
                 <package>INFSYS.queries</package>
-                <package>cenovnik_RD.beans</package>
-                <package>cenovnik_RD.ent</package>
-                <package>cenovnik_RD.queries</package>
                 <package>ent</package>
                 <package>ent.infsistem</package>
-                <package>ent.infsistem.beans</package>
                 <package>sp.izvestaji</package>
             </public-packages>
             <class-path-extension>
@@ -34,10 +31,6 @@
             <class-path-extension>
                 <runtime-relative-path>ext/JavaLibraryINFSISTEM.jar</runtime-relative-path>
                 <binary-origin>release/modules/ext/JavaLibraryINFSISTEM.jar</binary-origin>
-            </class-path-extension>
-            <class-path-extension>
-                <runtime-relative-path>ext/JavaLibraryCENOVNIK_RD.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/JavaLibraryCENOVNIK_RD.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

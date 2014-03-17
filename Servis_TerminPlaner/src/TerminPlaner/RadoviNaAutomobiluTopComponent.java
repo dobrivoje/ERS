@@ -79,6 +79,11 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
     private Lookup.Result<Nald001> odabraniNalog;
     private Lookup.Result<Sifarnik> odabranaSifra;
     private Lookup.Result<DatumSelektor> odabraniDatumi;
+
+    private LookupListener ll_datum;
+    private LookupListener ll_nalog;
+    private LookupListener ll_sifra;
+    private LookupListener ll_ds;
     //
     private AbstractNode RNRoot;
     private RadniNaloziZaSasijuChildFactory RNSChildFactory;
@@ -1247,42 +1252,47 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
     //<editor-fold defaultstate="collapsed" desc="Component Opened Handler">
     @Override
     public void componentOpened() {
+        odabraniDatum = WindowManager
+                .getDefault()
+                .findTopComponent("PretrazivacTopComponent")
+                .getLookup()
+                .lookupResult(String.class);
 
-        odabraniDatum = Utilities.actionsGlobalContext().lookupResult(String.class);
-        odabraniDatum.addLookupListener(
-                new LookupListener() {
-                    @Override
-                    public void resultChanged(LookupEvent le) {
-                        Lookup.Result lr = (Lookup.Result) le.getSource();
-                        Collection<String> datumi = lr.allInstances();
+        ll_datum = new LookupListener() {
+            @Override
+            public void resultChanged(LookupEvent le) {
+                Lookup.Result lr = (Lookup.Result) le.getSource();
+                Collection<String> datumi = lr.allInstances();
 
-                        for (String d : datumi) {
-                            if (!datum_bind.equals(d)) {
-                                datum_bind = d;
-                                RN_ZA_DATUM_Refresh(datum_bind);
-                            }
-                        }
+                for (String d : datumi) {
+                    if (!datum_bind.equals(d)) {
+                        datum_bind = d;
+                        RN_ZA_DATUM_Refresh(datum_bind);
                     }
-                });
+                }
+            }
+        };
+        odabraniDatum.addLookupListener(ll_datum);
 
         odabranaSifra = Utilities.actionsGlobalContext().lookupResult(Sifarnik.class);
-        odabranaSifra.addLookupListener(
-                new LookupListener() {
-                    @Override
-                    public void resultChanged(LookupEvent le) {
-                        Lookup.Result lr = (Lookup.Result) le.getSource();
-                        Collection<Sifarnik> sifre = lr.allInstances();
+        ll_sifra = new LookupListener() {
+            @Override
+            public void resultChanged(LookupEvent le) {
+                Lookup.Result lr = (Lookup.Result) le.getSource();
+                Collection<Sifarnik> sifre = lr.allInstances();
 
-                        if (!sifre.isEmpty()) {
-                            for (Sifarnik n : sifre) {
-                                sifra_bind = n;
-                            }
-
-                            clearUIComponents();
-                            setKlijentUI();
-                        }
+                if (!sifre.isEmpty()) {
+                    for (Sifarnik n : sifre) {
+                        sifra_bind = n;
                     }
-                });
+
+                    clearUIComponents();
+                    setKlijentUI();
+                }
+            }
+        };
+
+        odabranaSifra.addLookupListener(ll_sifra);
 
         odabraniNalog = WindowManager
                 .getDefault()
@@ -1290,86 +1300,96 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 .getLookup()
                 .lookupResult(Nald001.class);
 
-        odabraniNalog.addLookupListener(
-                new LookupListener() {
-                    @Override
-                    public void resultChanged(LookupEvent le) {
-                        Lookup.Result lr = (Lookup.Result) le.getSource();
-                        Collection<Nald001> nalozi = lr.allInstances();
+        ll_nalog = new LookupListener() {
+            @Override
+            public void resultChanged(LookupEvent le) {
+                Lookup.Result lr = (Lookup.Result) le.getSource();
+                Collection<Nald001> nalozi = lr.allInstances();
 
-                        if (!nalozi.isEmpty()) {
-                            for (Nald001 n : nalozi) {
-                                nalog_bind = n;
-                            }
-
-                            try {
-                                jTextArea_RADOVI.setText(
-                                        nalog_bind.getUradi().isEmpty() || nalog_bind.getUradi() == null
-                                        ? nalog_bind.getUradjeno() : nalog_bind.getUradi());
-                            } catch (NullPointerException npe) {
-                                jTextArea_RADOVI.setText("nema podataka o radovima,...");
-                            }
-
-                            jTextField_KM.setText(nalog_bind.getKm().toString());
-
-                            jTextField_Naziv.setText(
-                                    (nalog_bind.getIme() != null ? nalog_bind.getIme() + " " : "")
-                                    + (nalog_bind.getPrezime() != null ? nalog_bind.getPrezime() : ""));
-
-                            jTextField_Adresa.setText(
-                                    (nalog_bind.getAdresa() != null && !nalog_bind.getAdresa().isEmpty()
-                                    ? nalog_bind.getAdresa() : ""));
-
-                            jTextField_Model.setText(nalog_bind.getFamilija());
-                            jTextField_RegBroj.setText(nalog_bind.getRegistrac());
-                            jTextField_Tip.setText(nalog_bind.getTip());
-
-                            jTextField_Sasija.setText(nalog_bind.getSasija());
-
-                            jTextField_Sifra_Fakturisanja.setText(
-                                    (nalog_bind.getKupac() != null && !nalog_bind.getKupac().isEmpty()
-                                    ? nalog_bind.getKupac() : ""));
-
-                            try {
-                                jTextField_Naziv_Faktura.setText(INFSistemQuery.KupacPoSifri(
-                                                Integer.parseInt(nalog_bind.getKupac())).getIme());
-                            } catch (NumberFormatException | NullPointerException | NoResultException e) {
-                                jTextField_Naziv_Faktura.setText("Ne postoji šifra kupca.");
-                            }
-                        }
+                if (!nalozi.isEmpty()) {
+                    for (Nald001 n : nalozi) {
+                        nalog_bind = n;
                     }
-                });
+
+                    try {
+                        jTextArea_RADOVI.setText(
+                                nalog_bind.getUradi().isEmpty() || nalog_bind.getUradi() == null
+                                ? nalog_bind.getUradjeno() : nalog_bind.getUradi());
+                    } catch (NullPointerException npe) {
+                        jTextArea_RADOVI.setText("nema podataka o radovima,...");
+                    }
+
+                    jTextField_KM.setText(nalog_bind.getKm().toString());
+
+                    jTextField_Naziv.setText(
+                            (nalog_bind.getIme() != null ? nalog_bind.getIme() + " " : "")
+                            + (nalog_bind.getPrezime() != null ? nalog_bind.getPrezime() : ""));
+
+                    jTextField_Adresa.setText(
+                            (nalog_bind.getAdresa() != null && !nalog_bind.getAdresa().isEmpty()
+                            ? nalog_bind.getAdresa() : ""));
+
+                    jTextField_Model.setText(nalog_bind.getFamilija());
+                    jTextField_RegBroj.setText(nalog_bind.getRegistrac());
+                    jTextField_Tip.setText(nalog_bind.getTip());
+
+                    jTextField_Sasija.setText(nalog_bind.getSasija());
+
+                    jTextField_Sifra_Fakturisanja.setText(
+                            (nalog_bind.getKupac() != null && !nalog_bind.getKupac().isEmpty()
+                            ? nalog_bind.getKupac() : ""));
+
+                    try {
+                        jTextField_Naziv_Faktura.setText(INFSistemQuery.KupacPoSifri(
+                                Integer.parseInt(nalog_bind.getKupac())).getIme());
+                    } catch (NumberFormatException | NullPointerException | NoResultException e) {
+                        jTextField_Naziv_Faktura.setText("Ne postoji šifra kupca.");
+                    }
+                }
+            }
+        };
+
+        odabraniNalog.addLookupListener(ll_nalog);
 
         odabraniDatumi = WindowManager
                 .getDefault()
                 .findTopComponent("PretrazivacTopComponent")
                 .getLookup()
                 .lookupResult(DatumSelektor.class);
+        ll_ds = new LookupListener() {
+            @Override
+            public void resultChanged(LookupEvent le) {
+                Lookup.Result lr = (Lookup.Result) le.getSource();
+                Collection<DatumSelektor> datumi = lr.allInstances();
 
-        odabraniDatumi.addLookupListener(
-                new LookupListener() {
-                    @Override
-                    public void resultChanged(LookupEvent le) {
-                        Lookup.Result lr = (Lookup.Result) le.getSource();
-                        Collection<DatumSelektor> datumi = lr.allInstances();
-
-                        if (!datumi.isEmpty()) {
-                            for (DatumSelektor ds1 : datumi) {
-                                ds = ds1;
-                            }
-                        }
+                if (!datumi.isEmpty()) {
+                    for (DatumSelektor ds1 : datumi) {
+                        ds = ds1;
                     }
-                });
-    }
-    //</editor-fold>
+                }
+            }
+        };
 
-    //<editor-fold defaultstate="collapsed" desc="Auto generated">
+        odabraniDatumi.addLookupListener(ll_ds);
+    }
+
     @Override
     public void componentClosed() {
-        odabraniDatum.removeLookupListener(null);
+        odabraniDatum.removeLookupListener(ll_datum);
         odabraniDatum = null;
+
+        odabraniNalog.removeLookupListener(ll_nalog);
+        odabraniNalog = null;
+
+        odabranaSifra.removeLookupListener(ll_sifra);
+        odabranaSifra = null;
+
+        odabraniDatumi.removeLookupListener(ll_ds);
+        odabraniDatumi = null;
     }
 
+    //</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="Auto generated">
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
         // http://wiki.apidesign.org/wiki/PropertyFiles
@@ -1464,7 +1484,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
         if (is.getSifra() != null) {
             sifra_bind = is.getSifra();
-            
+
             jRadioButton_PoSifriKlijenta.setSelected(true);
             jTextField_PojamZaPretragu.setText(Integer.toString(sifra_bind.getKupac()));
 

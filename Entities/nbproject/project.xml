@@ -17,6 +17,7 @@
             </module-dependencies>
             <public-packages>
                 <package>ERS.Beans.FakturisaneUsluge</package>
+                <package>ERS.BusinessBeans</package>
                 <package>ERS.queries</package>
                 <package>INFSISTEM.BusinessBeans</package>
                 <package>INFSYS.queries</package>

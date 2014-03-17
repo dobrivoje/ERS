@@ -20,7 +20,11 @@ import ent.TipRadnika;
 import izvestaji.resursi.generatori.ReportGenerator;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import javax.persistence.EntityManager;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
@@ -62,12 +66,22 @@ import servis.manager.QuickSearch.IRadnik;
 public final class ManagementPodatakaTopComponent extends TopComponent
         implements LookupListener {
 
+    private final Calendar calendar = Calendar.getInstance();
+    private int god, mesec;
+
     private Lookup.Result<Kompanija> kompanijaLookup = null;
     private Lookup.Result<Firma> firmaLookup = null;
     private Lookup.Result<Orgjed> orgJedLookup = null;
     private Lookup.Result<Radnik> radnikLookup = null;
     private Lookup.Result<DatumSelektor> datumiLookup;
     private Lookup.Result<String> kalendarDatumLookup;
+
+    private LookupListener llKompanija;
+    private LookupListener llFirma;
+    private LookupListener llOrgjed;
+    private LookupListener llRadnik;
+    private LookupListener lldatumi;
+    private LookupListener llkalendarDatum;
 
     private DatumSelektor ds;
 
@@ -238,6 +252,21 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     public void setKalendarDatum(String kalendar) {
         String oldKalendar = this.kalendarDatum_bind;
         this.kalendarDatum_bind = kalendar;
+
+        try {
+            if (kalendar == null) {
+                calendar.setTime(new Date());
+            } else {
+                calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+            }
+
+            god = calendar.get(Calendar.YEAR);
+
+            // PAZI NA MESEC POČINJE OD NULE !!!
+            mesec = 1 + calendar.get(Calendar.MONTH);
+        } catch (ParseException ex) {
+        }
+
         propertyChangeSupport.firePropertyChange(PROP_KALENDAR, oldKalendar, kalendar);
     }
     //</editor-fold>
@@ -247,7 +276,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         setName(Bundle.CTL_ManagementPodatakaTopComponent());
         setToolTipText(Bundle.HINT_ManagementPodatakaTopComponent());
 
-        setKalendarDatum(DatumSelektor.getDafault().getYMDDatumOD());
+        setKalendarDatum(null);
     }
 
     /**
@@ -1702,7 +1731,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
     @Override
     public void componentOpened() {
         kompanijaLookup = Utilities.actionsGlobalContext().lookupResult(Kompanija.class);
-        kompanijaLookup.addLookupListener(new LookupListener() {
+        llKompanija = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result k = (Lookup.Result) le.getSource();
@@ -1715,10 +1744,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        kompanijaLookup.addLookupListener(llKompanija);
 
         firmaLookup = Utilities.actionsGlobalContext().lookupResult(Firma.class);
-        firmaLookup.addLookupListener(new LookupListener() {
+        llFirma = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result k = (Lookup.Result) le.getSource();
@@ -1736,10 +1766,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        firmaLookup.addLookupListener(llFirma);
 
         orgJedLookup = Utilities.actionsGlobalContext().lookupResult(Orgjed.class);
-        orgJedLookup.addLookupListener(new LookupListener() {
+        llOrgjed = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result k = (Lookup.Result) le.getSource();
@@ -1757,10 +1788,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        orgJedLookup.addLookupListener(llOrgjed);
 
         radnikLookup = Utilities.actionsGlobalContext().lookupResult(Radnik.class);
-        radnikLookup.addLookupListener(new LookupListener() {
+        llRadnik = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result s = (Lookup.Result) le.getSource();
@@ -1772,10 +1804,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        radnikLookup.addLookupListener(llRadnik);
 
         datumiLookup = Utilities.actionsGlobalContext().lookupResult(DatumSelektor.class);
-        datumiLookup.addLookupListener(new LookupListener() {
+        lldatumi = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -1788,10 +1821,11 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        datumiLookup.addLookupListener(lldatumi);
 
         kalendarDatumLookup = Utilities.actionsGlobalContext().lookupResult(String.class);
-        kalendarDatumLookup.addLookupListener(new LookupListener() {
+        llkalendarDatum = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -1803,22 +1837,23 @@ public final class ManagementPodatakaTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        kalendarDatumLookup.addLookupListener(llkalendarDatum);
     }
 
     @Override
     public void componentClosed() {
-        kompanijaLookup.removeLookupListener(this);
+        kompanijaLookup.removeLookupListener(llKompanija);
         kompanijaLookup = null;
-        firmaLookup.removeLookupListener(this);
+        firmaLookup.removeLookupListener(llFirma);
         firmaLookup = null;
-        orgJedLookup.removeLookupListener(this);
+        orgJedLookup.removeLookupListener(llOrgjed);
         orgJedLookup = null;
-        radnikLookup.removeLookupListener(this);
+        radnikLookup.removeLookupListener(llRadnik);
         radnikLookup = null;
-        datumiLookup.removeLookupListener(this);
+        datumiLookup.removeLookupListener(lldatumi);
         datumiLookup = null;
-        kalendarDatumLookup.removeLookupListener(this);
+        kalendarDatumLookup.removeLookupListener(llkalendarDatum);
         kalendarDatumLookup = null;
     }
     //</editor-fold>

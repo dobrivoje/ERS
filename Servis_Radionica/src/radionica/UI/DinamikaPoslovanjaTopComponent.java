@@ -7,8 +7,8 @@ package radionica.UI;
 
 import static ERS.queries.ERSQuery.UKDnevnaFakturisanost;
 import static ERS.queries.ERSQuery.UKSati;
-import static INFSYS.queries.INFSistemQuery.Br_RNFA_Mesec_LineChartData;
 import JFXChartGenerators.AbstractChartGenerator;
+import JFXChartGenerators.CSSStyles;
 import JFXChartGenerators.LineChartGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
@@ -22,7 +22,6 @@ import java.util.Date;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.awt.StatusDisplayer;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -58,23 +57,19 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
 
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
-    
+
     private Lookup.Result<String> kalendarLookup;
-    private LookupListener llDatumi;
+    private LookupListener llKalendar;
 
-    private final AbstractChartGenerator lcgRN_TekMesec = new LineChartGenerator();
-    private final AbstractChartGenerator lcgRN_PrethMesec = new LineChartGenerator();
-    private final AbstractChartGenerator lcgRN_TekIPrethMesec = new LineChartGenerator();
-
-    private final AbstractChartGenerator lcgDinamikaNaloga = new LineChartGenerator();
-
-    private String monitorPerformansi = "";
-    private long t1;
+    private final AbstractChartGenerator lcgRNKretanje = new LineChartGenerator();
+    private final AbstractChartGenerator lcgRNKretanjePreth = new LineChartGenerator();
+    private final AbstractChartGenerator lcgRN = new LineChartGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
-    private String kalendarDatum;
+    private String kalendarDatum_bind;
 
     public static final String PROP_KALENDAR_BIND = "kalendar_bind";
+    private boolean kalendarDatumIzmenjen;
 
     /**
      * Get the value of kalendarDatum_bind
@@ -82,7 +77,7 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
      * @return the value of kalendarDatum_bind
      */
     public String getKalendarDatum() {
-        return kalendarDatum;
+        return kalendarDatum_bind;
     }
 
     /**
@@ -91,19 +86,25 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
      * @param kalendar new value of kalendarDatum_bind
      */
     public void setKalendarDatum(String kalendar) {
-        String oldKalendar_bind = this.kalendarDatum;
-        this.kalendarDatum = kalendar;
+        String oldKalendar_bind = this.kalendarDatum_bind;
+        this.kalendarDatum_bind = kalendar;
 
         try {
             if (kalendar == null) {
                 calendar.setTime(new Date());
+                kalendarDatumIzmenjen = true;
             } else {
                 calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+
+                if (calendar.getTime() == (new SimpleDateFormat("yyyy-MM-dd").parse(kalendar))) {
+                    kalendarDatumIzmenjen = false;
+                } else {
+                    kalendarDatumIzmenjen = true;
+                }
             }
 
             god = calendar.get(Calendar.YEAR);
-
-            // PAZI NA MESEC POČINJE OD NULE !!!
+            // PAZI NA MESEC POÄŒINJE OD NULE !!!
             mesec = 1 + calendar.get(Calendar.MONTH);
         } catch (ParseException ex) {
         }
@@ -139,17 +140,18 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
         setName(Bundle.CTL_DinamikaPoslovanjaTopComponent());
         setToolTipText(Bundle.HINT_DinamikaPoslovanjaTopComponent());
 
+        lcgRNKretanje.lineChartSetUpPanel(jPanel_DOWN_LEFT);
+        lcgRNKretanje.setCSSStyle(CSSStyles.Style.RED);
+        lcgRNKretanjePreth.lineChartSetUpPanel(jPanel_DOWN_RIGHT);
+        lcgRNKretanjePreth.setCSSStyle(CSSStyles.Style.YELLOW);
+        lcgRN.lineChartSetUpPanel(jPanel_Kompanija_UP);
+        lcgRN.setCSSStyle(CSSStyles.Style.RED);
+
         setKalendarDatum(null);
 
-        lcgDinamikaNaloga.lineChartSetUpPanel(jPanel_Kompanija_UP);
-        lcgRN_TekMesec.lineChartSetUpPanel(jPanel_DOWN_LEFT);
-        lcgRN_PrethMesec.lineChartSetUpPanel(jPanel_DOWN_RIGHT);
-        lcgRN_TekIPrethMesec.lineChartSetUpPanel(jPanel_Kompanija_MIDDLE);
-
-        setFX_KretanjeRN(kalendarDatum, lcgDinamikaNaloga);
-        setFX_DinamikaFA(god, mesec, lcgRN_TekMesec);
-        setFX_DinamikaFA_Preth(god, mesec, lcgRN_PrethMesec);
-        setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN_TekIPrethMesec);
+        setFX_DinamikaFA(god, mesec, lcgRNKretanje);
+        setFX_DinamikaFA_Preth(god, mesec, lcgRNKretanjePreth);
+        setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
     }
 
     /**
@@ -163,7 +165,6 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
         jPanel_DOWN_LEFT = new javax.swing.JPanel();
         jPanel_DOWN_RIGHT = new javax.swing.JPanel();
         jPanel_Kompanija_UP = new javax.swing.JPanel();
-        jPanel_Kompanija_MIDDLE = new javax.swing.JPanel();
 
         jPanel_DOWN_LEFT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel_DOWN_LEFT.setVerifyInputWhenFocusTarget(false);
@@ -176,9 +177,6 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
         jPanel_Kompanija_UP.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel_Kompanija_UP.setLayout(new java.awt.BorderLayout());
 
-        jPanel_Kompanija_MIDDLE.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel_Kompanija_MIDDLE.setLayout(new java.awt.BorderLayout());
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -187,21 +185,18 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel_DOWN_LEFT, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                        .addComponent(jPanel_DOWN_LEFT, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                         .addGap(8, 8, 8)
-                        .addComponent(jPanel_DOWN_RIGHT, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE))
-                    .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel_Kompanija_MIDDLE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jPanel_DOWN_RIGHT, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE))
+                    .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel_Kompanija_MIDDLE, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, 151, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel_DOWN_LEFT, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel_DOWN_RIGHT, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -212,18 +207,12 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel_DOWN_LEFT;
     private javax.swing.JPanel jPanel_DOWN_RIGHT;
-    private javax.swing.JPanel jPanel_Kompanija_MIDDLE;
     private javax.swing.JPanel jPanel_Kompanija_UP;
     // End of variables declaration//GEN-END:variables
     @Override
     public void componentOpened() {
-        // Utiče loše na performanse zato što se globalno sluša
-        // svaka promena u kalendaru u pretraživaču, i svaki put se računaju upiti 
-        // u vezi radnih naloga, fin. aspekta poslovanja...koji oduzimaju mnogo vremena !
-        // kalendarLookup = Utilities.actionsGlobalContext().lookupResult(String.class);
-
         kalendarLookup = Utilities.actionsGlobalContext().lookupResult(String.class);
-        llDatumi = new LookupListener() {
+        llKalendar = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -231,26 +220,20 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
 
                 if (!datumi.isEmpty()) {
                     for (String d1 : datumi) {
-                        setKalendarDatum(d1);
-
-                        // setFX_DinamikaFA(god, mesec, lcgRN_TekMesec);
-                        // setFX_DinamikaFA_Preth(god, mesec, lcgRN_PrethMesec);
-                        
-                        setFX_KretanjeRN(kalendarDatum, lcgDinamikaNaloga);
-                        setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN_TekIPrethMesec);
-
-                        StatusDisplayer.getDefault().setStatusText(monitorPerformansi);
-                        monitorPerformansi = "";
+                        if (kalendarDatumIzmenjen) {
+                            setKalendarDatum(d1);
+                            setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
+                        }
                     }
                 }
             }
         };
-        kalendarLookup.addLookupListener(llDatumi);
+        kalendarLookup.addLookupListener(llKalendar);
     }
 
     @Override
     public void componentClosed() {
-        kalendarLookup.removeLookupListener(llDatumi);
+        kalendarLookup.removeLookupListener(llKalendar);
         kalendarLookup = null;
     }
 
@@ -269,82 +252,54 @@ public final class DinamikaPoslovanjaTopComponent extends TopComponent {
     //</editor-fold>
 
     private void setFX_DinamikaFA(int Godina, int Mesec, AbstractChartGenerator lcg) {
-        t1 = System.currentTimeMillis();
+        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
+        String ukSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
-        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec)
-                + " " + String.valueOf(Godina);
-        String ukSati = String.valueOf(", Ukupno " + UKSati(Godina, Mesec)) + " sati.";
+        lcg.setYAxisTitle("Uk. Fakturisano (h)");
 
         try {
             lcg.setUpSeries(UKDnevnaFakturisanost(Godina, Mesec));
 
-            lcg.setChartTitle("Dinamika Radnih Sati Servisa");
+            lcg.setChartTitle("Dinamika Radnih Sati");
             lcg.setSeriesTitles(tekMesGod + ukSati);
             lcg.createFXObject();
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
         }
-
-        monitorPerformansi += "setFX_DinamikaFA :" + Long.toString((System.currentTimeMillis() - t1)) + " ms.  ";
     }
 
     private void setFX_DinamikaFA_Preth(int Godina, int Mesec, AbstractChartGenerator lcg) {
-        t1 = System.currentTimeMillis();
-
         int m = (Mesec == 1 ? 12 : Mesec - 1);
         int g = (Mesec == 1 ? Godina - 1 : Godina);
 
         setFX_DinamikaFA(g, m, lcg);
-
-        monitorPerformansi += "setFX_DinamikaFA_Preth :" + Long.toString((System.currentTimeMillis() - t1)) + " ms.  ";
     }
 
     private void setFX_DinamikaFA_TekIPreth(int Godina, int Mesec, AbstractChartGenerator lcg) {
-        t1 = System.currentTimeMillis();
 
         int m = (Mesec == 1 ? 12 : Mesec - 1);
         int g = (Mesec == 1 ? Godina - 1 : Godina);
 
-        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + "  " + String.valueOf(Godina);
-        String ukSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
+        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec)
+                + " " + String.valueOf(Godina);
+        String tekUkSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
-        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(m) + "  " + String.valueOf(g);
+        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(m)
+                + " " + String.valueOf(g);
         String prethUkSati = String.valueOf(",  Ukupno " + UKSati(g, m)) + " sati.";
 
+        lcg.setYAxisTitle("Uk. Fakturisano (h)");
         try {
             lcg.setUpSeries(
                     UKDnevnaFakturisanost(Godina, Mesec),
                     UKDnevnaFakturisanost(g, m)
             );
 
-            lcg.setChartTitle("Radni Sati - " + (tekMesGod + ", " + prethMesGod));
-            lcg.setSeriesTitles(tekMesGod + ukSati, prethMesGod + prethUkSati);
+            lcg.setChartTitle("Dinamika Radnih Sati");
+            lcg.setSeriesTitles((tekMesGod + tekUkSati), (prethMesGod + prethUkSati));
             lcg.createFXObject();
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
         }
-
-        monitorPerformansi += "setFX_DinamikaFA :" + Long.toString((System.currentTimeMillis() - t1)) + " ms.  ";
-    }
-
-    private void setFX_KretanjeRN(String Datum, AbstractChartGenerator lcg) {
-        t1 = System.currentTimeMillis();
-
-        try {
-            lcg.setUpSeries(
-                    Br_RNFA_Mesec_LineChartData(Datum, 1),
-                    Br_RNFA_Mesec_LineChartData(Datum, 2),
-                    Br_RNFA_Mesec_LineChartData(Datum, 3)
-            );
-            lcg.setChartTitle("Dinamika Rada Servisa za " + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god) + ". godine");
-            lcg.setSeriesTitles("Radni Nalozi", "Fakture", "Storno Fakture");
-            lcg.createFXObject();
-        } catch (ParseException ex) {
-            Display.obavestenjeBaloncic("Greška.", "Datum nije u pravilnoj formi.", Display.TIP_OBAVESTENJA.GRESKA);
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-        }
-
-        monitorPerformansi += "setFX_KretanjeRN :" + Long.toString((System.currentTimeMillis() - t1)) + " ms.  ";
     }
 }

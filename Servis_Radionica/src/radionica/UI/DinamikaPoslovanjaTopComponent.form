@@ -20,12 +20,11 @@
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="jPanel_DOWN_LEFT" pref="310" max="32767" attributes="0"/>
+                      <Component id="jPanel_DOWN_LEFT" pref="286" max="32767" attributes="0"/>
                       <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
-                      <Component id="jPanel_DOWN_RIGHT" pref="310" max="32767" attributes="0"/>
+                      <Component id="jPanel_DOWN_RIGHT" pref="285" max="32767" attributes="0"/>
                   </Group>
                   <Component id="jPanel_Kompanija_UP" max="32767" attributes="0"/>
-                  <Component id="jPanel_Kompanija_MIDDLE" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -35,10 +34,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" max="-2" attributes="0"/>
-              <Component id="jPanel_Kompanija_UP" min="-2" pref="210" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jPanel_Kompanija_MIDDLE" min="-2" pref="158" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Component id="jPanel_Kompanija_UP" pref="151" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" min="-2" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jPanel_DOWN_LEFT" min="-2" pref="210" max="-2" attributes="0"/>
                   <Component id="jPanel_DOWN_RIGHT" min="-2" pref="210" max="-2" attributes="0"/>
@@ -74,17 +71,6 @@
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel_Kompanija_UP">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
-            <EtchetBorder/>
-          </Border>
-        </Property>
-      </Properties>
-
-      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-    </Container>
-    <Container class="javax.swing.JPanel" name="jPanel_Kompanija_MIDDLE">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">

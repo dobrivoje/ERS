@@ -8,6 +8,7 @@ package radionica.UI;
 import INFSYS.queries.INFSistemQuery;
 import static INFSYS.queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_RadMat;
 import JFXChartGenerators.AbstractChartGenerator;
+import JFXChartGenerators.CSSStyles;
 import JFXChartGenerators.LineChartGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
@@ -21,7 +22,6 @@ import java.util.Date;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.awt.StatusDisplayer;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
@@ -61,7 +61,6 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
 
-    private String monitorPerformansi = "";
     private long t1;
 
     private final AbstractChartGenerator lcgDinamikaFin = new LineChartGenerator();
@@ -138,7 +137,9 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
         setKalendarDatum(null);
 
         lcgDinamikaFin.lineChartSetUpPanel(jPanel_Kompanija_UP);
+        lcgDinamikaFin.setCSSStyle(CSSStyles.Style.YELLOW);
         lcgDinamikaFinAspekt.lineChartSetUpPanel(jPanel_Kompanija_DOWN);
+        lcgDinamikaFinAspekt.setCSSStyle(CSSStyles.Style.YELLOW);
 
         setFX_FA_DnevnoRadoviMaterijal(god, mesec, lcgDinamikaFin);
         setFX_KretanjeRN_FinAspekt(god, lcgDinamikaFinAspekt);
@@ -206,9 +207,6 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
 
                         setFX_KretanjeRN_FinAspekt(god, lcgDinamikaFinAspekt);
                         setFX_FA_DnevnoRadoviMaterijal(god, mesec, lcgDinamikaFin);
-
-                        StatusDisplayer.getDefault().setStatusText(monitorPerformansi);
-                        monitorPerformansi = "";
                     }
                 }
             }
@@ -254,8 +252,6 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
         } catch (Exception e) {
             Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
         }
-
-        monitorPerformansi += "setFX_FA_DnevnoRadoviMaterijal :" + Long.toString((System.currentTimeMillis() - t1)) + " ms.  ";
     }
 
     private void setFX_KretanjeRN_FinAspekt(int Godina, AbstractChartGenerator lcg) {
@@ -263,7 +259,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
             lcg.setUpSeries(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
 
             lcg.setChartTitle("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
-            lcg.setSeriesTitles("Radovi", "Materijal");
+            lcg.setSeriesTitles("Radovi", "Delovi");
             lcg.createFXObject();
 
         } catch (NullPointerException ex) {

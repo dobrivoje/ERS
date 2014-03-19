@@ -24,13 +24,16 @@ import javax.swing.JPanel;
  */
 public abstract class AbstractChartGenerator {
 
+    protected Scene scene;
+    protected CSSStyles.Style CSSStyle;
+
     protected List<Map<Integer, Integer>> FXSeriesMaps;
     protected List<String> FXSeriesMapTitles;
 
     protected String ChartTite;
     protected String xAxisTitle;
     protected String yAxisTitle;
-    
+
     protected Chart chart;
     protected final JFXPanel chartFxPanel;
 
@@ -39,6 +42,11 @@ public abstract class AbstractChartGenerator {
     //<editor-fold defaultstate="collapsed" desc="Init, getters/setters">
     public AbstractChartGenerator() {
         this.chartFxPanel = new JFXPanel();
+        this.CSSStyle = CSSStyles.Style.DEFAULT;
+    }
+
+    public void setCSSStyle(CSSStyles.Style CSSStyle) {
+        this.CSSStyle = CSSStyle;
     }
 
     public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
@@ -85,10 +93,24 @@ public abstract class AbstractChartGenerator {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Scene Creator">
-    private void createScene() {
+    protected void createScene() {
+        /*try {
+         chart = createCustomChart();
+         scene = new Scene(chart);
+         chartFxPanel.setScene(scene);
+         } catch (Exception e) {
+         }*/
+
         try {
             chart = createCustomChart();
-            chartFxPanel.setScene(new Scene(chart));
+            scene = new Scene(chart);
+
+            scene.getStylesheets().add(
+                    AbstractChartGenerator.class
+                    .getResource(CSSStyles.getCSSStyle(this.CSSStyle))
+                    .toExternalForm());
+
+            chartFxPanel.setScene(scene);
         } catch (Exception e) {
         }
     }

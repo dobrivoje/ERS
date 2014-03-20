@@ -4,7 +4,7 @@
  */
 package node_klase.infsistem.radninalozi;
 
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import ent.infsistem.Nald001;
 import java.beans.IntrospectionException;
 import java.util.List;

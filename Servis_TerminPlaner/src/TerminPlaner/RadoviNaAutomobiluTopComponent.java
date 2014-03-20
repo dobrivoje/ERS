@@ -4,7 +4,7 @@
  */
 package TerminPlaner;
 
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import TerminPlaner.QuickSearch.ISifra;
 import com.dobrivoje.utilities.datumi.DatumSelektor;
 import com.dobrivoje.utilities.icons.icon_renderer.INodeIconRenderer;

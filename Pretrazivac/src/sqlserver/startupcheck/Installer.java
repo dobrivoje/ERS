@@ -5,7 +5,7 @@
 package sqlserver.startupcheck;
 
 import ERS.queries.ERSQuery;
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import javax.persistence.EntityManager;
 import org.openide.DialogDisplayer;
 import org.openide.LifecycleManager;

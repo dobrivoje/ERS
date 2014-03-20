@@ -19,8 +19,10 @@
                 <package>ERS.Beans.FakturisaneUsluge</package>
                 <package>ERS.BusinessBeans</package>
                 <package>ERS.queries</package>
-                <package>INFSISTEM.BusinessBeans</package>
-                <package>INFSYS.queries</package>
+                <package>INFSYS.Adapt</package>
+                <package>INFSYS.Adapt.Functionalities</package>
+                <package>INFSYS.BusinessBeans</package>
+                <package>INFSYS.Queries</package>
                 <package>ent</package>
                 <package>ent.infsistem</package>
                 <package>sp.izvestaji</package>

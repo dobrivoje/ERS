@@ -5,7 +5,7 @@
  */
 package ERS.SearchProviders.Sifarnik;
 
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import ent.infsistem.Sifarnik;
 import java.util.ArrayList;
 import java.util.List;

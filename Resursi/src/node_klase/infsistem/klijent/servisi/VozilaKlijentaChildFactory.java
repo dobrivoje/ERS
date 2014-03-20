@@ -4,7 +4,7 @@
  */
 package node_klase.infsistem.klijent.servisi;
 
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import com.dobrivoje.utilities.cars.icon_renderer.ChasisIconRenderer;
 import com.dobrivoje.utilities.cars.icon_renderer.INodeIconRenderer;
 import java.beans.IntrospectionException;

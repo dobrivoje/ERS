@@ -4,7 +4,7 @@
  */
 package node_klase.infsistem.sifarnik;
 
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import com.dobrivoje.utilities.icons.icon_renderer.INodeIconRenderer;
 import com.dobrivoje.utilities.icons.icon_renderer.IconRenderer;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.Univerzalne.STRANKE;

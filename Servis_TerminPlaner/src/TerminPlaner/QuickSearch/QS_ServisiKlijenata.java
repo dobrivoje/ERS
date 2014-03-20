@@ -5,7 +5,7 @@
  */
 package TerminPlaner.QuickSearch;
 
-import INFSYS.queries.INFSistemQuery;
+import INFSYS.Queries.INFSistemQuery;
 import static com.dobrivoje.utilities.TopCompoment.TopComponentUtils.OpenTopComponent;
 import com.dobrivoje.utilities.warnings.Display;
 import ent.infsistem.Sifarnik;

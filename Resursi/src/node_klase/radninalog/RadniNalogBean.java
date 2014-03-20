@@ -4,7 +4,7 @@
  */
 package node_klase.radninalog;
 
-import static INFSYS.queries.INFSistemQuery.pretragaPoFakturi;
+import static INFSYS.Queries.INFSistemQuery.pretragaPoFakturi;
 import com.dobrivoje.utilities.icons.icon_renderer.INodeIconRenderer;
 import com.dobrivoje.utilities.icons.icon_renderer.IconRenderer;
 import static com.dobrivoje.utilities.icons.icon_renderer.IconType.RadniNalog.FAKTURA;

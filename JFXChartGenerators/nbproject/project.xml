@@ -17,6 +17,7 @@
             </module-dependencies>
             <public-packages>
                 <package>JFXChartGenerators</package>
+                <package>JFXChartGenerators.CssStyles</package>
             </public-packages>
         </data>
     </configuration>

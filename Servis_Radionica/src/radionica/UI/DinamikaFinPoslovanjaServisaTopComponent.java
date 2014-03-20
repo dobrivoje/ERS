@@ -8,7 +8,7 @@ package radionica.UI;
 import INFSYS.Queries.INFSistemQuery;
 import static INFSYS.Queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_RadMat;
 import JFXChartGenerators.AbstractChartGenerator;
-import JFXChartGenerators.CSSStyles;
+import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.LineChartGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;

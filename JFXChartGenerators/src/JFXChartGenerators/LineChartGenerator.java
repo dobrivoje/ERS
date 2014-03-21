@@ -14,7 +14,7 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class LineChartGenerator extends AbstractChartGenerator {
+public class LineChartGenerator extends AbstractMonthLineChartGenerator {
 
     @Override
     protected LineChart createCustomChart() {

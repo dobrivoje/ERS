@@ -22,7 +22,8 @@ import javax.swing.JPanel;
 /**
  *
  * @author root
- * @param <T1>
+ * @param <T1> -> x Axis
+ * @param <T2> -> y Axis
  */
 public abstract class AbstractCustomChartGenerator<T1, T2> {
 
@@ -107,14 +108,15 @@ public abstract class AbstractCustomChartGenerator<T1, T2> {
             chart = createCustomChart();
             scene = new Scene(chart);
 
-            // Do jaja !!! Dinamičko učitavanje Css fajla smeštenog u drugom paketu-
-            // Ukoliko se promeni lokacija CSSStyles.java ili Css.* MORA SE REBUILD-ovati i JFXChartGenerators
+            // Do jaja !!! Dinamičko učitavanje CSS fajla smeštenog u drugom paketu-
+            // Ukoliko se promeni lokacija CSSStyles.java ili CSS.* MORA SE REBUILD-ovati 
+            // i JFXChartGenerators
             // i OBAVEZNO korisnik(ci) JFXChartGenerators-a tj. ovde, Servis_Radionica !!!
-            
             scene.getStylesheets().add(
                     CSSStyles.class
                     .getResource(CSSStyles.getCSSStyle(this.CSSStyle))
-                    .toExternalForm());
+                    .toExternalForm()
+            );
 
             chartFxPanel.setScene(scene);
         } catch (Exception e) {

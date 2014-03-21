@@ -17,7 +17,7 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class StackedBarChartGenerator extends AbstractChartGenerator {
+public class StackedBarChartGenerator extends AbstractMonthLineChartGenerator {
 
     private static final String[] zemlje = new String[]{"Austria", "Brazil", "France", "Italy", "USA"};
 

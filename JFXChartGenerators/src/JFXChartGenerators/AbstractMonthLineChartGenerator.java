@@ -9,5 +9,6 @@ package JFXChartGenerators;
  *
  * @author root
  */
-public abstract class AbstractChartGenerator extends AbstractCustomChartGenerator<Integer, Integer> {
+public abstract class AbstractMonthLineChartGenerator
+        extends AbstractCustomChartGenerator<Integer, Integer> {
 }

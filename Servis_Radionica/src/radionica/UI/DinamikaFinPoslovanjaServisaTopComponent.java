@@ -7,7 +7,7 @@ package radionica.UI;
 
 import INFSYS.Queries.INFSistemQuery;
 import static INFSYS.Queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_RadMat;
-import JFXChartGenerators.AbstractChartGenerator;
+import JFXChartGenerators.AbstractMonthLineChartGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.LineChartGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
@@ -63,8 +63,8 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
 
     private long t1;
 
-    private final AbstractChartGenerator lcgDinamikaFin = new LineChartGenerator();
-    private final AbstractChartGenerator lcgDinamikaFinAspekt = new LineChartGenerator();
+    private final AbstractMonthLineChartGenerator lcgDinamikaFin = new LineChartGenerator();
+    private final AbstractMonthLineChartGenerator lcgDinamikaFinAspekt = new LineChartGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum;
@@ -236,7 +236,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    private void setFX_FA_DnevnoRadoviMaterijal(int Godina, int Mesec, AbstractChartGenerator lcg) {
+    private void setFX_FA_DnevnoRadoviMaterijal(int Godina, int Mesec, AbstractMonthLineChartGenerator lcg) {
 
         t1 = System.currentTimeMillis();
 
@@ -254,7 +254,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
         }
     }
 
-    private void setFX_KretanjeRN_FinAspekt(int Godina, AbstractChartGenerator lcg) {
+    private void setFX_KretanjeRN_FinAspekt(int Godina, AbstractMonthLineChartGenerator lcg) {
         try {
             lcg.setUpSeries(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
 

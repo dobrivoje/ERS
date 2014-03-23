@@ -6,10 +6,10 @@
 package radionica.UI;
 
 import INFSYS.Queries.INFSistemQuery;
-import static INFSYS.Queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_RadMat;
-import JFXChartGenerators.Lines.AbstractMonthLineChartGenerator;
+import JFXChartGenerators.AbstractBASEChartGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
-import JFXChartGenerators.Lines.LineChartGenerator;
+import JFXChartGenerators.StackedBars.AbstractStackedBarChartGenerator;
+import JFXChartGenerators.StackedBars.StackedBarCategoryChartGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.beans.PropertyChangeListener;
@@ -33,27 +33,27 @@ import org.openide.windows.WindowManager;
  * Top component which displays something.
  */
 @ConvertAsProperties(
-        dtd = "-//radionica.UI//DinamikaFinPoslovanjaServisa//EN",
+        dtd = "-//radionica.UI//DinamikaServSavetnici//EN",
         autostore = false
 )
 @TopComponent.Description(
-        preferredID = "DinamikaFinPoslovanjaServisaTopComponent",
+        preferredID = "DinamikaServSavetniciTopComponent",
         //iconBase="SET/PATH/TO/ICON/HERE", 
         persistenceType = TopComponent.PERSISTENCE_ALWAYS
 )
-@TopComponent.Registration(mode = "editor", openAtStartup = false, position = 1100)
-@ActionID(category = "Window/Servis", id = "radionica.UI.DinamikaFinPoslovanjaServisaTopComponent")
-@ActionReference(path = "Menu/Window/Servis", position = 1100)
+@TopComponent.Registration(mode = "editor", openAtStartup = false, position = 1200)
+@ActionID(category = "Window/Servis", id = "radionica.UI.DinamikaServSavetniciTopComponent")
+@ActionReference(path = "Menu/Window/Servis", position = 1200)
 @TopComponent.OpenActionRegistration(
-        displayName = "#CTL_DinamikaFinPoslovanjaServisaAction",
-        preferredID = "DinamikaFinPoslovanjaServisaTopComponent"
+        displayName = "#CTL_DinamikaServSavetniciAction",
+        preferredID = "DinamikaServSavetniciTopComponent"
 )
 @Messages({
-    "CTL_DinamikaFinPoslovanjaServisaAction=Dinamika Fin. Poslovanja Servisa",
-    "CTL_DinamikaFinPoslovanjaServisaTopComponent=Dinamika Fin. Poslovanja Servisa",
-    "HINT_DinamikaFinPoslovanjaServisaTopComponent=Dinamika Fin. Poslovanja Servisa"
+    "CTL_DinamikaServSavetniciAction=Performanse Servisnih Savetnika",
+    "CTL_DinamikaServSavetniciTopComponent=Performanse Servisnih Savetnika",
+    "HINT_DinamikaServSavetniciTopComponent=Performanse Servisnih Savetnika"
 })
-public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent {
+public final class DinamikaServSavetniciTopComponent extends TopComponent {
 
     private Lookup.Result<String> kalendarLookup;
     private LookupListener ll;
@@ -61,10 +61,8 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
 
-    private long t1;
-
-    private final AbstractMonthLineChartGenerator lcgDinamikaFin = new LineChartGenerator();
-    private final AbstractMonthLineChartGenerator lcgDinamikaFinAspekt = new LineChartGenerator();
+    private final AbstractStackedBarChartGenerator bCSSavetnici1 = new StackedBarCategoryChartGenerator();
+    private final AbstractStackedBarChartGenerator bCSSavetnici2 = new StackedBarCategoryChartGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum;
@@ -129,20 +127,20 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    public DinamikaFinPoslovanjaServisaTopComponent() {
+    public DinamikaServSavetniciTopComponent() {
         initComponents();
         setName(Bundle.CTL_DinamikaFinPoslovanjaServisaTopComponent());
         setToolTipText(Bundle.HINT_DinamikaFinPoslovanjaServisaTopComponent());
 
         setKalendarDatum(null);
 
-        lcgDinamikaFin.lineChartSetUpPanel(jPanel_Kompanija_UP);
-        lcgDinamikaFin.setCSSStyle(CSSStyles.Style.YELLOW_LINE);
-        lcgDinamikaFinAspekt.lineChartSetUpPanel(jPanel_Kompanija_DOWN);
-        lcgDinamikaFinAspekt.setCSSStyle(CSSStyles.Style.YELLOW_LINE);
+        bCSSavetnici1.lineChartSetUpPanel(jPanel_Kompanija_UP);
+        bCSSavetnici1.setCSSStyle(CSSStyles.Style.RED_BAR);
+        bCSSavetnici2.lineChartSetUpPanel(jPanel_Kompanija_DOWN);
+        bCSSavetnici2.setCSSStyle(CSSStyles.Style.RED_BAR);
 
-        setFX_FA_DnevnoRadoviMaterijal(god, mesec, lcgDinamikaFin);
-        setFX_KretanjeRN_FinAspekt(god, lcgDinamikaFinAspekt);
+        setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici1);
+        setFX_FA_Mesec_SSavetnici_Performanse(mesec == 1 ? god - 1 : god, mesec == 12 ? mesec - 1 : mesec, bCSSavetnici2);
     }
 
     /**
@@ -166,21 +164,15 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, 522, Short.MAX_VALUE)
-                    .addComponent(jPanel_Kompanija_DOWN, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(3, 3, 3))
+            .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
+            .addComponent(jPanel_Kompanija_DOWN, javax.swing.GroupLayout.DEFAULT_SIZE, 664, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                .addGap(3, 3, 3)
-                .addComponent(jPanel_Kompanija_DOWN, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE)
-                .addGap(3, 3, 3))
+                .addComponent(jPanel_Kompanija_UP, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
+                .addGap(2, 2, 2)
+                .addComponent(jPanel_Kompanija_DOWN, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -188,7 +180,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     private javax.swing.JPanel jPanel_Kompanija_DOWN;
     private javax.swing.JPanel jPanel_Kompanija_UP;
     // End of variables declaration//GEN-END:variables
-//<editor-fold defaultstate="collapsed" desc="UI Lookup">
+    //<editor-fold defaultstate="collapsed" desc="UI Lookup">
     @Override
     public void componentOpened() {
         kalendarLookup = WindowManager.getDefault()
@@ -205,8 +197,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
                     for (String d1 : datumi) {
                         setKalendarDatum(d1);
 
-                        setFX_KretanjeRN_FinAspekt(god, lcgDinamikaFinAspekt);
-                        setFX_FA_DnevnoRadoviMaterijal(god, mesec, lcgDinamikaFin);
+                        setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici2);
                     }
                 }
             }
@@ -236,31 +227,14 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     }
     //</editor-fold>
 
-    private void setFX_FA_DnevnoRadoviMaterijal(int Godina, int Mesec, AbstractMonthLineChartGenerator lcg) {
-
-        t1 = System.currentTimeMillis();
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarChartGenerator abc) {
 
         try {
-            lcg.setUpSeries(INFSistemQuery.Mesec_DnevnoFA_UK_Serije(Godina, Mesec));
+            abc.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec));
 
-            lcg.setChartTitle("Finansijska Dinamika Servisa za " + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god) + ". godine");
-            lcg.setSeriesTitles("Radovi", "Materijal");
-            lcg.createFXObject();
-
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-        } catch (Exception e) {
-            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
-        }
-    }
-
-    private void setFX_KretanjeRN_FinAspekt(int Godina, AbstractMonthLineChartGenerator lcg) {
-        try {
-            lcg.setUpSeries(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
-
-            lcg.setChartTitle("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
-            lcg.setSeriesTitles("Radovi", "Delovi");
-            lcg.createFXObject();
+            abc.setChartTitle("Učešće Servisnih Savetnika za " + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god) + ". godine");
+            abc.setSeriesTitles("Radovi", "Materijal");
+            abc.createFXObject();
 
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);

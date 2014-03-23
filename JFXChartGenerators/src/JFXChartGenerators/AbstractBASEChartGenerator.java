@@ -25,7 +25,7 @@ import javax.swing.JPanel;
  * @param <T1> -> x Axis
  * @param <T2> -> y Axis
  */
-public abstract class AbstractCustomChartGenerator<T1, T2> {
+public abstract class AbstractBASEChartGenerator<T1, T2> {
 
     protected Scene scene;
     protected CSSStyles.Style CSSStyle;
@@ -43,9 +43,9 @@ public abstract class AbstractCustomChartGenerator<T1, T2> {
     protected List<XYChart.Series> fxSeries;
 
     //<editor-fold defaultstate="collapsed" desc="Init, getters/setters">
-    public AbstractCustomChartGenerator() {
+    public AbstractBASEChartGenerator() {
         this.chartFxPanel = new JFXPanel();
-        this.CSSStyle = CSSStyles.Style.DEFAULT;
+        this.CSSStyle = CSSStyles.Style.DEFAULT_LINE;
     }
 
     public void setCSSStyle(CSSStyles.Style CSSStyle) {
@@ -97,13 +97,6 @@ public abstract class AbstractCustomChartGenerator<T1, T2> {
 
     //<editor-fold defaultstate="collapsed" desc="Scene Creator">
     protected void createScene() {
-        /*try {
-         chart = createCustomChart();
-         scene = new Scene(chart);
-         chartFxPanel.setScene(scene);
-         } catch (Exception e) {
-         }*/
-
         try {
             chart = createCustomChart();
             scene = new Scene(chart);

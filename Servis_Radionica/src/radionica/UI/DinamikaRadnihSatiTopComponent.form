@@ -19,15 +19,20 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jPanel_MIDDLE_LEFT" pref="348" max="32767" attributes="0"/>
+                  <Component id="jPanel_UP" alignment="1" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jPanel_DOWN_LEFT" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jPanel_MIDDLE_LEFT" pref="332" max="32767" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-                      <Component id="jPanel_MIDDLE_RIGHT" pref="348" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jPanel_MIDDLE_RIGHT" pref="332" max="32767" attributes="0"/>
+                          <Component id="jPanel_DOWN_RIGHT" max="32767" attributes="0"/>
+                      </Group>
                   </Group>
-                  <Component id="jPanel_UP" max="32767" attributes="0"/>
-                  <Component id="jPanel_DOWN" alignment="0" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace min="3" pref="3" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -42,8 +47,10 @@
                   <Component id="jPanel_MIDDLE_RIGHT" min="-2" pref="210" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
-              <Component id="jPanel_DOWN" pref="211" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="jPanel_DOWN_LEFT" pref="208" max="32767" attributes="0"/>
+                  <Component id="jPanel_DOWN_RIGHT" pref="208" max="32767" attributes="0"/>
+              </Group>
           </Group>
       </Group>
     </DimensionLayout>
@@ -84,7 +91,18 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
     </Container>
-    <Container class="javax.swing.JPanel" name="jPanel_DOWN">
+    <Container class="javax.swing.JPanel" name="jPanel_DOWN_LEFT">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">
+            <EtchetBorder/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+    </Container>
+    <Container class="javax.swing.JPanel" name="jPanel_DOWN_RIGHT">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.EtchedBorderInfo">

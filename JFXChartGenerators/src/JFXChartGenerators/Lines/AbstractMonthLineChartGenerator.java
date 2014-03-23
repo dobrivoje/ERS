@@ -3,12 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JFXChartGenerators;
+package JFXChartGenerators.Lines;
+
+import JFXChartGenerators.AbstractBASEChartGenerator;
 
 /**
  *
  * @author root
  */
 public abstract class AbstractMonthLineChartGenerator
-        extends AbstractCustomChartGenerator<Integer, Integer> {
+        extends AbstractBASEChartGenerator<Integer, Integer> {
 }

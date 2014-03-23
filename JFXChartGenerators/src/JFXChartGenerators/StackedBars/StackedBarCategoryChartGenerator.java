@@ -3,33 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JFXChartGenerators;
+package JFXChartGenerators.StackedBars;
 
+import JFXChartGenerators.*;
 import java.util.Map;
+import javafx.collections.FXCollections;
 import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.StackedBarChart;
 import javafx.scene.chart.XYChart;
 
 /**
  *
  * @author root
  */
-public class LineCategoryChartGenerator extends AbstractCustomChartGenerator<String, Integer> {
+public class StackedBarCategoryChartGenerator extends AbstractStackedBarChartGenerator {
 
     @Override
-    protected LineChart createCustomChart() {
+    protected StackedBarChart createCustomChart() {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
 
-        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        final StackedBarChart<String, Number> stackedBarChart = new StackedBarChart<>(xAxis, yAxis);
 
-        lineChart.setCreateSymbols(false);
-        lineChart.setTitle(ChartTite);
+        stackedBarChart.setTitle(ChartTite);
 
         xAxis.setLabel(xAxisTitle);
         xAxis.setTickMarkVisible(false);
         xAxis.setTickLength(xAxis.getTickLength());
+
+        xAxis.setCategories(FXCollections.<String>observableArrayList(categories));
 
         yAxis.setLabel(yAxisTitle);
         yAxis.setTickMarkVisible(false);
@@ -48,9 +51,9 @@ public class LineCategoryChartGenerator extends AbstractCustomChartGenerator<Str
                 sTmp.getData().add(new XYChart.Data(e.getKey(), e.getValue()));
             }
 
-            lineChart.getData().add(sTmp);
+            stackedBarChart.getData().add(sTmp);
         }
 
-        return lineChart;
+        return stackedBarChart;
     }
 }

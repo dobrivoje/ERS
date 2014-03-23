@@ -15,25 +15,28 @@ public class CSSStyles {
 
     public static enum Style {
 
-        DEFAULT,
-        RED,
-        GREEN,
-        YELLOW
+        // definicije za LineChart :
+        DEFAULT_LINE,
+        RED_LINE,
+        GREEN_LINE,
+        YELLOW_LINE,
+        // definicije za BarChart :
+        DEFAULT_BAR,
+        RED_BAR,
+        GREEN_BAR,
+        YELLOW_BAR
     }
 
     public static String getCSSStyle(Style CSSStyle) {
         switch (CSSStyle) {
-            case RED:
+            case RED_LINE:
                 CSSFile = "LCG_RED.css";
                 break;
-            case YELLOW:
+            case YELLOW_LINE:
                 CSSFile = "LCG_YELLOW.css";
                 break;
-
-            default:
-            case GREEN:
-                DEFAULT:
-                CSSFile = "Default.css";
+            case RED_BAR:
+                CSSFile = "SBG_RED.css";
                 break;
         }
 

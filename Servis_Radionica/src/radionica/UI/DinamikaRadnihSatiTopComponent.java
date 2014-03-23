@@ -7,10 +7,13 @@ package radionica.UI;
 
 import static ERS.queries.ERSQuery.UKDnevnaFakturisanost;
 import static ERS.queries.ERSQuery.UKSati;
-import static INFSYS.Queries.INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije;
-import JFXChartGenerators.AbstractMonthLineChartGenerator;
+import INFSYS.Queries.INFSistemQuery;
+import JFXChartGenerators.AbstractBASEChartGenerator;
+import JFXChartGenerators.Lines.AbstractMonthLineChartGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
-import JFXChartGenerators.LineChartGenerator;
+import JFXChartGenerators.Lines.LineChartGenerator;
+import JFXChartGenerators.StackedBars.AbstractStackedBarChartGenerator;
+import JFXChartGenerators.StackedBars.StackedBarCategoryChartGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.beans.PropertyChangeListener;
@@ -65,7 +68,9 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     private final AbstractMonthLineChartGenerator lcgRN = new LineChartGenerator();
     private final AbstractMonthLineChartGenerator lcgRNKretanje = new LineChartGenerator();
     private final AbstractMonthLineChartGenerator lcgRNKretanjePreth = new LineChartGenerator();
-    private final AbstractMonthLineChartGenerator lcgSSavetnici = new LineChartGenerator();
+
+    private final AbstractStackedBarChartGenerator bCSSavetnici1 = new StackedBarCategoryChartGenerator();
+    private final AbstractStackedBarChartGenerator bCSSavetnici2 = new StackedBarCategoryChartGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum_bind;
@@ -138,16 +143,19 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         setToolTipText(Bundle.HINT_DinamikaRadnihSatiTopComponent());
 
         lcgRN.lineChartSetUpPanel(jPanel_UP);
-        lcgRN.setCSSStyle(CSSStyles.Style.RED);
+        lcgRN.setCSSStyle(CSSStyles.Style.RED_LINE);
 
         lcgRNKretanje.lineChartSetUpPanel(jPanel_MIDDLE_LEFT);
-        lcgRNKretanje.setCSSStyle(CSSStyles.Style.RED);
+        lcgRNKretanje.setCSSStyle(CSSStyles.Style.RED_LINE);
 
         lcgRNKretanjePreth.lineChartSetUpPanel(jPanel_MIDDLE_RIGHT);
-        lcgRNKretanjePreth.setCSSStyle(CSSStyles.Style.YELLOW);
+        lcgRNKretanjePreth.setCSSStyle(CSSStyles.Style.YELLOW_LINE);
 
-        lcgSSavetnici.lineChartSetUpPanel(jPanel_DOWN);
-        lcgSSavetnici.setCSSStyle(CSSStyles.Style.DEFAULT);
+        bCSSavetnici1.lineChartSetUpPanel(jPanel_DOWN_LEFT);
+        bCSSavetnici1.setCSSStyle(CSSStyles.Style.RED_BAR);
+
+        bCSSavetnici2.lineChartSetUpPanel(jPanel_DOWN_RIGHT);
+        bCSSavetnici2.setCSSStyle(CSSStyles.Style.RED_BAR);
 
         setKalendarDatum(null);
 
@@ -156,7 +164,8 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         setFX_DinamikaFA(god, mesec, lcgRNKretanje);
         setFX_DinamikaFA_Preth(god, mesec, lcgRNKretanjePreth);
 
-        setFX_DinamikaFA_Savetnici(god, mesec, lcgSSavetnici);
+        setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici1);
+        setFX_FA_Mesec_SSavetnici_Performanse(god, mesec - 1, bCSSavetnici2);
     }
 
     /**
@@ -170,7 +179,8 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         jPanel_MIDDLE_LEFT = new javax.swing.JPanel();
         jPanel_MIDDLE_RIGHT = new javax.swing.JPanel();
         jPanel_UP = new javax.swing.JPanel();
-        jPanel_DOWN = new javax.swing.JPanel();
+        jPanel_DOWN_LEFT = new javax.swing.JPanel();
+        jPanel_DOWN_RIGHT = new javax.swing.JPanel();
 
         jPanel_MIDDLE_LEFT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel_MIDDLE_LEFT.setVerifyInputWhenFocusTarget(false);
@@ -183,8 +193,11 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         jPanel_UP.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel_UP.setLayout(new java.awt.BorderLayout());
 
-        jPanel_DOWN.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel_DOWN.setLayout(new java.awt.BorderLayout());
+        jPanel_DOWN_LEFT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel_DOWN_LEFT.setLayout(new java.awt.BorderLayout());
+
+        jPanel_DOWN_RIGHT.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel_DOWN_RIGHT.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -193,12 +206,15 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel_MIDDLE_LEFT, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
-                        .addGap(3, 3, 3)
-                        .addComponent(jPanel_MIDDLE_RIGHT, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE))
                     .addComponent(jPanel_UP, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel_DOWN, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel_DOWN_LEFT, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jPanel_MIDDLE_LEFT, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE))
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel_MIDDLE_RIGHT, javax.swing.GroupLayout.DEFAULT_SIZE, 332, Short.MAX_VALUE)
+                            .addComponent(jPanel_DOWN_RIGHT, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(3, 3, 3))
         );
         layout.setVerticalGroup(
@@ -211,13 +227,15 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
                     .addComponent(jPanel_MIDDLE_LEFT, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel_MIDDLE_RIGHT, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(3, 3, 3)
-                .addComponent(jPanel_DOWN, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                .addGap(10, 10, 10))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel_DOWN_LEFT, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                    .addComponent(jPanel_DOWN_RIGHT, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel_DOWN;
+    private javax.swing.JPanel jPanel_DOWN_LEFT;
+    private javax.swing.JPanel jPanel_DOWN_RIGHT;
     private javax.swing.JPanel jPanel_MIDDLE_LEFT;
     private javax.swing.JPanel jPanel_MIDDLE_RIGHT;
     private javax.swing.JPanel jPanel_UP;
@@ -237,7 +255,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
                             setKalendarDatum(d1);
                             setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
 
-                            setFX_DinamikaFA_Savetnici(god, mesec, lcgSSavetnici);
+                            setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici2);
                         }
                     }
                 }
@@ -319,20 +337,19 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         }
     }
 
-    private void setFX_DinamikaFA_Savetnici(int Godina, int Mesec, AbstractMonthLineChartGenerator lcg) {
-        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
-
-        lcg.setYAxisTitle("Uk. Fakturisano (Din.)");
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarChartGenerator abc) {
 
         try {
-            lcg.setUpSeries(Mesec_Svi_SSavetnici_Performanse_Serije(Godina, Mesec));
+            abc.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec));
 
-            lcg.setChartTitle("Servisni Savetnici");
-            lcg.setSeriesTitles("Radovi", "Materijal");
-            lcg.setXAxisTitle(tekMesGod);
-            lcg.createFXObject();
+            abc.setChartTitle("Učešće Servisnih Savetnika za " + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god) + ". godine");
+            abc.setSeriesTitles("Radovi", "Materijal");
+            abc.createFXObject();
+
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+        } catch (Exception e) {
+            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
         }
     }
     //</editor-fold>

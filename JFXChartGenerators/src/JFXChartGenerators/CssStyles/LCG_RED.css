@@ -1,3 +1,6 @@
+.chart-symbol {
+    -fx-stroke: #a9e200;
+}
 .chart-title {
     -fx-text-fill: #666666;
 }

@@ -18,6 +18,8 @@
             <public-packages>
                 <package>JFXChartGenerators</package>
                 <package>JFXChartGenerators.CssStyles</package>
+                <package>JFXChartGenerators.Lines</package>
+                <package>JFXChartGenerators.StackedBars</package>
             </public-packages>
         </data>
     </configuration>

@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package JFXChartGenerators;
+package JFXChartGenerators.Lines;
+import JFXChartGenerators.AbstractBASEChartGenerator;
 
 import java.util.Map;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -14,25 +16,20 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class LineChartGenerator extends AbstractMonthLineChartGenerator {
+public class LineCategoryChartGenerator extends AbstractBASEChartGenerator<String, Integer> {
 
     @Override
     protected LineChart createCustomChart() {
-        // Obavezno generiši onoliko podeljaka na X osi 
-        // koliko ih ima KAKSIMALNO u seriji,a to je ovde 31.
-        // Ako treba dinaički da se menja pogledaj ispod kako 
-        // da postaviš !
-        final NumberAxis xAxis = new NumberAxis(1, 31, 1);
+        final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
 
-        final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        final LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
         lineChart.setCreateSymbols(false);
         lineChart.setTitle(ChartTite);
 
         xAxis.setLabel(xAxisTitle);
         xAxis.setTickMarkVisible(false);
-        xAxis.setMinorTickCount(0);
         xAxis.setTickLength(xAxis.getTickLength());
 
         yAxis.setLabel(yAxisTitle);
@@ -44,15 +41,11 @@ public class LineChartGenerator extends AbstractMonthLineChartGenerator {
         int i = 0;
         XYChart.Series sTmp;
 
-        for (Map<Integer, Integer> s : FXSeriesMaps) {
+        for (Map<String, Integer> s : FXSeriesMaps) {
             sTmp = new XYChart.Series<>();
             sTmp.setName(FXSeriesMapTitles.get(i++));
 
-            // OVO JE TRIK KOJI DINAMIČKI ODREĐUJE DUŽINU X-OSE !!!
-            // JEEEEEEEEEEEEEEEEEEE !!!
-            xAxis.setUpperBound(s.entrySet().size());
-
-            for (Map.Entry<Integer, Integer> e : s.entrySet()) {
+            for (Map.Entry<String, Integer> e : s.entrySet()) {
                 sTmp.getData().add(new XYChart.Data(e.getKey(), e.getValue()));
             }
 

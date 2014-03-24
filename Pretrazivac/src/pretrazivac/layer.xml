@@ -25,8 +25,6 @@
         <folder name="File">
             <file name="Separator3.instance_hidden"/>
             <file name="Separator4.instance_hidden"/>
-            <file name="org-netbeans-modules-print-action-PageSetupAction.shadow_hidden"/>
-            <file name="org-netbeans-modules-print-action-PrintAction.shadow_hidden"/>
             <file name="org-openide-actions-SaveAction.shadow_hidden"/>
             <file name="org-openide-actions-SaveAllAction.shadow_hidden"/>
             <file name="org-openide-actions-SaveAsAction.shadow_hidden"/>

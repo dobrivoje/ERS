@@ -7,13 +7,13 @@ package radionica.UI;
 
 import static ERS.queries.ERSQuery.UKDnevnaFakturisanost;
 import static ERS.queries.ERSQuery.UKSati;
+import INFSYS.Adapt.Kategorije;
 import INFSYS.Queries.INFSistemQuery;
-import JFXChartGenerators.AbstractBASEChartGenerator;
-import JFXChartGenerators.Lines.AbstractMonthLineChartGenerator;
+import JFXChartGenerators.Lines.AbstractMonthLineGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
-import JFXChartGenerators.Lines.LineChartGenerator;
-import JFXChartGenerators.StackedBars.AbstractStackedBarChartGenerator;
-import JFXChartGenerators.StackedBars.StackedBarCategoryChartGenerator;
+import JFXChartGenerators.Lines.LineGenerator;
+import JFXChartGenerators.StackedBars.AbstractStackedBarGenerator;
+import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.beans.PropertyChangeListener;
@@ -65,12 +65,12 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     private Lookup.Result<String> kalendarLookup;
     private LookupListener llKalendar;
 
-    private final AbstractMonthLineChartGenerator lcgRN = new LineChartGenerator();
-    private final AbstractMonthLineChartGenerator lcgRNKretanje = new LineChartGenerator();
-    private final AbstractMonthLineChartGenerator lcgRNKretanjePreth = new LineChartGenerator();
+    private final AbstractMonthLineGenerator lcgRN = new LineGenerator();
+    private final AbstractMonthLineGenerator lcgRNKretanje = new LineGenerator();
+    private final AbstractMonthLineGenerator lcgRNKretanjePreth = new LineGenerator();
 
-    private final AbstractStackedBarChartGenerator bCSSavetnici1 = new StackedBarCategoryChartGenerator();
-    private final AbstractStackedBarChartGenerator bCSSavetnici2 = new StackedBarCategoryChartGenerator();
+    private final AbstractStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
+    private final AbstractStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum_bind;
@@ -142,11 +142,16 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         setName(Bundle.CTL_DinamikaRadnihSatiTopComponent());
         setToolTipText(Bundle.HINT_DinamikaRadnihSatiTopComponent());
 
+        // Print funkcionalnost
+        putClientProperty("print.printable", Boolean.TRUE);
+
+        setKalendarDatum(null);
+
         lcgRN.lineChartSetUpPanel(jPanel_UP);
-        lcgRN.setCSSStyle(CSSStyles.Style.RED_LINE);
+        lcgRN.setCSSStyle(CSSStyles.Style.GREEN_LINE);
 
         lcgRNKretanje.lineChartSetUpPanel(jPanel_MIDDLE_LEFT);
-        lcgRNKretanje.setCSSStyle(CSSStyles.Style.RED_LINE);
+        lcgRNKretanje.setCSSStyle(CSSStyles.Style.GREEN_LINE);
 
         lcgRNKretanjePreth.lineChartSetUpPanel(jPanel_MIDDLE_RIGHT);
         lcgRNKretanjePreth.setCSSStyle(CSSStyles.Style.YELLOW_LINE);
@@ -157,15 +162,13 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         bCSSavetnici2.lineChartSetUpPanel(jPanel_DOWN_RIGHT);
         bCSSavetnici2.setCSSStyle(CSSStyles.Style.RED_BAR);
 
-        setKalendarDatum(null);
-
         setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
 
         setFX_DinamikaFA(god, mesec, lcgRNKretanje);
         setFX_DinamikaFA_Preth(god, mesec, lcgRNKretanjePreth);
 
         setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici1);
-        setFX_FA_Mesec_SSavetnici_Performanse(god, mesec - 1, bCSSavetnici2);
+        setFX_FA_Mesec_SSavetnici_Performanse(mesec == 1 ? god - 1 : god, mesec == 1 ? mesec = 12 : mesec - 1, bCSSavetnici2);
     }
 
     /**
@@ -253,8 +256,9 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
                     for (String d1 : datumi) {
                         if (kalendarDatumIzmenjen) {
                             setKalendarDatum(d1);
-                            setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
 
+                            setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
+                            setFX_DinamikaFA(god, mesec, lcgRNKretanjePreth);
                             setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici2);
                         }
                     }
@@ -285,7 +289,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="setFX_Dinamika...">
-    private void setFX_DinamikaFA(int Godina, int Mesec, AbstractMonthLineChartGenerator lcg) {
+    private void setFX_DinamikaFA(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
         String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
         String ukSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
@@ -302,27 +306,25 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         }
     }
 
-    private void setFX_DinamikaFA_Preth(int Godina, int Mesec, AbstractMonthLineChartGenerator lcg) {
+    private void setFX_DinamikaFA_Preth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
         int m = (Mesec == 1 ? 12 : Mesec - 1);
         int g = (Mesec == 1 ? Godina - 1 : Godina);
 
         setFX_DinamikaFA(g, m, lcg);
     }
 
-    private void setFX_DinamikaFA_TekIPreth(int Godina, int Mesec, AbstractMonthLineChartGenerator lcg) {
+    private void setFX_DinamikaFA_TekIPreth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
 
         int m = (Mesec == 1 ? 12 : Mesec - 1);
         int g = (Mesec == 1 ? Godina - 1 : Godina);
 
-        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec)
-                + " " + String.valueOf(Godina);
+        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
         String tekUkSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
-        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(m)
-                + " " + String.valueOf(g);
+        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(m) + " " + String.valueOf(g);
         String prethUkSati = String.valueOf(",  Ukupno " + UKSati(g, m)) + " sati.";
 
-        lcg.setYAxisTitle("Uk. Fakturisano (h)");
+        lcg.setYAxisTitle("Fakturisano (h)");
         try {
             lcg.setUpSeries(
                     UKDnevnaFakturisanost(Godina, Mesec),
@@ -337,14 +339,14 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         }
     }
 
-    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarChartGenerator abc) {
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarGenerator asbg) {
 
         try {
-            abc.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec));
+            asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IDINFSYSTEM));
 
-            abc.setChartTitle("Učešće Servisnih Savetnika za " + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god) + ". godine");
-            abc.setSeriesTitles("Radovi", "Materijal");
-            abc.createFXObject();
+            asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god));
+            asbg.setSeriesTitles("Radovi", "Materijal");
+            asbg.createFXObject();
 
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);

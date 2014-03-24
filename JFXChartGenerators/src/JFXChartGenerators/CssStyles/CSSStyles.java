@@ -35,6 +35,9 @@ public class CSSStyles {
             case YELLOW_LINE:
                 CSSFile = "LCG_YELLOW.css";
                 break;
+            case GREEN_LINE:
+                CSSFile = "LCG_GREEN.css";
+                break;
             case RED_BAR:
                 CSSFile = "SBG_RED.css";
                 break;

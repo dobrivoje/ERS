@@ -17,7 +17,7 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class StackedBarCategoryChartGenerator extends AbstractStackedBarChartGenerator {
+public class StackedBarCategoryGenerator extends AbstractStackedBarGenerator {
 
     @Override
     protected StackedBarChart createCustomChart() {

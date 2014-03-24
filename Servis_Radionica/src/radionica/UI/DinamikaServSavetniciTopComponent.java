@@ -5,11 +5,11 @@
  */
 package radionica.UI;
 
+import INFSYS.Adapt.Kategorije;
 import INFSYS.Queries.INFSistemQuery;
-import JFXChartGenerators.AbstractBASEChartGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
-import JFXChartGenerators.StackedBars.AbstractStackedBarChartGenerator;
-import JFXChartGenerators.StackedBars.StackedBarCategoryChartGenerator;
+import JFXChartGenerators.StackedBars.AbstractStackedBarGenerator;
+import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.beans.PropertyChangeListener;
@@ -49,9 +49,9 @@ import org.openide.windows.WindowManager;
         preferredID = "DinamikaServSavetniciTopComponent"
 )
 @Messages({
-    "CTL_DinamikaServSavetniciAction=Performanse Servisnih Savetnika",
-    "CTL_DinamikaServSavetniciTopComponent=Performanse Servisnih Savetnika",
-    "HINT_DinamikaServSavetniciTopComponent=Performanse Servisnih Savetnika"
+    "CTL_DinamikaServSavetniciAction=Učešće Servisnih Savetnika",
+    "CTL_DinamikaServSavetniciTopComponent=Učešće Servisnih Savetnika",
+    "HINT_DinamikaServSavetniciTopComponent=Učešće Servisnih Savetnika"
 })
 public final class DinamikaServSavetniciTopComponent extends TopComponent {
 
@@ -61,8 +61,8 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
 
-    private final AbstractStackedBarChartGenerator bCSSavetnici1 = new StackedBarCategoryChartGenerator();
-    private final AbstractStackedBarChartGenerator bCSSavetnici2 = new StackedBarCategoryChartGenerator();
+    private final AbstractStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
+    private final AbstractStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum;
@@ -129,9 +129,12 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
 
     public DinamikaServSavetniciTopComponent() {
         initComponents();
-        setName(Bundle.CTL_DinamikaFinPoslovanjaServisaTopComponent());
-        setToolTipText(Bundle.HINT_DinamikaFinPoslovanjaServisaTopComponent());
+        setName(Bundle.CTL_DinamikaServSavetniciTopComponent());
+        setToolTipText(Bundle.HINT_DinamikaServSavetniciTopComponent());
 
+        // Print funkcionalnost
+        putClientProperty("print.printable", Boolean.TRUE);
+        
         setKalendarDatum(null);
 
         bCSSavetnici1.lineChartSetUpPanel(jPanel_Kompanija_UP);
@@ -183,7 +186,8 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     //<editor-fold defaultstate="collapsed" desc="UI Lookup">
     @Override
     public void componentOpened() {
-        kalendarLookup = WindowManager.getDefault()
+        kalendarLookup = WindowManager
+                .getDefault()
                 .findTopComponent("PretrazivacTopComponent")
                 .getLookup().lookupResult(String.class);
 
@@ -227,14 +231,14 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     }
     //</editor-fold>
 
-    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarChartGenerator abc) {
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarGenerator asbg) {
 
         try {
-            abc.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec));
+            asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IME_I_PREZIME));
 
-            abc.setChartTitle("Učešće Servisnih Savetnika za " + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god) + ". godine");
-            abc.setSeriesTitles("Radovi", "Materijal");
-            abc.createFXObject();
+            asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god));
+            asbg.setSeriesTitles("Radovi", "Materijal");
+            asbg.createFXObject();
 
         } catch (NullPointerException ex) {
             Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);

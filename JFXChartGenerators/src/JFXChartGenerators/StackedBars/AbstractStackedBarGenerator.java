@@ -14,7 +14,7 @@ import java.util.Set;
  *
  * @author root
  */
-public abstract class AbstractStackedBarChartGenerator
+public abstract class AbstractStackedBarGenerator
         extends AbstractBASEChartGenerator<String, Integer> {
 
     protected Set<String> categories;

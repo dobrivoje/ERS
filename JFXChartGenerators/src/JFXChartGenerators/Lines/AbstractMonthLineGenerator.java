@@ -11,6 +11,6 @@ import JFXChartGenerators.AbstractBASEChartGenerator;
  *
  * @author root
  */
-public abstract class AbstractMonthLineChartGenerator
+public abstract class AbstractMonthLineGenerator
         extends AbstractBASEChartGenerator<Integer, Integer> {
 }

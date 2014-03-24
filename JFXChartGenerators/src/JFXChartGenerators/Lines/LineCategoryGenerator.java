@@ -16,7 +16,7 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class LineCategoryChartGenerator extends AbstractBASEChartGenerator<String, Integer> {
+public class LineCategoryGenerator extends AbstractBASEChartGenerator<String, Integer> {
 
     @Override
     protected LineChart createCustomChart() {

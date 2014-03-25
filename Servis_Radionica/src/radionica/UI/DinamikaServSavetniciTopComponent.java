@@ -133,7 +133,8 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
         setToolTipText(Bundle.HINT_DinamikaServSavetniciTopComponent());
 
         // Print funkcionalnost
-        putClientProperty("print.printable", Boolean.TRUE);
+        // putClientProperty("print.printable", Boolean.TRUE);
+        // Nećemo, zaato što baš i nema smisla štampati :)
         
         setKalendarDatum(null);
 

@@ -61,6 +61,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
 
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
+    private int prethGod, prethMesec;
 
     private Lookup.Result<String> kalendarLookup;
     private LookupListener llKalendar;
@@ -106,8 +107,12 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
             }
 
             god = calendar.get(Calendar.YEAR);
-            // PAZI NA MESEC POÄŒINJE OD NULE !!!
+            // PAZI NA MESEC POČINJE OD NULE !!!
             mesec = 1 + calendar.get(Calendar.MONTH);
+
+            prethGod = (mesec == 1 ? god - 1 : god);
+            prethMesec = (mesec == 1 ? 12 : mesec - 1);
+
         } catch (ParseException ex) {
         }
 
@@ -165,10 +170,10 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
 
         setFX_DinamikaFA(god, mesec, lcgRNKretanje);
-        setFX_DinamikaFA_Preth(god, mesec, lcgRNKretanjePreth);
+        setFX_DinamikaFA(prethGod, prethMesec, lcgRNKretanjePreth);
 
         setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici1);
-        setFX_FA_Mesec_SSavetnici_Performanse(mesec == 1 ? god - 1 : god, mesec == 1 ? mesec = 12 : mesec - 1, bCSSavetnici2);
+        setFX_FA_Mesec_SSavetnici_Performanse(prethGod, prethMesec, bCSSavetnici2);
     }
 
     /**
@@ -306,29 +311,27 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         }
     }
 
-    private void setFX_DinamikaFA_Preth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
-        int m = (Mesec == 1 ? 12 : Mesec - 1);
-        int g = (Mesec == 1 ? Godina - 1 : Godina);
-
-        setFX_DinamikaFA(g, m, lcg);
-    }
-
+    /*
+     private void setFX_DinamikaFA_Preth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
+     int m = (Mesec == 1 ? 12 : Mesec - 1);
+     int g = (Mesec == 1 ? Godina - 1 : Godina);
+    
+     setFX_DinamikaFA(g, m, lcg);
+     }
+     */
     private void setFX_DinamikaFA_TekIPreth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
-
-        int m = (Mesec == 1 ? 12 : Mesec - 1);
-        int g = (Mesec == 1 ? Godina - 1 : Godina);
 
         String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
         String tekUkSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
-        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(m) + " " + String.valueOf(g);
-        String prethUkSati = String.valueOf(",  Ukupno " + UKSati(g, m)) + " sati.";
+        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(prethMesec) + " " + String.valueOf(prethGod);
+        String prethUkSati = String.valueOf(",  Ukupno " + UKSati(prethGod, prethMesec)) + " sati.";
 
         lcg.setYAxisTitle("Fakturisano (h)");
         try {
             lcg.setUpSeries(
                     UKDnevnaFakturisanost(Godina, Mesec),
-                    UKDnevnaFakturisanost(g, m)
+                    UKDnevnaFakturisanost(prethGod, prethMesec)
             );
 
             lcg.setChartTitle("Dinamika Radnih Sati");
@@ -344,7 +347,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         try {
             asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IDINFSYSTEM));
 
-            asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god));
+            asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina));
             asbg.setSeriesTitles("Radovi", "Materijal");
             asbg.createFXObject();
 

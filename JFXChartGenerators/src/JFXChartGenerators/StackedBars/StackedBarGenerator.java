@@ -16,7 +16,7 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class StackedBarCategoryGenerator extends AbstractCategoryStackedBarGenerator {
+public class StackedBarGenerator extends AbstractStackedBarGenerator {
 
     @Override
     protected StackedBarChart createCustomChart() {
@@ -42,12 +42,12 @@ public class StackedBarCategoryGenerator extends AbstractCategoryStackedBarGener
         int i = 0;
         XYChart.Series sTmp;
 
-        for (Map<String, Integer> s : FXSeriesMaps) {
+        for (Map<Integer, Integer> s : FXSeriesMaps) {
             sTmp = new XYChart.Series<>();
             sTmp.setName(FXSeriesMapTitles.get(i++));
 
-            for (Map.Entry<String, Integer> e : s.entrySet()) {
-                sTmp.getData().add(new XYChart.Data(e.getKey(), e.getValue()));
+            for (Map.Entry<Integer, Integer> e : s.entrySet()) {
+                sTmp.getData().add(new XYChart.Data(e.getKey() < 10 ? "0" + e.getKey().toString() : e.getKey().toString(), e.getValue()));
             }
 
             stackedBarChart.getData().add(sTmp);

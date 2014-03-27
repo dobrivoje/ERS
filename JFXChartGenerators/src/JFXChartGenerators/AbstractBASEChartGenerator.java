@@ -52,7 +52,7 @@ public abstract class AbstractBASEChartGenerator<T1, T2> {
         this.CSSStyle = CSSStyle;
     }
 
-    public void lineChartSetUpPanel(JPanel panelToEmbedFXObject) {
+    public void setUpChartPanel(JPanel panelToEmbedFXObject) {
         panelToEmbedFXObject.add(this.chartFxPanel, BorderLayout.CENTER);
     }
 

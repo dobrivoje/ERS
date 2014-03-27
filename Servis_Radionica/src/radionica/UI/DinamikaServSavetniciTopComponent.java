@@ -8,7 +8,7 @@ package radionica.UI;
 import INFSYS.Adapt.Kategorije;
 import INFSYS.Queries.INFSistemQuery;
 import JFXChartGenerators.CssStyles.CSSStyles;
-import JFXChartGenerators.StackedBars.AbstractStackedBarGenerator;
+import JFXChartGenerators.StackedBars.AbstractCategoryStackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
@@ -61,8 +61,8 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
 
-    private final AbstractStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
-    private final AbstractStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
+    private final AbstractCategoryStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
+    private final AbstractCategoryStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum;
@@ -138,9 +138,9 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
         
         setKalendarDatum(null);
 
-        bCSSavetnici1.lineChartSetUpPanel(jPanel_Kompanija_UP);
+        bCSSavetnici1.setUpChartPanel(jPanel_Kompanija_UP);
         bCSSavetnici1.setCSSStyle(CSSStyles.Style.RED_BAR);
-        bCSSavetnici2.lineChartSetUpPanel(jPanel_Kompanija_DOWN);
+        bCSSavetnici2.setUpChartPanel(jPanel_Kompanija_DOWN);
         bCSSavetnici2.setCSSStyle(CSSStyles.Style.RED_BAR);
 
         setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici1);
@@ -232,7 +232,7 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     }
     //</editor-fold>
 
-    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarGenerator asbg) {
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractCategoryStackedBarGenerator asbg) {
 
         try {
             asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IME_I_PREZIME));

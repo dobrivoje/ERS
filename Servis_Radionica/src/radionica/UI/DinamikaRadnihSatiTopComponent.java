@@ -12,7 +12,7 @@ import INFSYS.Queries.INFSistemQuery;
 import JFXChartGenerators.Lines.AbstractMonthLineGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.Lines.LineGenerator;
-import JFXChartGenerators.StackedBars.AbstractStackedBarGenerator;
+import JFXChartGenerators.StackedBars.AbstractCategoryStackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
@@ -70,8 +70,8 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     private final AbstractMonthLineGenerator lcgRNKretanje = new LineGenerator();
     private final AbstractMonthLineGenerator lcgRNKretanjePreth = new LineGenerator();
 
-    private final AbstractStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
-    private final AbstractStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
+    private final AbstractCategoryStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
+    private final AbstractCategoryStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum_bind;
@@ -152,19 +152,19 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
 
         setKalendarDatum(null);
 
-        lcgRN.lineChartSetUpPanel(jPanel_UP);
+        lcgRN.setUpChartPanel(jPanel_UP);
         lcgRN.setCSSStyle(CSSStyles.Style.GREEN_LINE);
 
-        lcgRNKretanje.lineChartSetUpPanel(jPanel_MIDDLE_LEFT);
+        lcgRNKretanje.setUpChartPanel(jPanel_MIDDLE_LEFT);
         lcgRNKretanje.setCSSStyle(CSSStyles.Style.GREEN_LINE);
 
-        lcgRNKretanjePreth.lineChartSetUpPanel(jPanel_MIDDLE_RIGHT);
+        lcgRNKretanjePreth.setUpChartPanel(jPanel_MIDDLE_RIGHT);
         lcgRNKretanjePreth.setCSSStyle(CSSStyles.Style.YELLOW_LINE);
 
-        bCSSavetnici1.lineChartSetUpPanel(jPanel_DOWN_LEFT);
+        bCSSavetnici1.setUpChartPanel(jPanel_DOWN_LEFT);
         bCSSavetnici1.setCSSStyle(CSSStyles.Style.RED_BAR);
 
-        bCSSavetnici2.lineChartSetUpPanel(jPanel_DOWN_RIGHT);
+        bCSSavetnici2.setUpChartPanel(jPanel_DOWN_RIGHT);
         bCSSavetnici2.setCSSStyle(CSSStyles.Style.RED_BAR);
 
         setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
@@ -342,7 +342,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         }
     }
 
-    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractStackedBarGenerator asbg) {
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractCategoryStackedBarGenerator asbg) {
 
         try {
             asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IDINFSYSTEM));

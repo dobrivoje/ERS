@@ -12,8 +12,6 @@ import JFXChartGenerators.StackedBars.AbstractStackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -61,6 +59,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
     private int prethGod, prethMesec;
+    private boolean godIzmenjen, mesecIzmenjen;
 
     private final AbstractStackedBarGenerator sbFinDinamikaTekMesec = new StackedBarGenerator();
     private final AbstractStackedBarGenerator sbFinDinamikaPrethMesec = new StackedBarGenerator();
@@ -70,69 +69,37 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum_bind;
 
-    public static final String PROP_KALENDAR_BIND = "kalendar_bind";
-    private boolean kalendarDatumIzmenjen;
-
-    /**
-     * Get the value of kalendarDatum_bind
-     *
-     * @return the value of kalendarDatum_bind
-     */
     public String getKalendarDatum() {
         return kalendarDatum_bind;
     }
 
-    /**
-     * Set the value of kalendarDatum_bind
-     *
-     * @param kalendar new value of kalendarDatum_bind
-     */
     public void setKalendarDatum(String kalendar) {
-        String oldKalendar_bind = this.kalendarDatum_bind;
         this.kalendarDatum_bind = kalendar;
 
         try {
-            if (kalendar == null) {
-                calendar.setTime(new Date());
-                kalendarDatumIzmenjen = true;
+            calendar.setTime(
+                    kalendar == null
+                    ? new Date() : new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+
+            if (calendar.get(Calendar.YEAR) != god) {
+                godIzmenjen = true;
+                god = calendar.get(Calendar.YEAR);
             } else {
-                calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
-                kalendarDatumIzmenjen = calendar.getTime() != (new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+                godIzmenjen = false;
             }
 
-            god = calendar.get(Calendar.YEAR);
-            // PAZI NA MESEC POČINJE OD NULE !!!
-            mesec = 1 + calendar.get(Calendar.MONTH);
+            if (1 + calendar.get(Calendar.MONTH) != mesec) {
+                mesecIzmenjen = true;
+                mesec = 1 + calendar.get(Calendar.MONTH);
+            } else {
+                mesecIzmenjen = false;
+            }
 
             prethGod = (mesec == 1 ? god - 1 : god);
             prethMesec = (mesec == 1 ? 12 : mesec - 1);
 
         } catch (ParseException ex) {
         }
-
-        propertyChangeSupport.firePropertyChange(PROP_KALENDAR_BIND, oldKalendar_bind, kalendar);
-    }
-
-    private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
     }
     //</editor-fold>
 
@@ -209,6 +176,7 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     private javax.swing.JPanel jPanel_Kompanija_UP;
     private javax.swing.JPanel jPanel_Kompanija_UP_MIDDLE;
     // End of variables declaration//GEN-END:variables
+
     //<editor-fold defaultstate="collapsed" desc="UI Lookup">
     @Override
     public void componentOpened() {
@@ -259,32 +227,36 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     //</editor-fold>
 
     private void setFX_FA_DnevnoRadoviMaterijal(int Godina, int Mesec, AbstractStackedBarGenerator sb) {
-        try {
-            sb.setUpSeries(Mesec_DnevnoFA_UK_Serije(Godina, Mesec));
+        if (godIzmenjen || mesecIzmenjen) {
+            try {
+                sb.setUpSeries(Mesec_DnevnoFA_UK_Serije(Godina, Mesec));
 
-            sb.setChartTitle("Finansijska Dinamika Servisa za " + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina) + ". godine");
-            sb.setSeriesTitles("Radovi", "Materijal");
-            sb.createFXObject();
+                sb.setChartTitle("Finansijska Dinamika Servisa za " + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina) + ". godine");
+                sb.setSeriesTitles("Radovi", "Materijal");
+                sb.createFXObject();
 
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-        } catch (Exception e) {
-            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (NullPointerException ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
         }
     }
 
     private void setFX_KretanjeRN_FinAspekt(int Godina, AbstractStackedBarGenerator sb) {
-        try {
-            sb.setUpSeries(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
+        if (godIzmenjen) {
+            try {
+                sb.setUpSeries(finansijskiAspekt_GodisnjiPregled_RadMat(Godina));
 
-            sb.setChartTitle("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
-            sb.setSeriesTitles("Radovi", "Delovi");
-            sb.createFXObject();
+                sb.setChartTitle("Finansijska Dinamika Servisa za " + String.valueOf(Godina) + " Godinu");
+                sb.setSeriesTitles("Radovi", "Delovi");
+                sb.createFXObject();
 
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-        } catch (Exception e) {
-            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (NullPointerException ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
         }
     }
 }

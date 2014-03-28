@@ -11,6 +11,7 @@ import ent.Radnik;
 import org.netbeans.spi.quicksearch.SearchProvider;
 import org.netbeans.spi.quicksearch.SearchRequest;
 import org.netbeans.spi.quicksearch.SearchResponse;
+import org.openide.awt.StatusDisplayer;
 import org.openide.util.lookup.ServiceProvider;
 
 @ServiceProvider(service = IRadnik.class)
@@ -33,6 +34,7 @@ public class QS_ManagementRadnika implements SearchProvider, IRadnik {
                 }
             }
         } catch (NullPointerException npe) {
+            StatusDisplayer.getDefault().setStatusText("Greška u pretraživanju. " + npe.getMessage());
         }
     }
 

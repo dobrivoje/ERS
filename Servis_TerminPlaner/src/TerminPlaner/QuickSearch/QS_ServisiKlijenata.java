@@ -45,22 +45,23 @@ public class QS_ServisiKlijenata implements SearchProvider, ISifra {
 
     private static class RezultatPretrage implements Runnable {
 
-        private static Sifarnik sifra;
-        private final String topComponentID;
+        private final Sifarnik sifra;
+        private static String topComponentID;
 
         public RezultatPretrage(Sifarnik sifra, String topComponentID) {
-            RezultatPretrage.sifra = sifra;
-            this.topComponentID = topComponentID;
+            this.sifra = sifra;
+            RezultatPretrage.topComponentID = topComponentID;
         }
 
         @Override
         public void run() {
             try {
-                QS_ServisiKlijenata.sifra = sifra;
-
-                OpenTopComponent(this.topComponentID);
-            } catch (NullPointerException npe) {
-                Display.obavestenjeBaloncic("Greška.", npe.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+                QS_ServisiKlijenata.sifra = this.sifra;
+                OpenTopComponent(RezultatPretrage.topComponentID);
+            } catch (NullPointerException e) {
+                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
             }
         }
     }

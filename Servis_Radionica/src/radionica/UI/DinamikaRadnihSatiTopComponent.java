@@ -16,8 +16,6 @@ import JFXChartGenerators.StackedBars.AbstractCategoryStackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -62,6 +60,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
     private int prethGod, prethMesec;
+    private boolean godIzmenjen, mesecIzmenjen;
 
     private Lookup.Result<String> kalendarLookup;
     private LookupListener llKalendar;
@@ -76,69 +75,37 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum_bind;
 
-    public static final String PROP_KALENDAR_BIND = "kalendar_bind";
-    private boolean kalendarDatumIzmenjen;
-
-    /**
-     * Get the value of kalendarDatum_bind
-     *
-     * @return the value of kalendarDatum_bind
-     */
     public String getKalendarDatum() {
         return kalendarDatum_bind;
     }
 
-    /**
-     * Set the value of kalendarDatum_bind
-     *
-     * @param kalendar new value of kalendarDatum_bind
-     */
     public void setKalendarDatum(String kalendar) {
-        String oldKalendar_bind = this.kalendarDatum_bind;
         this.kalendarDatum_bind = kalendar;
 
         try {
-            if (kalendar == null) {
-                calendar.setTime(new Date());
-                kalendarDatumIzmenjen = true;
+            calendar.setTime(
+                    kalendar == null
+                    ? new Date() : new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+
+            if (calendar.get(Calendar.YEAR) != god) {
+                godIzmenjen = true;
+                god = calendar.get(Calendar.YEAR);
             } else {
-                calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
-                kalendarDatumIzmenjen = calendar.getTime() != (new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+                godIzmenjen = false;
             }
 
-            god = calendar.get(Calendar.YEAR);
-            // PAZI NA MESEC POČINJE OD NULE !!!
-            mesec = 1 + calendar.get(Calendar.MONTH);
+            if (1 + calendar.get(Calendar.MONTH) != mesec) {
+                mesecIzmenjen = true;
+                mesec = 1 + calendar.get(Calendar.MONTH);
+            } else {
+                mesecIzmenjen = false;
+            }
 
             prethGod = (mesec == 1 ? god - 1 : god);
             prethMesec = (mesec == 1 ? 12 : mesec - 1);
 
         } catch (ParseException ex) {
         }
-
-        propertyChangeSupport.firePropertyChange(PROP_KALENDAR_BIND, oldKalendar_bind, kalendar);
-    }
-
-    private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
     }
     //</editor-fold>
 
@@ -259,13 +226,11 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
 
                 if (!datumi.isEmpty()) {
                     for (String d1 : datumi) {
-                        if (kalendarDatumIzmenjen) {
-                            setKalendarDatum(d1);
+                        setKalendarDatum(d1);
 
-                            setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
-                            setFX_DinamikaFA(god, mesec, lcgRNKretanjePreth);
-                            setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici2);
-                        }
+                        setFX_DinamikaFA_TekIPreth(god, mesec, lcgRN);
+                        setFX_DinamikaFA(god, mesec, lcgRNKretanjePreth);
+                        setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici2);
                     }
                 }
             }
@@ -295,66 +260,62 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
 
     //<editor-fold defaultstate="collapsed" desc="setFX_Dinamika...">
     private void setFX_DinamikaFA(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
-        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
-        String ukSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
+        if (godIzmenjen || mesecIzmenjen) {
+            String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
+            String ukSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
-        lcg.setYAxisTitle("Uk. Fakturisano (h)");
+            lcg.setYAxisTitle("Uk. Fakturisano (h)");
 
-        try {
-            lcg.setUpSeries(UKDnevnaFakturisanost(Godina, Mesec));
+            try {
+                lcg.setUpSeries(UKDnevnaFakturisanost(Godina, Mesec));
 
-            lcg.setChartTitle("Dinamika Radnih Sati");
-            lcg.setSeriesTitles(tekMesGod + ukSati);
-            lcg.createFXObject();
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+                lcg.setChartTitle("Dinamika Radnih Sati");
+                lcg.setSeriesTitles(tekMesGod + ukSati);
+                lcg.createFXObject();
+            } catch (NullPointerException ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
         }
     }
 
-    /*
-     private void setFX_DinamikaFA_Preth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
-     int m = (Mesec == 1 ? 12 : Mesec - 1);
-     int g = (Mesec == 1 ? Godina - 1 : Godina);
-    
-     setFX_DinamikaFA(g, m, lcg);
-     }
-     */
     private void setFX_DinamikaFA_TekIPreth(int Godina, int Mesec, AbstractMonthLineGenerator lcg) {
+        if (godIzmenjen || mesecIzmenjen) {
+            String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
+            String tekUkSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
 
-        String tekMesGod = SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina);
-        String tekUkSati = String.valueOf(",  Ukupno " + UKSati(Godina, Mesec)) + " sati.";
+            String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(prethMesec) + " " + String.valueOf(prethGod);
+            String prethUkSati = String.valueOf(",  Ukupno " + UKSati(prethGod, prethMesec)) + " sati.";
 
-        String prethMesGod = SrpskiKalendar.getMesecNazivLatinica(prethMesec) + " " + String.valueOf(prethGod);
-        String prethUkSati = String.valueOf(",  Ukupno " + UKSati(prethGod, prethMesec)) + " sati.";
+            lcg.setYAxisTitle("Fakturisano (h)");
+            try {
+                lcg.setUpSeries(
+                        UKDnevnaFakturisanost(Godina, Mesec),
+                        UKDnevnaFakturisanost(prethGod, prethMesec)
+                );
 
-        lcg.setYAxisTitle("Fakturisano (h)");
-        try {
-            lcg.setUpSeries(
-                    UKDnevnaFakturisanost(Godina, Mesec),
-                    UKDnevnaFakturisanost(prethGod, prethMesec)
-            );
-
-            lcg.setChartTitle("Dinamika Radnih Sati");
-            lcg.setSeriesTitles((tekMesGod + tekUkSati), (prethMesGod + prethUkSati));
-            lcg.createFXObject();
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+                lcg.setChartTitle("Dinamika Radnih Sati");
+                lcg.setSeriesTitles((tekMesGod + tekUkSati), (prethMesGod + prethUkSati));
+                lcg.createFXObject();
+            } catch (NullPointerException ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
         }
     }
 
     private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractCategoryStackedBarGenerator asbg) {
+        if (godIzmenjen || mesecIzmenjen) {
+            try {
+                asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IDINFSYSTEM));
 
-        try {
-            asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IDINFSYSTEM));
+                asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina));
+                asbg.setSeriesTitles("Radovi", "Materijal");
+                asbg.createFXObject();
 
-            asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina));
-            asbg.setSeriesTitles("Radovi", "Materijal");
-            asbg.createFXObject();
-
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-        } catch (Exception e) {
-            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (NullPointerException ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
         }
     }
     //</editor-fold>

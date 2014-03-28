@@ -212,7 +212,7 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         this.radnik_bind = radnik_bind;
         propertyChangeSupport.firePropertyChange(PROP_RADNIK_BIND, oldRadnik_bind, radnik_bind);
     }
-//</editor-fold>
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="TipRadnika Bind">
     private TipRadnika tipRadnika_bind;
@@ -1331,9 +1331,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         } catch (Exception e) {
             Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
         }
-    }
-
-    private void firmaInsertUpdate(boolean insert) {
     }//GEN-LAST:event_jButton_FIRMA_IzmenaPodatakaActionPerformed
 
     private void jButton_RADNIK_NoviActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RADNIK_NoviActionPerformed
@@ -1356,9 +1353,6 @@ public final class ManagementPodatakaTopComponent extends TopComponent
         } catch (Exception e) {
             Display.obavestenjeBaloncic("Greška.", e.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
         }
-    }
-
-    private void radnikInsertUpdate(boolean insert) {
     }//GEN-LAST:event_jButton_RADNIK_NoviActionPerformed
 
     private void jButton_RADNIK_IzmenaPodatakaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_RADNIK_IzmenaPodatakaActionPerformed

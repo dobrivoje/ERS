@@ -21,7 +21,11 @@ import static com.dobrivoje.utilities.warnings.Display.TIP_OBAVESTENJA.GRESKA;
 import ent.infsistem.Nald001;
 import ent.infsistem.Sifarnik;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.NoResultException;
@@ -70,11 +74,9 @@ import org.openide.windows.WindowManager;
 public final class RadoviNaAutomobiluTopComponent extends TopComponent
         implements ExplorerManager.Provider, LookupListener, INodeIconRenderer {
 
-    private String datum_bind;
-    private Nald001 nalog_bind;
-    private Sifarnik sifra_bind;
     private DatumSelektor ds;
-    //
+    private final Calendar calendar = Calendar.getInstance();
+
     private Lookup.Result<String> odabraniDatum;
     private Lookup.Result<Nald001> odabraniNalog;
     private Lookup.Result<Sifarnik> odabranaSifra;
@@ -84,7 +86,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
     private LookupListener ll_nalog;
     private LookupListener ll_sifra;
     private LookupListener ll_ds;
-    //
+
     private AbstractNode RNRoot;
     private RadniNaloziZaSasijuChildFactory RNSChildFactory;
     private RadniNaloziZaDatumChildFactory RNDChildFactory;
@@ -92,12 +94,109 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
     private SifarnikChildFactory SChildFactory;
     //
     private VozilaKlijentaChildFactory VKChildFactory;
-    //
     private RN_Faktura_ChildFactory rnfChildFactory;
-    //
+
     private static final ExplorerManager em = new ExplorerManager();
-    //
+
     private final IconRenderer iconRenderer = IconRenderer.getDefault();
+
+    //<editor-fold defaultstate="collapsed" desc="Sifarnik bind">
+    private Sifarnik sifra_bind;
+
+    public static final String PROP_SIFRA_BIND = "sifra_bind";
+
+    /**
+     * Get the value of sifra_bind
+     *
+     * @return the value of sifra_bind
+     */
+    public Sifarnik getSifra_bind() {
+        return sifra_bind;
+    }
+
+    /**
+     * Set the value of sifra_bind
+     *
+     * @param sifra_bind new value of sifra_bind
+     */
+    public void setSifra_bind(Sifarnik sifra_bind) {
+        Sifarnik oldSifra_bind = this.sifra_bind;
+        this.sifra_bind = sifra_bind;
+        propertyChangeSupport.firePropertyChange(PROP_SIFRA_BIND, oldSifra_bind, sifra_bind);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Nalog bind">
+    private Nald001 nalog_bind;
+
+    /**
+     * Get the value of nalog_bind
+     *
+     * @return the value of nalog_bind
+     */
+    public Nald001 getNalog_bind1() {
+        return nalog_bind;
+    }
+
+    /**
+     * Set the value of nalog_bind1
+     *
+     * @param nalog_bind1 new value of nalog_bind1
+     */
+    public void setNalog_bind(Nald001 nalog_bind) {
+        this.nalog_bind = nalog_bind;
+    }
+
+    private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
+
+    /**
+     * Add PropertyChangeListener.
+     *
+     * @param listener
+     */
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    /**
+     * Remove PropertyChangeListener.
+     *
+     * @param listener
+     */
+    @Override
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.removePropertyChangeListener(listener);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
+    private String kalendarDatum_bind;
+
+    public final String PROP_KALENDAR = "kalendar";
+
+    public String getKalendarDatum() {
+        return kalendarDatum_bind;
+    }
+
+    public void setKalendarDatum(String kalendar) {
+        String oldKalendar = this.kalendarDatum_bind;
+        this.kalendarDatum_bind = kalendar;
+
+        try {
+            if (kalendar == null) {
+                calendar.setTime(new Date());
+                kalendarDatum_bind = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            } else {
+                calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+                kalendarDatum_bind = kalendar;
+            }
+        } catch (ParseException ex) {
+        }
+
+        propertyChangeSupport.firePropertyChange(PROP_KALENDAR, oldKalendar, kalendar);
+    }
+    //</editor-fold>
 
     public RadoviNaAutomobiluTopComponent() {
         initComponents();
@@ -106,8 +205,9 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
         associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
 
-        datum_bind = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        RN_ZA_DATUM_Refresh(datum_bind);
+        // kalendarDatum_bind = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        setKalendarDatum(null);
+        RN_ZA_DATUM_Refresh(kalendarDatum_bind);
     }
 
     //<editor-fold defaultstate="collapsed" desc="Node Factories">
@@ -1265,15 +1365,15 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 Collection<String> datumi = lr.allInstances();
 
                 for (String d : datumi) {
-                    if (!datum_bind.equals(d)) {
-                        datum_bind = d;
-                        RN_ZA_DATUM_Refresh(datum_bind);
-                    }
+                    setKalendarDatum(d);
+                    RN_ZA_DATUM_Refresh(kalendarDatum_bind);
                 }
             }
         };
         odabraniDatum.addLookupListener(ll_datum);
 
+        
+        
         odabranaSifra = Utilities.actionsGlobalContext().lookupResult(Sifarnik.class);
         ll_sifra = new LookupListener() {
             @Override
@@ -1283,7 +1383,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
                 if (!sifre.isEmpty()) {
                     for (Sifarnik n : sifre) {
-                        sifra_bind = n;
+                        setSifra_bind(n);
                     }
 
                     clearUIComponents();
@@ -1291,9 +1391,10 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 }
             }
         };
-
         odabranaSifra.addLookupListener(ll_sifra);
 
+        
+        
         odabraniNalog = WindowManager
                 .getDefault()
                 .findTopComponent("RadoviNaAutomobiluTopComponent")
@@ -1308,7 +1409,7 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
 
                 if (!nalozi.isEmpty()) {
                     for (Nald001 n : nalozi) {
-                        nalog_bind = n;
+                        setNalog_bind(n);
                     }
 
                     try {
@@ -1348,7 +1449,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 }
             }
         };
-
         odabraniNalog.addLookupListener(ll_nalog);
 
         odabraniDatumi = WindowManager
@@ -1369,7 +1469,6 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
                 }
             }
         };
-
         odabraniDatumi.addLookupListener(ll_ds);
     }
 
@@ -1387,8 +1486,8 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
         odabraniDatumi.removeLookupListener(ll_ds);
         odabraniDatumi = null;
     }
-
     //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Auto generated">
     void writeProperties(java.util.Properties p) {
         // better to version settings since initial version as advocated at
@@ -1483,7 +1582,8 @@ public final class RadoviNaAutomobiluTopComponent extends TopComponent
         ISifra is = Lookup.getDefault().lookup(ISifra.class);
 
         if (is.getSifra() != null) {
-            sifra_bind = is.getSifra();
+            Sifarnik s = is.getSifra();
+            setSifra_bind(s);
 
             jRadioButton_PoSifriKlijenta.setSelected(true);
             jTextField_PojamZaPretragu.setText(Integer.toString(sifra_bind.getKupac()));

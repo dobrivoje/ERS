@@ -12,8 +12,6 @@ import JFXChartGenerators.StackedBars.AbstractCategoryStackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -60,70 +58,46 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
 
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
+    private int prethGod, prethMesec;
+    private boolean godIzmenjen, mesecIzmenjen;
 
     private final AbstractCategoryStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
     private final AbstractCategoryStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
-    private String kalendarDatum;
+    private String kalendarDatum_bind;
 
-    public static final String PROP_KALENDAR_BIND = "kalendar_bind";
-
-    /**
-     * Get the value of kalendarDatum_bind
-     *
-     * @return the value of kalendarDatum_bind
-     */
     public String getKalendarDatum() {
-        return kalendarDatum;
+        return kalendarDatum_bind;
     }
 
-    /**
-     * Set the value of kalendarDatum_bind
-     *
-     * @param kalendar new value of kalendarDatum_bind
-     */
     public void setKalendarDatum(String kalendar) {
-        String oldKalendar_bind = this.kalendarDatum;
-        this.kalendarDatum = kalendar;
+        this.kalendarDatum_bind = kalendar;
 
         try {
-            if (kalendar == null) {
-                calendar.setTime(new Date());
+            calendar.setTime(
+                    kalendar == null
+                    ? new Date() : new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+
+            if (calendar.get(Calendar.YEAR) != god) {
+                godIzmenjen = true;
+                god = calendar.get(Calendar.YEAR);
             } else {
-                calendar.setTime(new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+                godIzmenjen = false;
             }
 
-            god = calendar.get(Calendar.YEAR);
+            if (1 + calendar.get(Calendar.MONTH) != mesec) {
+                mesecIzmenjen = true;
+                mesec = 1 + calendar.get(Calendar.MONTH);
+            } else {
+                mesecIzmenjen = false;
+            }
 
-            // PAZI NA MESEC POČINJE OD NULE !!!
-            mesec = 1 + calendar.get(Calendar.MONTH);
+            prethGod = (mesec == 1 ? god - 1 : god);
+            prethMesec = (mesec == 1 ? 12 : mesec - 1);
+
         } catch (ParseException ex) {
         }
-
-        propertyChangeSupport.firePropertyChange(PROP_KALENDAR_BIND, oldKalendar_bind, kalendar);
-    }
-
-    private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
-
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
-    @Override
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
-    @Override
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.removePropertyChangeListener(listener);
     }
     //</editor-fold>
 
@@ -135,7 +109,6 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
         // Print funkcionalnost
         // putClientProperty("print.printable", Boolean.TRUE);
         // Nećemo, zaato što baš i nema smisla štampati :)
-        
         setKalendarDatum(null);
 
         bCSSavetnici1.setUpChartPanel(jPanel_Kompanija_UP);
@@ -144,7 +117,7 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
         bCSSavetnici2.setCSSStyle(CSSStyles.Style.RED_BAR);
 
         setFX_FA_Mesec_SSavetnici_Performanse(god, mesec, bCSSavetnici1);
-        setFX_FA_Mesec_SSavetnici_Performanse(mesec == 1 ? god - 1 : god, mesec == 12 ? mesec - 1 : mesec, bCSSavetnici2);
+        setFX_FA_Mesec_SSavetnici_Performanse(prethGod, prethMesec, bCSSavetnici2);
     }
 
     /**
@@ -184,6 +157,7 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     private javax.swing.JPanel jPanel_Kompanija_DOWN;
     private javax.swing.JPanel jPanel_Kompanija_UP;
     // End of variables declaration//GEN-END:variables
+
     //<editor-fold defaultstate="collapsed" desc="UI Lookup">
     @Override
     public void componentOpened() {
@@ -207,7 +181,6 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
                 }
             }
         };
-
         kalendarLookup.addLookupListener(ll);
     }
 
@@ -233,18 +206,19 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
     //</editor-fold>
 
     private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractCategoryStackedBarGenerator asbg) {
+        if (godIzmenjen || mesecIzmenjen) {
+            try {
+                asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IME_I_PREZIME));
 
-        try {
-            asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IME_I_PREZIME));
+                asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina));
+                asbg.setSeriesTitles("Radovi", "Materijal");
+                asbg.createFXObject();
 
-            asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(mesec) + " " + String.valueOf(god));
-            asbg.setSeriesTitles("Radovi", "Materijal");
-            asbg.createFXObject();
-
-        } catch (NullPointerException ex) {
-            Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
-        } catch (Exception e) {
-            Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (NullPointerException ex) {
+                Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            } catch (Exception e) {
+                Display.obavestenjeBaloncic("Greška.", e.toString(), Display.TIP_OBAVESTENJA.GRESKA);
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ import JFXChartGenerators.CssStyles.CSSStyles;
 import java.awt.BorderLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -27,10 +28,17 @@ import javax.swing.JPanel;
  */
 public abstract class AbstractBASEChartGenerator<T1, T2> {
 
+    private static final Calendar c = Calendar.getInstance();
+    private static int lastDayOfMonth;
+
     protected Scene scene;
     protected CSSStyles.Style CSSStyle;
 
     protected List<Map<T1, T2>> FXSeriesMaps;
+    // FXSeriesMapsMaxXAxis : Ako imamo više serija, na X osi se može dogoditi da se prikaže
+    // manje podataka u npr. drugoj nego u prvoj seriji ! Zato moramo obezbediti da se prikaže
+    // maksimum !
+    protected int FXSeriesMapsMaxXAxis;
     protected List<String> FXSeriesMapTitles;
 
     protected String ChartTite;
@@ -41,6 +49,21 @@ public abstract class AbstractBASEChartGenerator<T1, T2> {
     protected final JFXPanel chartFxPanel;
 
     protected List<XYChart.Series> fxSeries;
+
+    protected int getFXSeriesMapsMaxXAxis() {
+        for (Map<T1, T2> s : FXSeriesMaps) {
+            // Ako ima više serija, moramo uzeti max vrednost na X osi, da bi se prikazale sve vrednosti !
+            FXSeriesMapsMaxXAxis = Math.max(FXSeriesMapsMaxXAxis, s.entrySet().size());
+        }
+        return FXSeriesMapsMaxXAxis;
+    }
+
+    public static int getLastDayOfMonth(int year, int month) {
+        c.set(year, month - 1, 1);
+        lastDayOfMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        return lastDayOfMonth;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Init, getters/setters">
     public AbstractBASEChartGenerator() {

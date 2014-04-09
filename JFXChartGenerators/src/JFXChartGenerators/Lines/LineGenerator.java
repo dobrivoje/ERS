@@ -6,6 +6,7 @@
 package JFXChartGenerators.Lines;
 
 import java.util.Map;
+import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -19,11 +20,11 @@ public class LineGenerator extends AbstractMonthLineGenerator {
     @Override
     protected LineChart createCustomChart() {
         // Obavezno generiši onoliko podeljaka na X osi 
-        // koliko ih ima KAKSIMALNO u seriji,a to je ovde 31.
-        // Ako treba dinaički da se menja pogledaj ispod kako 
-        // da postaviš !
-        final NumberAxis xAxis = new NumberAxis(1, 31, 1);
+        // koliko ih ima MAKSIMALNO u seriji,a to je ovde 31.
+
+        final NumberAxis xAxis = new NumberAxis(1, 27, 1);
         final NumberAxis yAxis = new NumberAxis();
+        FXSeriesMapsMaxXAxis = 31;
 
         final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
@@ -45,12 +46,9 @@ public class LineGenerator extends AbstractMonthLineGenerator {
         XYChart.Series sTmp;
 
         for (Map<Integer, Integer> s : FXSeriesMaps) {
+
             sTmp = new XYChart.Series<>();
             sTmp.setName(FXSeriesMapTitles.get(i++));
-
-            // OVO JE TRIK KOJI DINAMIČKI ODREĐUJE DUŽINU X-OSE !!!
-            // JEEEEEEEEEEEEEEEEEEE !!!
-            xAxis.setUpperBound(s.entrySet().size());
 
             for (Map.Entry<Integer, Integer> e : s.entrySet()) {
                 sTmp.getData().add(new XYChart.Data(e.getKey(), e.getValue()));
@@ -59,6 +57,25 @@ public class LineGenerator extends AbstractMonthLineGenerator {
             lineChart.getData().add(sTmp);
         }
 
+        xAxis.setUpperBound(getFXSeriesMapsMaxXAxis());
+
         return lineChart;
+    }
+
+    private void paint(int serija, String color) {
+        for (Node n : chart.lookupAll(".default-color" + Integer.toString(serija) + ".chart-series-line")) {
+            n.setStyle("-fx-stroke: #" + color + ";");
+        }
+        
+        for (Node n : chart.lookupAll(".default-color" + Integer.toString(serija) + ".chart-line-symbol")) {
+            n.setStyle("-fx-background-color: #" + color + ", white;");
+        }
+    }
+
+    @Override
+    protected void createScene() {
+        super.createScene();
+        paint(0, "11FF33");
+        paint(1, "FF33AA");
     }
 }

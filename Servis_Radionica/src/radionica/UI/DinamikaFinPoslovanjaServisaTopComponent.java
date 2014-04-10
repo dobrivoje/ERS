@@ -63,7 +63,6 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
 
     private final AbstractStackedBarGenerator sbFinDinamikaTekMesec = new StackedBarGenerator();
     private final AbstractStackedBarGenerator sbFinDinamikaPrethMesec = new StackedBarGenerator();
-
     private final AbstractStackedBarGenerator sbFinAspektTekGod = new StackedBarGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">

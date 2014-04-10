@@ -13,8 +13,10 @@ import java.util.Set;
 /**
  *
  * @author root
+ * Kategorija može biti na i na X i na Y osi !!!
+ * FXSeriesMaps je UVEK u formi <String, Integer>
  */
-public abstract class AbstractCategoryStackedBarGenerator
+public abstract class AbstractCategory_StackedBarGenerator
         extends AbstractBASEChartGenerator<String, Integer> {
 
     protected Set<String> categories;

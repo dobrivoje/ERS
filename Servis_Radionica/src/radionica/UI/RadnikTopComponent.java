@@ -69,52 +69,36 @@ public final class RadnikTopComponent extends TopComponent
     private Lookup.Result<Radnik> odabraniRadnici = null;
     private Lookup.Result<String> odabraniDatum = null;
 
+    private LookupListener llOdabraneFirme;
+    private LookupListener llOdabraneOrgJed;
+    private LookupListener llOdabraniRadnici;
+    private LookupListener llOdabraniDatum;
+
     // pomoćne varijable
     //<editor-fold defaultstate="collapsed" desc="Firma Bind">
     private Firma firma_bind;
-
     public static final String PROP_FIRMA_BIND = "firma_bind";
 
-    /**
-     * Get the value of firma_bind
-     *
-     * @return the value of firma_bind
-     */
     public Firma getFirma_bind() {
         return firma_bind;
     }
 
-    /**
-     * Set the value of firma_bind
-     *
-     * @param firma_bind new value of firma_bind
-     */
     public void setFirma_bind(Firma firma_bind) {
         Firma oldFirma_bind = this.firma_bind;
         this.firma_bind = firma_bind;
         propertyChangeSupport.firePropertyChange(PROP_FIRMA_BIND, oldFirma_bind, firma_bind);
     }
-//</editor-fold>
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="OrgJed Bind">
     private Orgjed orgJed_bind;
 
     public static final String PROP_ORGJED_BIND = "orgJed_bind";
 
-    /**
-     * Get the value of orgJed_bind
-     *
-     * @return the value of orgJed_bind
-     */
     public Orgjed getOrgJed_bind() {
         return orgJed_bind;
     }
 
-    /**
-     * Set the value of orgJed_bind
-     *
-     * @param orgJed_bind new value of orgJed_bind
-     */
     public void setOrgJed_bind(Orgjed orgJed_bind) {
         Orgjed oldOrgJed_bind = this.orgJed_bind;
         this.orgJed_bind = orgJed_bind;
@@ -123,46 +107,26 @@ public final class RadnikTopComponent extends TopComponent
 
     private transient final PropertyChangeSupport propertyChangeSupport = new PropertyChangeSupport(this);
 
-    /**
-     * Add PropertyChangeListener.
-     *
-     * @param listener
-     */
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
-    /**
-     * Remove PropertyChangeListener.
-     *
-     * @param listener
-     */
     @Override
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         propertyChangeSupport.removePropertyChangeListener(listener);
     }
-//</editor-fold>
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Radnik Bind">
     private Radnik radnik_bind;
 
     public static final String PROP_RADNIK_BIND = "radnik_bind";
 
-    /**
-     * Get the value of radnik_bind
-     *
-     * @return the value of radnik_bind
-     */
     public Radnik getRadnik_bind() {
         return radnik_bind;
     }
 
-    /**
-     * Set the value of radnik_bind
-     *
-     * @param radnik_bind new value of radnik_bind
-     */
     public void setRadnik_bind(Radnik radnik_bind) {
         Radnik oldRadnik_bind = this.radnik_bind;
         this.radnik_bind = radnik_bind;
@@ -175,20 +139,10 @@ public final class RadnikTopComponent extends TopComponent
 
     public static final String PROP_DATUM_BIND = "datum_bind";
 
-    /**
-     * Get the value of datum_bind
-     *
-     * @return the value of datum_bind
-     */
     public String getDatum_bind() {
         return datum_bind;
     }
 
-    /**
-     * Set the value of datum_bind
-     *
-     * @param datum_bind new value of datum_bind
-     */
     public void setDatum_bind(String datum_bind) {
         String oldDatum_bind = this.datum_bind;
         this.datum_bind = datum_bind;
@@ -221,7 +175,7 @@ public final class RadnikTopComponent extends TopComponent
         propertyChangeSupport.firePropertyChange(PROP_STATUSI_BIND, oldStatusi_bind, statusi_bind);
     }
 //</editor-fold>
-    //
+
     private Node evidencijeRadnikaRoot = null;
     private RADDANZaDatumChildFactory evidencijeChildFactory = null;
     //
@@ -342,6 +296,7 @@ public final class RadnikTopComponent extends TopComponent
 
         jButton_EVIDENCIJA.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ikonice/errors_warnings_info/ok.gif"))); // NOI18N
         org.openide.awt.Mnemonics.setLocalizedText(jButton_EVIDENCIJA, org.openide.util.NbBundle.getMessage(RadnikTopComponent.class, "RadnikTopComponent.jButton_EVIDENCIJA.text")); // NOI18N
+        jButton_EVIDENCIJA.setToolTipText(org.openide.util.NbBundle.getMessage(RadnikTopComponent.class, "RadnikTopComponent.jButton_EVIDENCIJA.toolTipText")); // NOI18N
         jButton_EVIDENCIJA.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton_EVIDENCIJAActionPerformed(evt);
@@ -656,7 +611,7 @@ public final class RadnikTopComponent extends TopComponent
         odabraniRadnici = Utilities.actionsGlobalContext().lookupResult(Radnik.class);
         odabraniDatum = Utilities.actionsGlobalContext().lookupResult(String.class);
 
-        odabraneFirme.addLookupListener(new LookupListener() {
+        llOdabraneFirme = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result f = (Lookup.Result) le.getSource();
@@ -669,9 +624,10 @@ public final class RadnikTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        odabraneFirme.addLookupListener(llOdabraneFirme);
 
-        odabraneOrgJed.addLookupListener(new LookupListener() {
+        llOdabraneOrgJed = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result o = (Lookup.Result) le.getSource();
@@ -686,9 +642,10 @@ public final class RadnikTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        odabraneOrgJed.addLookupListener(llOdabraneOrgJed);
 
-        odabraniRadnici.addLookupListener(new LookupListener() {
+        llOdabraniRadnici = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -706,9 +663,10 @@ public final class RadnikTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        odabraniRadnici.addLookupListener(llOdabraniRadnici);
 
-        odabraniDatum.addLookupListener(new LookupListener() {
+        llOdabraniDatum = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -722,21 +680,22 @@ public final class RadnikTopComponent extends TopComponent
                     }
                 }
             }
-        });
+        };
+        odabraniDatum.addLookupListener(llOdabraniDatum);
     }
 
     @Override
     public void componentClosed() {
-        odabraneFirme.removeLookupListener(this);
+        odabraneFirme.removeLookupListener(llOdabraneFirme);
         odabraneFirme = null;
 
-        odabraneOrgJed.removeLookupListener(this);
+        odabraneOrgJed.removeLookupListener(llOdabraneOrgJed);
         odabraneOrgJed = null;
 
-        odabraniRadnici.removeLookupListener(this);
+        odabraniRadnici.removeLookupListener(llOdabraniRadnici);
         odabraniRadnici = null;
 
-        odabraniDatum.removeLookupListener(this);
+        odabraniDatum.removeLookupListener(llOdabraniDatum);
         odabraniDatum = null;
     }
 
@@ -760,7 +719,7 @@ public final class RadnikTopComponent extends TopComponent
     public ExplorerManager getExplorerManager() {
         return em;
     }
-//</editor-fold>
+    //</editor-fold>
 
     private boolean proveraZaUpis(Radnik radnik, String datum_bind, Statusi status, String nalog)
             throws DatumException, NoResultException, NumberFormatException, NalogException, Exception {
@@ -856,7 +815,7 @@ public final class RadnikTopComponent extends TopComponent
     private void QSRadnik() {
         IRadnik ir = Lookup.getDefault().lookup(IRadnik.class);
 
-        setDatum_bind(datum_bind== null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : datum_bind);
+        setDatum_bind(datum_bind == null ? new SimpleDateFormat("yyyy-MM-dd").format(new Date()) : datum_bind);
 
         if (ir.getRadnik() != null) {
             Radnik r = ir.getRadnik();

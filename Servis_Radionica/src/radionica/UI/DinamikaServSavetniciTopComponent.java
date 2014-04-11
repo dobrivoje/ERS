@@ -9,7 +9,6 @@ import INFSYS.Adapt.Kategorije;
 import INFSYS.Queries.INFSistemQuery;
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.StackedBars.AbstractCategory_StackedBarGenerator;
-import JFXChartGenerators.StackedBars.StackedBarCategoryY_Generator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryX_Generator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;

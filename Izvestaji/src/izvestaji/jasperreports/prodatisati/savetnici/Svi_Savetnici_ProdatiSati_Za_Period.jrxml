@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prodati Sati i Materijal" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="21d1902b-290d-4990-b713-a553bc72e8fd">
+	<property name="ireport.zoom" value="1.9487171000000056"/>
+	<property name="ireport.x" value="70"/>
+	<property name="ireport.y" value="527"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="SansSerif" fontSize="50" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="SubTitle" forecolor="#666666" fontName="SansSerif" fontSize="18" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Column header" forecolor="#666666" fontName="SansSerif" fontSize="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Detail" mode="Transparent" fontName="SansSerif" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Row" mode="Transparent" fontName="SansSerif" pdfFontName="Helvetica" pdfEncoding="Cp1250">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<style name="Crosstab Data Text" hAlign="Center" fontName="SansSerif" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<subDataset name="PieChartDataset" uuid="f8e2d65b-fc7c-472d-8e64-6fe95629ebfa"/>
+	<parameter name="DatumOD" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DatumDO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM [FullKD].[dbo].[f_Servis_Svi_ServisniSavetnici_Prodati_Sati_Detaljno] 
+($P{DatumOD}, $P{DatumDO})]]>
+	</queryString>
+	<field name="IDRadnik" class="java.lang.String"/>
+	<field name="IME" class="java.lang.String"/>
+	<field name="PREZIME" class="java.lang.String"/>
+	<field name="ORGJED" class="java.lang.String"/>
+	<field name="Godina" class="java.lang.Integer"/>
+	<field name="Mesec" class="java.lang.Integer"/>
+	<field name="Radovi" class="java.lang.Double"/>
+	<field name="RadoviPorez" class="java.lang.Double"/>
+	<field name="Materijal" class="java.lang.Double"/>
+	<field name="MaterijalPorez" class="java.lang.Double"/>
+	<field name="UKUPNO" class="java.lang.Double"/>
+	<group name="IDRadnik" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{IDRadnik}]]></groupExpression>
+		<groupHeader>
+			<band height="31">
+				<frame>
+					<reportElement mode="Opaque" x="0" y="3" width="555" height="24" forecolor="#B89F7D" backcolor="#70A9C6" uuid="48743355-7b33-4e10-8466-7f1ff4884076"/>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement style="SubTitle" isPrintRepeatedValues="false" x="2" y="1" width="553" height="23" forecolor="#333333" uuid="af3a59be-1743-4694-95e2-5232864fee7a"/>
+						<textElement textAlignment="Right" verticalAlignment="Middle">
+							<font fontName="Arial" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{IME} +" " + $F{PREZIME} + " - " + $F{IDRadnik}]]></textFieldExpression>
+					</textField>
+				</frame>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="192">
+				<xyAreaChart>
+					<chart>
+						<reportElement x="2" y="5" width="548" height="180" uuid="e2480538-db5b-497e-aee4-0f9bc3fe9c17"/>
+						<chartTitle/>
+						<chartSubtitle/>
+						<chartLegend/>
+					</chart>
+					<xyDataset>
+						<dataset resetType="Group" resetGroup="IDRadnik"/>
+						<xySeries>
+							<seriesExpression><![CDATA["radovi"]]></seriesExpression>
+							<xValueExpression><![CDATA[$F{Mesec}]]></xValueExpression>
+							<yValueExpression><![CDATA[$F{Radovi}]]></yValueExpression>
+						</xySeries>
+						<xySeries>
+							<seriesExpression><![CDATA["materijal"]]></seriesExpression>
+							<xValueExpression><![CDATA[$F{Mesec}]]></xValueExpression>
+							<yValueExpression><![CDATA[$F{Materijal}]]></yValueExpression>
+						</xySeries>
+						<xySeries>
+							<seriesExpression><![CDATA["ukupno"]]></seriesExpression>
+							<xValueExpression><![CDATA[$F{Mesec}]]></xValueExpression>
+							<yValueExpression><![CDATA[$F{UKUPNO}]]></yValueExpression>
+						</xySeries>
+					</xyDataset>
+					<areaPlot>
+						<plot/>
+						<categoryAxisFormat>
+							<axisFormat/>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat/>
+						</valueAxisFormat>
+					</areaPlot>
+				</xyAreaChart>
+			</band>
+		</groupFooter>
+	</group>
+	<title>
+		<band height="90" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="557" height="65" forecolor="#006699" backcolor="#CCCCCC" uuid="6d252601-780c-4c70-ae63-1efc6d340b62"/>
+				<staticText>
+					<reportElement style="Title" x="0" y="0" width="556" height="65" forecolor="#333333" uuid="377f2890-b790-4032-a823-df9aa55a623f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="36" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Prodati Sati i Materijal]]></text>
+				</staticText>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="0" y="68" width="556" height="18" forecolor="#006699" backcolor="#CCCCCC" uuid="e20709e6-b6e8-4f59-9256-0ccafbd02bf1"/>
+				<textField>
+					<reportElement x="0" y="0" width="555" height="18" uuid="facd2946-c772-4637-8188-a2062b890512"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Za period od " + $P{DatumOD}.toString() + ". do "+ $P{DatumDO}.toString() + "."]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="19">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="-1" width="555" height="19" backcolor="#919ED3" uuid="2aa197ef-0d2c-4e7d-af2f-748617602f0a"/>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="4" y="1" width="90" height="18" forecolor="#000000" uuid="fa1ca7e5-f2f5-43e2-a4bf-2556f4d529df"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Prof. Centar]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="94" y="0" width="65" height="18" forecolor="#000000" uuid="eb9ceb31-f2bd-494c-bcb7-8e80392f2048"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Mesec]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="160" y="1" width="108" height="18" forecolor="#000000" uuid="9b31833a-c3c5-477e-8da9-960128516664"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Radovi]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="269" y="1" width="139" height="18" forecolor="#000000" uuid="32d9285e-8806-4564-ba78-4690ab38f89d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Materijal]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="410" y="1" width="143" height="18" forecolor="#333333" uuid="7c40e4b5-d3b4-4c77-9cdb-7a14bd0bc102"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="13" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[UKUPNO]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="2" y="22" width="553" height="1" uuid="32ba9744-ec0c-4b90-bf9a-ca5618f5396a"/>
+			</line>
+			<frame>
+				<reportElement x="0" y="0" width="555" height="20" uuid="1725ea18-bf43-437e-83e7-81bdd63c9d4b"/>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="269" y="2" width="139" height="18" uuid="409dacd3-8b08-433b-9f34-793a12b00e30"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Materijal}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="410" y="2" width="143" height="18" uuid="75c7ea00-994e-411e-998d-86be710c4179"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Radovi} + $F{Materijal}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="160" y="2" width="108" height="18" uuid="2e268962-184e-4a31-804d-90094f8b28c6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Radovi}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="4" y="2" width="90" height="18" uuid="97502807-183e-4327-b5b5-0b65679c290f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ORGJED}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="94" y="2" width="65" height="18" uuid="d4ad0053-fddb-4671-996e-8dbb48ce48db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Mesec}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="8" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="72421adb-dc64-44da-9662-c8dd63acecf3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="5" width="555" height="19" forecolor="#D0B48E" backcolor="#9999FF" uuid="9a8f2899-eebb-48a4-a694-ced45e78484e"/>
+				<textField pattern="dd/MM/yyyy h.mm a">
+					<reportElement style="Column header" x="4" y="3" width="145" height="13" forecolor="#333333" uuid="042988e1-22cd-4c33-b0b5-af2702dba772"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Datum generisanja izveštaja "]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd.MM.yyyy. HH.mm:ss ">
+					<reportElement style="Column header" x="149" y="3" width="120" height="13" forecolor="#333333" uuid="9803e0c7-b64b-45de-8b20-0db4443788a0"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="461" y="3" width="56" height="13" forecolor="#333333" uuid="03a27572-a91c-4d2f-8d95-62e6d263a502"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Strana "+$V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" mode="Transparent" x="517" y="2" width="36" height="16" forecolor="#333333" uuid="9d5824f6-5637-4555-a217-76c89dce5a64"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="10" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" od " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="7"/>
+	</lastPageFooter>
+	<summary>
+		<band height="444">
+			<frame>
+				<reportElement mode="Opaque" x="3" y="6" width="547" height="27" backcolor="#E2E0E0" uuid="c5f94ed3-1beb-46ae-a7b5-9ea64101e6ad"/>
+				<textField>
+					<reportElement style="Column header" positionType="Float" x="19" y="5" width="514" height="18" forecolor="#000000" uuid="4755dabb-b992-479c-afe5-1f5981fd0350"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Udeo servisnih savetnika za period od " + $P{DatumOD}.toString() + " do "+ $P{DatumDO}.toString()]]></textFieldExpression>
+				</textField>
+			</frame>
+			<crosstab>
+				<reportElement mode="Transparent" x="4" y="40" width="546" height="184" uuid="0055d84c-e00b-45c0-aec7-fc5df38a39c1"/>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement mode="Transparent" x="0" y="0" width="51" height="18" backcolor="#FF9393" uuid="adf9366e-570f-46d6-9dc6-8a2a1216bf74"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font size="9" isBold="true"/>
+							</textElement>
+							<text><![CDATA[Mesec \ ID]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="Mesec" width="51" totalPosition="End">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{Mesec}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents backcolor="#CC33FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="3" width="51" height="14" backcolor="#EDEDED" uuid="e503152b-c2c4-4f0b-bf18-7c482f4969cd"/>
+								<textElement verticalAlignment="Middle">
+									<font size="9" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{Mesec}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents backcolor="#BFE1FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+							</box>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="IDRadnik" height="19" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{IDRadnik}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents backcolor="#F0F8FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+							</box>
+							<textField>
+								<reportElement style="Crosstab Data Text" mode="Opaque" x="2" y="0" width="53" height="18" backcolor="#EDEDED" uuid="0472b483-aa3f-4da7-9e2a-235ed54a73b3"/>
+								<textElement verticalAlignment="Middle">
+									<font size="9" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{IDRadnik}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents backcolor="#BFE1FF" mode="Transparent">
+							<box>
+								<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+							</box>
+							<staticText>
+								<reportElement mode="Opaque" x="0" y="0" width="58" height="18" backcolor="#FF9393" uuid="f9f3d94e-f93a-4f68-9119-cb6d79e155c2"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="9" isBold="true"/>
+								</textElement>
+								<text><![CDATA[Ukupno]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="UKUPNOMeasure" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{UKUPNO}]]></measureExpression>
+				</measure>
+				<crosstabCell width="57" height="17">
+					<cellContents mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+						</box>
+						<textField pattern="#,##0.00;-#,##0.00">
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="2" y="3" width="53" height="14" backcolor="#F3F3F3" uuid="6360cf32-0418-4cbf-8ff7-a03a32c638e1"/>
+							<textElement verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[($V{UKUPNOMeasure}==0 || $V{UKUPNOMeasure}==null ? "": $V{UKUPNOMeasure} )]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="57" height="11" rowTotalGroup="Mesec">
+					<cellContents backcolor="#BFE1FF" mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="58" height="17" columnTotalGroup="IDRadnik">
+					<cellContents backcolor="#BFE1FF" mode="Transparent">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+						</box>
+						<textField pattern="#,##0.00;-#,##0.00">
+							<reportElement style="Crosstab Data Text" mode="Opaque" x="0" y="3" width="58" height="14" backcolor="#F4C7C7" uuid="a9712f40-3dc8-433a-afcb-478835f4e87d"/>
+							<textElement verticalAlignment="Middle">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{UKUPNOMeasure}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="58" height="11" rowTotalGroup="Mesec" columnTotalGroup="IDRadnik">
+					<cellContents backcolor="#FFFFFF" mode="Transparent" style="Crosstab Data Text">
+						<box>
+							<pen lineWidth="0.5" lineStyle="Solid" lineColor="#FFFFFF"/>
+						</box>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<stackedBar3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="4" y="251" width="546" height="187" uuid="05b9967b-a868-4860-8e66-d0e9ae7ebeb9"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA[$F{IDRadnik}]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Mesec}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{Radovi} + $F{Materijal}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot isShowLabels="true">
+					<plot/>
+					<itemLabel>
+						<font fontName="SansSerif"/>
+					</itemLabel>
+					<categoryAxisFormat>
+						<axisFormat verticalTickLabels="true"/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</stackedBar3DChart>
+		</band>
+	</summary>
+</jasperReport>

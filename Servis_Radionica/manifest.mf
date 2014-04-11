@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+OpenIDE-Module: radionica
+OpenIDE-Module-Layer: radionica/layer.xml
+OpenIDE-Module-Localizing-Bundle: radionica/Bundle.properties
+OpenIDE-Module-Reqradionicares: org.openide.windows.WindowManager
+OpenIDE-Module-Requires: org.openide.windows.WindowManager
+OpenIDE-Module-Specification-Version: 1.6.1
+

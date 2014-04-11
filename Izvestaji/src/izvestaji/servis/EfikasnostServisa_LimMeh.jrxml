@@ -1,0 +1,1085 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Efikasnost Mehanika i Limarija" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bbd6549f-b4d3-41ee-83c8-00777c575301">
+	<property name="ireport.zoom" value="1.6105100000000079"/>
+	<property name="ireport.x" value="14"/>
+	<property name="ireport.y" value="586"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Helvetica" pdfEncoding="Cp1250">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="PieChartDataset" uuid="fcf52e09-380d-4f59-a36e-57e4f40579c1"/>
+	<parameter name="DatumOD" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="DatumDO" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Radnici" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Ostali" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IDFirma" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="Mehanika" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select * from f_Servis_Efikasnost_LimMeh
+(
+$P{DatumOD} , $P{DatumDO}, 
+$P{Radnici}, $P{Ostali}, 
+$P{IDFirma}, $P{Mehanika}
+)
+order by sifra_orgjed asc]]>
+	</queryString>
+	<field name="IDRadnik" class="java.lang.Long"/>
+	<field name="Ime" class="java.lang.String"/>
+	<field name="Prezime" class="java.lang.String"/>
+	<field name="Firma" class="java.lang.String"/>
+	<field name="Kod" class="java.lang.String"/>
+	<field name="IDOrgjed" class="java.lang.Integer"/>
+	<field name="Sifra_OrgJed" class="java.lang.String"/>
+	<field name="Naziv_OrgJed" class="java.lang.String"/>
+	<field name="Mehanika" class="java.lang.Boolean"/>
+	<field name="UK_VremePrisustva" class="java.lang.Double"/>
+	<field name="UK_Pauza" class="java.lang.Double"/>
+	<field name="UK_Produktivno" class="java.lang.Double"/>
+	<field name="UK_FaktSati" class="java.lang.Double"/>
+	<field name="UK_StepenPrisustva" class="java.lang.Double"/>
+	<field name="UK_StepenIskoriscenja" class="java.lang.Double"/>
+	<field name="UK_StepenEfikasnosti" class="java.lang.Double"/>
+	<field name="UK_StepenProduktivnosti" class="java.lang.Double"/>
+	<field name="W1" class="java.lang.Double"/>
+	<field name="W2" class="java.lang.Double"/>
+	<field name="W3" class="java.lang.Double"/>
+	<field name="W4" class="java.lang.Double"/>
+	<field name="W8" class="java.lang.Double"/>
+	<field name="W5" class="java.lang.Double"/>
+	<field name="W6" class="java.lang.Double"/>
+	<field name="W7" class="java.lang.Double"/>
+	<variable name="UK_Prisustvo" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{UK_VremePrisustva}]]></variableExpression>
+	</variable>
+	<variable name="UK_Pauza" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{UK_Pauza}]]></variableExpression>
+	</variable>
+	<variable name="UK_Produktivno" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{UK_Produktivno}]]></variableExpression>
+	</variable>
+	<variable name="UK_FaktSati" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{UK_FaktSati}]]></variableExpression>
+	</variable>
+	<variable name="UK_W1W4_W8" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W1}+$F{W2}+$F{W3}+$F{W4}+$F{W8}]]></variableExpression>
+	</variable>
+	<variable name="UK_W5_W7" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W5}+$F{W6}+$F{W7}]]></variableExpression>
+	</variable>
+	<variable name="UK_W1" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W1}]]></variableExpression>
+	</variable>
+	<variable name="UK_W2" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W2}]]></variableExpression>
+	</variable>
+	<variable name="UK_W3" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W3}]]></variableExpression>
+	</variable>
+	<variable name="UK_W4" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W4}]]></variableExpression>
+	</variable>
+	<variable name="UK_W5" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W5}]]></variableExpression>
+	</variable>
+	<variable name="UK_W6" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W6}]]></variableExpression>
+	</variable>
+	<variable name="UK_W7" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W7}]]></variableExpression>
+	</variable>
+	<variable name="UK_W8" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{W8}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="82" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="0" width="842" height="53" forecolor="#006699" backcolor="#9DA9B0" uuid="7f194536-9ce9-4111-ba1c-e668d67f0ad7"/>
+				<staticText>
+					<reportElement style="Title" x="202" y="0" width="620" height="52" uuid="7117b334-3639-4fca-a822-5910ea2b2c6d"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="40" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[EFIKASNOST]]></text>
+				</staticText>
+			</frame>
+			<textField>
+				<reportElement style="SubTitle" x="0" y="53" width="802" height="27" uuid="fc85ebf9-1048-44f8-b058-e411228096a4"/>
+				<textElement textAlignment="Right" markup="none">
+					<font fontName="SansSerif" size="15" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Firma} + ", Org. Jedinica - " + $F{Sifra_OrgJed} + " ("+$F{Naziv_OrgJed}+"), Izveštaj za period " +$P{DatumOD} + " do " + $P{DatumDO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="85">
+			<frame>
+				<reportElement mode="Opaque" x="21" y="3" width="780" height="79" backcolor="#F5F5F5" uuid="b254cd78-9387-4fbd-ab6a-200810f9d78c"/>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="0" y="0" width="31" height="79" forecolor="#000000" uuid="d5d24ed2-3990-48ff-88ae-f85ffe0bb875"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[ID]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="31" y="0" width="139" height="79" forecolor="#000000" uuid="842f9eab-afb1-4e2e-a233-45aca3940352"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Radnik]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="206" y="0" width="36" height="79" forecolor="#000000" uuid="a618defd-d80b-467a-a041-d524e11bad82"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Vreme Prisustva]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="242" y="0" width="51" height="79" forecolor="#000000" uuid="9b2fadb7-03cd-43a3-9a5d-8791aeb1bfe7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Pauza]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="292" y="0" width="52" height="79" forecolor="#000000" uuid="7befde8a-c8e7-42b2-83a1-a50788bb7672"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Produktivno]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="342" y="0" width="50" height="79" forecolor="#000000" uuid="66e2403d-b600-40d8-a6a3-a3c8f40e0801"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Prodati Norma Sati]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" mode="Transparent" x="392" y="0" width="33" height="79" forecolor="#000000" backcolor="#DBDBF0" uuid="5bf89534-bb88-47a9-ba6c-4523ca8a5406"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Stepen Prisustva (%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" mode="Transparent" x="424" y="0" width="33" height="79" forecolor="#000000" backcolor="#DBDBF0" uuid="a8a589cb-0898-475b-a6e7-c731bf185112"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Stepen Iskorišćenja (%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" mode="Transparent" x="457" y="0" width="32" height="79" forecolor="#000000" backcolor="#DBDBF0" uuid="7d9121de-af4e-4f78-9eb3-81e025271779"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Stepen Efikasnosti (%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" mode="Transparent" x="489" y="0" width="41" height="79" forecolor="#000000" backcolor="#DBDBF0" uuid="35420763-d1ff-4229-a263-bcb871a902f2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Stepen Produktivnosti (%)]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="531" y="0" width="32" height="79" forecolor="#000000" uuid="76772532-cc8a-4db1-99ec-59fd207e5aba"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W1]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="562" y="0" width="32" height="79" forecolor="#000000" uuid="57a54650-d56c-41b1-ba43-ed7ec5a5ef70"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W2]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="593" y="0" width="32" height="79" forecolor="#000000" uuid="678d5e8a-f59d-43fa-88f7-cfeb986b5040"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W3]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="624" y="0" width="32" height="79" forecolor="#000000" uuid="41eae46d-dc9a-494d-8a3c-9d9e55aa683c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="655" y="0" width="32" height="79" forecolor="#000000" uuid="7f44282c-6c3a-497a-ad01-80ca7b5b5883"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W8]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="686" y="0" width="32" height="79" forecolor="#000000" uuid="fea10d6a-1864-4386-b14a-d31f8e9a847a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W5]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="717" y="0" width="32" height="79" forecolor="#000000" uuid="5f5bbf98-a818-4973-b3f0-b4307867af9e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W6]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="748" y="0" width="32" height="79" forecolor="#000000" uuid="85604a5c-a104-442d-8d91-2be8667baa49"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[W7]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="171" y="0" width="35" height="79" forecolor="#000000" uuid="1a14bfa9-26c4-4ede-bdef-55c21f8b864c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+						<font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Organizaciona jedinica]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="21" y="14" width="780" height="1" uuid="be5bed75-d86c-4796-b81b-5134d2bf86b4"/>
+			</line>
+			<frame>
+				<reportElement x="21" y="0" width="780" height="14" uuid="d9482b45-e97a-4cb6-84f5-7802b4a8bb75"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="31" y="0" width="139" height="14" uuid="8f38d28e-733a-4091-bcc8-dd3bfa11194a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Ime} +" " + $F{Prezime}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="206" y="0" width="36" height="14" uuid="8b545560-3c76-400b-937f-9523dcde4a63"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UK_VremePrisustva}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="242" y="0" width="50" height="14" backcolor="#77DCFE" uuid="2ed42e20-6ce9-4565-b88a-c190f47c5cfd"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UK_Pauza}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="342" y="0" width="50" height="14" backcolor="#77DCFE" uuid="6da80f88-c764-49e5-806c-78f80c243800"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UK_FaktSati}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="392" y="0" width="32" height="14" uuid="0e90d5dd-cc48-4b55-be5e-0ddbac6a61d0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{UK_StepenPrisustva} == null ? "N/A" : $F{UK_StepenPrisustva} )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="424" y="0" width="33" height="14" uuid="f17f52f2-7143-43f0-a0bd-7a1c57484294"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{UK_StepenIskoriscenja} == null ? "N/A" : $F{UK_StepenIskoriscenja} )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="457" y="0" width="32" height="14" uuid="ad7fe7de-bf1c-44d1-b656-446ff3327cfe"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{UK_StepenEfikasnosti} == null ? "N/A" : $F{UK_StepenEfikasnosti} )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="489" y="0" width="41" height="14" uuid="5fa42e4a-9635-4f69-af4c-9451f0761227"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[( $F{UK_StepenProduktivnosti} == null ? "N/A" : $F{UK_StepenProduktivnosti} )]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="531" y="0" width="32" height="14" backcolor="#77DCFE" uuid="b2bdfd1d-8d9a-406b-b476-b8dd7c529d84"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W1}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="562" y="0" width="32" height="14" backcolor="#77DCFE" uuid="03d7494d-3e02-4ea6-810b-c30ae659f814"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W2}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="593" y="0" width="32" height="14" backcolor="#77DCFE" uuid="88034f41-c8a4-43a8-a728-738dd787ce1b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W3}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="624" y="0" width="32" height="14" backcolor="#77DCFE" uuid="bd5f5623-edae-4c33-8655-17edd38c0c3a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W4}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="655" y="0" width="32" height="14" backcolor="#77DCFE" uuid="6bcb364e-ea01-4880-96d4-112f4a5158b2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W8}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="686" y="0" width="32" height="14" backcolor="#77DCFE" uuid="faa7b686-0318-4948-8664-b5de517041b2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W5}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="717" y="0" width="32" height="14" backcolor="#77DCFE" uuid="9a69aec1-ce00-4368-8392-b787d63340e5"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W6}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="748" y="0" width="32" height="14" backcolor="#77DCFE" uuid="784c9630-5842-4576-81b1-1bb96d6e2ea1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{W7}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="0" width="31" height="14" uuid="17fe3f40-8c48-4146-9dfe-bfc887c1e027"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{IDRadnik}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="###0" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="170" y="0" width="35" height="14" uuid="9f12c82a-1e9b-4729-893b-9259dd099cd1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Sifra_OrgJed}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" mode="Opaque" x="291" y="0" width="53" height="14" backcolor="#77DCFE" uuid="e6f102a1-b375-44ea-bc72-8c1e72071f10"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{UK_Produktivno}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="4" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="802" height="16" forecolor="#D0B48E" backcolor="#DCDCDC" uuid="48499c12-9c7c-425f-9650-fe60242ec487"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="753" y="0" width="40" height="16" forecolor="#000000" uuid="b6a2900c-149a-4117-9fe3-b911d85102e2"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="673" y="0" width="80" height="16" forecolor="#000000" backcolor="#FFFFFF" uuid="f426deac-356e-4cde-9c4d-e9abcfe41b5a"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Strana "+$V{PAGE_NUMBER}+" od"]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd-MM-yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="16" forecolor="#000000" uuid="e083b6f7-44ea-4c2d-bd0e-4c40504efddb"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="false" pdfFontName="Helvetica"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="458">
+			<rectangle>
+				<reportElement x="21" y="5" width="780" height="119" uuid="61966f88-79bc-4e9f-9338-b41baa377449"/>
+			</rectangle>
+			<frame>
+				<reportElement mode="Opaque" x="199" y="65" width="197" height="13" backcolor="#E3D73E" uuid="51fbb0f2-1c38-4ec8-a523-d8c2a94098d8"/>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement mode="Opaque" x="150" y="0" width="47" height="13" backcolor="#BAB12F" uuid="dd71ee62-598b-4757-9cae-947e428da952"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_FaktSati}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement mode="Opaque" x="99" y="0" width="50" height="13" backcolor="#CEC435" uuid="2be2b471-0dc2-4739-9693-aef32a93be0f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_Produktivno}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement mode="Opaque" x="51" y="0" width="48" height="13" backcolor="#DED33A" uuid="b7252701-44c4-4af9-b472-794a0422d4e2"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_Pauza}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement mode="Opaque" x="0" y="0" width="50" height="13" backcolor="#F4E840" uuid="15978401-b133-4c1e-bad3-c5a422c5466a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_Prisustvo}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="552" y="64" width="248" height="13" backcolor="#E3D73E" uuid="465856f5-ff75-4409-9546-31cac65daf4c"/>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="0" y="0" width="132" height="13" uuid="f4c60511-64cf-4af8-a052-4547e8d03b2a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_W1W4_W8}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="132" y="0" width="80" height="13" uuid="adcca1bf-f727-4348-8ba0-eba2f88d2869"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_W5_W7}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<frame>
+				<reportElement mode="Opaque" x="552" y="91" width="248" height="13" backcolor="#E3D73E" uuid="63b78838-80ad-41d6-b71f-2dbf781785f1"/>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="1" y="0" width="211" height="13" uuid="cccbdff3-2d8b-4050-b5b7-a2abf66415f0"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_W1W4_W8}+$V{UK_W5_W7}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<rectangle>
+				<reportElement x="552" y="6" width="249" height="46" uuid="5e99319c-3339-4498-a7f4-fe4781c05e30"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="143" y="65" width="55" height="13" uuid="8c41ec22-4601-4553-9ea2-3a6a2fe192c5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[UKUPNO (h)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="552" y="78" width="155" height="13" uuid="15e26660-7e1e-4739-840f-fdc45db64013"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[neproduktivni sati prisustva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="708" y="78" width="93" height="13" uuid="9701e3b6-b165-41f9-b75c-af54f981fad6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[sati odsustva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="552" y="104" width="247" height="13" uuid="29e1cdb9-d94f-4c7f-9329-91a0702e6d6e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[UKUPNO neproduktivni i sati odsustva]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="104" width="99" height="13" uuid="51b6cf99-480a-4c86-be07-3de4c6783eee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[plaćeni sati]]></text>
+			</staticText>
+			<frame>
+				<reportElement mode="Opaque" x="250" y="91" width="99" height="13" backcolor="#E3D73E" uuid="b92eb441-52f5-407b-abcc-bd0c66b622bf"/>
+				<textField pattern="#,##0.00;-#,##0.00">
+					<reportElement x="0" y="0" width="99" height="13" uuid="cec713f5-6387-4d7f-999a-56394bccc0de"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement x="285" y="78" width="1" height="13" uuid="b9fcb90c-a1b0-4283-8982-8214919d8617"/>
+			</line>
+			<line>
+				<reportElement x="329" y="78" width="1" height="13" uuid="58886ba2-1c12-41bb-ba44-eaeb87675d95"/>
+			</line>
+			<line>
+				<reportElement x="349" y="97" width="202" height="1" uuid="e9f7993a-d791-474b-bbe4-d75b0083bd00"/>
+			</line>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="614" y="6" width="31" height="14" backcolor="#77DCFE" uuid="13fb03cc-e28a-4de8-b7c5-c3bae43d4a7d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="739" y="6" width="32" height="14" backcolor="#77DCFE" uuid="7d2d24d6-65af-44bd-b681-7f1d9896fd25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="769" y="6" width="32" height="14" backcolor="#77DCFE" uuid="373f4f73-8ea7-48af-a12d-8f5a4a2d4c4f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="584" y="6" width="32" height="14" backcolor="#77DCFE" uuid="74862985-9b20-4b61-a0d4-59479da7f09b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="676" y="6" width="32" height="14" backcolor="#77DCFE" uuid="d9d66068-fc50-4193-b4eb-ed1373f86ebb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="708" y="6" width="32" height="14" backcolor="#77DCFE" uuid="0eca3f11-cb95-46dc-a3ab-21a088da1957"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="552" y="6" width="32" height="14" backcolor="#77DCFE" uuid="0a2ed55a-f1c2-4f4b-9a84-5de10e5851d4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="646" y="6" width="32" height="14" backcolor="#77DCFE" uuid="3afca1b9-5cf1-411d-bf39-64a6a45f974a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{UK_W4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="678" y="23" width="29" height="14" backcolor="#77DCFE" uuid="709aed7d-c5d1-4606-a2e4-69aa30b0fd0a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W8}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="708" y="23" width="31" height="14" backcolor="#77DCFE" uuid="6d7521fc-20ab-44d9-8f18-719d6100d687"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W5}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="740" y="23" width="29" height="14" backcolor="#77DCFE" uuid="e48e72ea-3c46-4e97-b569-4944f3436cfb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W6}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="646" y="23" width="30" height="14" backcolor="#77DCFE" uuid="5b21cf82-cb30-4a48-bf3d-68c635a7e6c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W4}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="616" y="23" width="29" height="14" backcolor="#77DCFE" uuid="0792c907-2473-4bfc-85ec-5846a8635c06"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W3}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="584" y="23" width="31" height="14" backcolor="#77DCFE" uuid="8e446329-ff8b-47b3-b308-e7846a64dad1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W2}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="771" y="23" width="29" height="14" backcolor="#77DCFE" uuid="cbe8a356-a9c4-4566-9898-92bdb08daffe"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W7}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="552" y="23" width="31" height="14" backcolor="#77DCFE" uuid="d54a0c2b-6f7b-40d5-9c7b-4391bcb04499"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W1}/($V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="552" y="38" width="155" height="14" backcolor="#77DCFE" uuid="20fbdc64-560e-4c67-ac77-aaf9e121dc54"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_W1W4_W8} / ($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="708" y="38" width="91" height="14" backcolor="#77DCFE" uuid="58120964-138e-44f8-bd63-6a834b550922"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100* $V{UK_W5_W7} / ($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="537" y="6" width="14" height="14" uuid="5903ecc1-55cf-406e-8ec7-7dbe491cac57"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(h)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="23" width="14" height="14" uuid="d926c64e-03ff-4adf-af5b-450d6efcf93a"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="38" width="14" height="14" uuid="e1252669-d28d-46cf-819e-de40e6e9da6d"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="51" width="51" height="13" uuid="a103b820-dd2c-431b-b988-31f2c1a1320f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[prisustvo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="249" y="51" width="49" height="13" uuid="7d612d01-5830-4e0f-93f1-b3af8d9fb0ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[pauza]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="298" y="51" width="50" height="13" uuid="024320a1-558d-490e-a447-ac69fd02bc66"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[produk.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="348" y="51" width="48" height="13" uuid="5a923889-18fd-48ba-9a17-9e381524c7e3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[prodati norma sati]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="538" y="91" width="14" height="13" uuid="54eec57d-cacd-4413-b6d6-030edcb85cea"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(h)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="537" y="64" width="14" height="13" uuid="be4b1af9-bf91-45cf-826f-5c752e5808fb"/>
+				<textElement textAlignment="Center">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(h)]]></text>
+			</staticText>
+			<pie3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="21" y="148" width="170" height="120" uuid="229b95be-28c2-48f0-bd1b-259f8e60da55"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<pieSeries>
+						<keyExpression><![CDATA["W1"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W1}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W2"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W2}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W3"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W3}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W4"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W4}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W8"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W8}]]></valueExpression>
+					</pieSeries>
+				</pieDataset>
+				<pie3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#CCCCFF"/>
+						<seriesColor seriesOrder="2" color="#DFB022"/>
+						<seriesColor seriesOrder="3" color="#04E7A9"/>
+						<seriesColor seriesOrder="4" color="#CDCED6"/>
+					</plot>
+					<itemLabel>
+						<font pdfEncoding="Cp1250"/>
+					</itemLabel>
+				</pie3DPlot>
+			</pie3DChart>
+			<pie3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="325" y="148" width="170" height="120" uuid="eaf0d9c5-9559-47a5-8733-4aad6127d052"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<pieSeries>
+						<keyExpression><![CDATA["W5"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W5}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W6"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W6}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W7"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W7}]]></valueExpression>
+					</pieSeries>
+				</pieDataset>
+				<pie3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#CCCCFF"/>
+						<seriesColor seriesOrder="2" color="#DFB022"/>
+						<seriesColor seriesOrder="3" color="#04E7A9"/>
+						<seriesColor seriesOrder="4" color="#CDCED6"/>
+					</plot>
+					<itemLabel>
+						<font pdfEncoding="Cp1250"/>
+					</itemLabel>
+				</pie3DPlot>
+			</pie3DChart>
+			<pie3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="630" y="148" width="170" height="120" uuid="95776118-b62f-4deb-b448-11838d78df8d"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<pieSeries>
+						<keyExpression><![CDATA["W1-W4,W8"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W1W4_W8}]]></valueExpression>
+					</pieSeries>
+					<pieSeries>
+						<keyExpression><![CDATA["W5-W7"]]></keyExpression>
+						<valueExpression><![CDATA[$V{UK_W5_W7}]]></valueExpression>
+					</pieSeries>
+				</pieDataset>
+				<pie3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#CCCCFF"/>
+						<seriesColor seriesOrder="2" color="#DFB022"/>
+						<seriesColor seriesOrder="3" color="#04E7A9"/>
+						<seriesColor seriesOrder="4" color="#CDCED6"/>
+					</plot>
+					<itemLabel>
+						<font pdfEncoding="Cp1250"/>
+					</itemLabel>
+				</pie3DPlot>
+			</pie3DChart>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="249" y="37" width="50" height="14" backcolor="#77DCFE" uuid="61ada1a9-8ca0-4176-a49c-4f04823fe887"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_Pauza}/($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="299" y="37" width="49" height="14" backcolor="#77DCFE" uuid="333bbc00-7e26-45b6-870d-0bc070aa6fdf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_Produktivno}/($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="233" y="37" width="15" height="14" uuid="30f93b6b-2059-4160-a238-caa08d05492b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(%)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="399" y="65" width="138" height="13" uuid="7fd9ec0b-577f-4f69-8a69-558a9a1931f3"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="399" y="64" width="34" height="14" backcolor="#77DCFE" uuid="fcca6ec6-3488-42e1-9162-aa7acfec1640"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_Prisustvo}/($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="432" y="64" width="32" height="14" backcolor="#77DCFE" uuid="dd264911-d620-48f5-baa9-1243573a8ef3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100*$V{UK_Produktivno}/($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="464" y="64" width="32" height="14" backcolor="#77DCFE" uuid="ad117b2f-aa52-4b8b-9e9b-956882ab899a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100* $V{UK_FaktSati} / $V{UK_Produktivno}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" mode="Transparent" x="496" y="64" width="41" height="13" backcolor="#77DCFE" uuid="23f7c35d-a6ce-4825-a9f2-74ad5d1b71db"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<textFieldExpression><![CDATA[100* $V{UK_FaktSati} / $V{UK_Prisustvo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="464" y="37" width="15" height="14" uuid="36825468-baf2-4b4b-9309-a5d7f9e2b4ab"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[(%)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="398" y="51" width="35" height="13" uuid="8814f8c4-721c-4978-973f-5eb73c5a25bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[80%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="51" width="32" height="13" uuid="c87bbf2f-1713-4558-b3f3-4b4e1a937b9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[90%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="51" width="32" height="13" uuid="a906b624-b8ae-4c11-9306-ca1fcd2ffcd7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[100%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="496" y="51" width="42" height="13" uuid="ab33ba60-5e88-475c-9e64-0973e38f27f4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+				</textElement>
+				<text><![CDATA[95%]]></text>
+			</staticText>
+			<bar3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="21" y="282" width="170" height="154" uuid="96a45d29-6772-4995-b545-5d2b7709c165"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Referentna Vrednost"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[80]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Stepen Prisustva"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[100*$V{UK_Prisustvo}/($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#FFCC66"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+			<bar3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="223" y="282" width="170" height="154" uuid="7431dc1f-8fe2-4a7e-ad3a-86963a82b45a"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Referentna Vrednost"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[90]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Stepen Iskorišćenja"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[100*$V{UK_Produktivno}/($V{UK_Pauza}+$V{UK_Produktivno}+$V{UK_W1W4_W8}+$V{UK_W5_W7})]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#FF9999"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+			<bar3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="429" y="282" width="170" height="154" uuid="00ce0d1a-2ca4-4214-ad77-b13717dfcaad"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Referentna Vrednost"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[100]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Stepen Efikasnosti"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[100* $V{UK_FaktSati} / $V{UK_Produktivno}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#FF6666"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+			<bar3DChart>
+				<chart>
+					<reportElement positionType="FixRelativeToBottom" x="632" y="282" width="170" height="154" uuid="2cacd4b2-6f0b-4f4f-b6e6-6978861985bf"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Referentna Vrednost"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[95]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Stepen Produktivnosti"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{Kod}]]></categoryExpression>
+						<valueExpression><![CDATA[100* $V{UK_FaktSati} / $V{UK_Prisustvo}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot>
+						<seriesColor seriesOrder="0" color="#999999"/>
+						<seriesColor seriesOrder="1" color="#9999FF"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat/>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</lastPageFooter>
+</jasperReport>

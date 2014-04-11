@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Analza Poslovanja Profitnih Centara" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9102834e-fd54-4278-b952-196a32695377">
+	<property name="ireport.zoom" value="1.3310000000000015"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="GodinaOD" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="GodinaDO" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT * FROM [ERS].[dbo].[f_Servis_Poslovanje_Mesecno] ($P{GodinaOD}, $P{GodinaDO})
+order by PCENTAR asc, Mesec asc, Godina asc]]>
+	</queryString>
+	<field name="PCENTAR" class="java.lang.String"/>
+	<field name="Mesec" class="java.lang.Integer"/>
+	<field name="Godina" class="java.lang.Integer"/>
+	<field name="Radovi" class="java.lang.Double"/>
+	<field name="Delovi" class="java.lang.Double"/>
+	<field name="Ukupno" class="java.lang.Double"/>
+	<group name="PCENTAR" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{PCENTAR}]]></groupExpression>
+		<groupHeader>
+			<band height="35">
+				<textField pattern="#,###.00;-#,###.00">
+					<reportElement uuid="93a386cc-4987-424f-9c69-09689a048e86" style="SubTitle" x="149" y="6" width="145" height="24" forecolor="#333333"/>
+					<textElement textAlignment="Center">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{PCENTAR}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement uuid="f570f462-f7e8-4e18-a00b-a33e73055fcb" mode="Opaque" x="0" y="6" width="149" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+				</rectangle>
+				<textField>
+					<reportElement uuid="61b9688c-e82e-45b4-83a0-be641ad97803" x="7" y="8" width="142" height="20"/>
+					<textElement>
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["PROFITNI CENTAR"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="ba0b6e68-4ea1-4d1d-8689-4a3964d079c2" positionType="FixRelativeToBottom" x="0" y="34" width="555" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+				<line>
+					<reportElement uuid="43667c1b-01b2-46f7-bdb0-4b16f702d5c6" positionType="FixRelativeToBottom" x="0" y="2" width="555" height="1"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="5"/>
+		</groupFooter>
+	</group>
+	<group name="Mesec" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{Mesec}]]></groupExpression>
+		<groupHeader>
+			<band height="50" splitType="Prevent">
+				<textField>
+					<reportElement uuid="ecfc8c7c-71b3-4fdd-8693-625694c27de5" style="SubTitle" x="140" y="5" width="89" height="24"/>
+					<textElement verticalAlignment="Middle">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{Mesec}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement uuid="d97e249c-7dcc-48e8-83cf-1ff09a723a6b" mode="Opaque" x="63" y="5" width="65" height="24" forecolor="#CCCCCC" backcolor="#CCCCCC"/>
+				</rectangle>
+				<textField>
+					<reportElement uuid="0756b8d3-9d1a-4180-ba6e-c08cfaf57f2d" x="64" y="7" width="63" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["MESEC"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="cbe14004-9790-4861-9099-50e613b5df1b" style="Column header" x="63" y="32" width="65" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Godina]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="3a5bde83-b3ad-4d76-ab32-aa9be2f28d67" style="Column header" x="347" y="32" width="120" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Ukupno]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="4de0439f-eb89-43a8-840c-7814b75f69d1" style="Column header" x="140" y="32" width="89" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Radovi]]></text>
+				</staticText>
+				<staticText>
+					<reportElement uuid="8b3abeb8-e28d-4af2-9d4c-bb102aca5639" style="Column header" x="243" y="32" width="89" height="15"/>
+					<textElement textAlignment="Center"/>
+					<text><![CDATA[Delovi]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="85" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="cbd4dd79-3ddb-490a-9d64-66db4bf53f89" style="Title" x="0" y="5" width="553" height="46"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Wood Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8708fd98-e75a-4042-b0d5-f1d9681e63ef" style="SubTitle" x="0" y="54" width="553" height="29" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Wood SubTitle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a0b626d3-61c1-425e-93c0-014169849a50" x="7" y="9" width="536" height="39"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[Analza Poslovanja Profitnih Centara]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="39c25b37-5b9e-4e1b-b82d-676785aa5741" x="7" y="59" width="447" height="20"/>
+				<textElement markup="none">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Za period od " + $P{GodinaOD} + ". do " + $P{GodinaDO} + ". godine."]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="d1ad2b7c-9117-42d5-9b42-a12dfc4e36be" positionType="FixRelativeToBottom" x="0" y="4" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="4" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c4ae499d-149c-4729-a971-26568f266527" style="Detail" x="63" y="0" width="65" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Godina}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.00;-#,###.00">
+				<reportElement uuid="6da25db0-55d1-4dc7-9a72-279445f2719e" style="Detail" x="347" y="1" width="120" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Ukupno}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.00;-#,###.00">
+				<reportElement uuid="749afebe-982b-407d-a20b-4fcdd4adda05" style="Detail" x="140" y="1" width="89" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Radovi}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.00;-#,###.00">
+				<reportElement uuid="b07bdd57-8261-4808-8988-48ef79abc26b" style="Detail" x="243" y="1" width="89" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{Delovi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="19" splitType="Stretch">
+			<line>
+				<reportElement uuid="b992b2d7-2965-419d-9568-e0a041acdd2b" positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="ce4d7825-57a5-4b0d-b9d3-8bb1ec44942e" style="Column header" x="433" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Stranica "+$V{PAGE_NUMBER}+" od"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="3f036599-8145-4a88-b6e7-ff278bd5beb6" style="Column header" x="513" y="0" width="40" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d.M.yyyy">
+				<reportElement uuid="a6b01dcb-e93e-49db-ab20-ba9ad5f7966d" style="Column header" x="0" y="0" width="197" height="20"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

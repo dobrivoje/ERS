@@ -1,0 +1,13 @@
+.chart-title {
+    -fx-text-fill: #666666;
+}
+.axis-label {
+    -fx-text-fill: brown;
+}
+.default-color0.chart-series-line { -fx-stroke: #64cf64; }
+.default-color1.chart-series-line { -fx-stroke: #dcce52; }
+.default-color2.chart-series-line { -fx-stroke: #e9967a; }
+
+.default-color0.chart-line-symbol { -fx-background-color: #64cf64, white; }
+.default-color1.chart-line-symbol { -fx-background-color: #dcce52, white; }
+.default-color2.chart-line-symbol { -fx-background-color: #dda0dd, white; }

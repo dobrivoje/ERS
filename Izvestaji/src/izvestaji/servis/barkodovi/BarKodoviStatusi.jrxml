@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="BarKod Statusi" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8bb751df-2bc7-4f68-8682-d480eadc043c">
+	<property name="ireport.zoom" value="1.4641000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" forecolor="#FFFFFF" fontName="Times New Roman" fontSize="50" isBold="false" pdfFontName="Times-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Times New Roman" fontSize="18" isBold="false" pdfFontName="Times-Roman"/>
+	<style name="Column header" forecolor="#666666" fontName="Times New Roman" fontSize="14" isBold="true" pdfFontName="Times-Roman"/>
+	<style name="Detail" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman"/>
+	<style name="Row" mode="Transparent" fontName="Times New Roman" pdfFontName="Times-Roman">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style mode="Opaque" backcolor="#F0EFEF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="PieChartDataset" uuid="8fb91f8f-a37f-45df-a1af-fed8024181e0"/>
+	<parameter name="p" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     STATUSI."IDStatus" AS STATUSI_IDStatus,
+     STATUSI."Status" AS STATUSI_Status,
+     STATUSI."Znacenje" AS STATUSI_Znacenje,
+     STATUSI."oznaka" AS STATUSI_oznaka,
+     STATUSI."Napomena" AS STATUSI_Napomena,
+     STATUSI."unos_naloga" AS STATUSI_unos_naloga,
+     STATUSI."Produktivno" AS STATUSI_Produktivno,
+     STATUSI."Prisustvo" AS STATUSI_Prisustvo
+FROM
+     "dbo"."STATUSI" STATUSI]]>
+	</queryString>
+	<field name="STATUSI_IDStatus" class="java.lang.Integer"/>
+	<field name="STATUSI_Status" class="java.lang.String"/>
+	<field name="STATUSI_Znacenje" class="java.lang.String"/>
+	<field name="STATUSI_oznaka" class="java.lang.Integer"/>
+	<field name="STATUSI_Napomena" class="java.lang.String"/>
+	<field name="STATUSI_Prisustvo" class="java.lang.Boolean"/>
+	<title>
+		<band height="94" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-21" y="0" width="597" height="65" forecolor="#006699" backcolor="#CCCCCC" uuid="d3afacec-5208-4171-b001-76b90555b5db"/>
+				<staticText>
+					<reportElement style="Title" x="20" y="0" width="557" height="65" uuid="902c9093-d596-4d36-ba0c-9eba295b370c"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="40" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Bar Kodovi Statusa]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="0" y="0" width="555" height="24" backcolor="#F4F4F4" uuid="ab652ccf-a2ec-489f-8221-768e01c30320"/>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="0" y="2" width="34" height="20" forecolor="#000000" uuid="feecff6f-153f-444b-96b0-823ca52ba462"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[ID]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="34" y="2" width="56" height="20" forecolor="#000000" uuid="a1577023-5e9f-4fef-96dc-6c4888487e13"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Status]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="90" y="2" width="246" height="20" forecolor="#000000" uuid="e31ffba3-603c-4404-96a1-339b9bbcf5ed"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Značenje]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="337" y="2" width="70" height="20" forecolor="#000000" uuid="993c2513-290c-490a-b00d-065758f917c6"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Prisustvo ?]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Column header" positionType="Float" x="436" y="2" width="119" height="20" forecolor="#000000" uuid="ba8aace1-d6bc-4f22-8416-39e7a55e32b5"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<text><![CDATA[Barkod Statusa]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="43" uuid="27d87457-1bb1-42bb-839d-47937ea65135"/>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="0" y="8" width="34" height="18" uuid="54348ef1-5ec5-46fd-b78b-de8348cec1e1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STATUSI_IDStatus}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="34" y="8" width="55" height="18" uuid="5bb584af-19c0-4600-a678-c0e85dfbe867"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STATUSI_Status}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="90" y="8" width="246" height="18" uuid="0b3459fb-91cb-424d-b712-10489b5881a3"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STATUSI_Znacenje}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement style="Detail" positionType="Float" x="337" y="8" width="70" height="18" uuid="941cc48a-dbf6-4a66-8f3f-7fd6ee393d3e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="14" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{STATUSI_Prisustvo}==true ? "Da" : "Ne"]]></textFieldExpression>
+				</textField>
+				<componentElement>
+					<reportElement x="436" y="1" width="119" height="38" uuid="9803806d-9499-4526-a73a-9d295faf0519"/>
+					<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="3of9" drawText="false" checksumRequired="false">
+						<jr:codeExpression><![CDATA[$F{STATUSI_IDStatus}]]></jr:codeExpression>
+					</jr:barbecue>
+				</componentElement>
+				<line>
+					<reportElement positionType="FixRelativeToBottom" x="0" y="39" width="555" height="1" uuid="64a75705-ae59-4ce6-bd68-f00308b82b70"/>
+					<graphicElement>
+						<pen lineWidth="0.5" lineColor="#999999"/>
+					</graphicElement>
+				</line>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="2" y="0" width="553" height="13" forecolor="#D0B48E" backcolor="#ECECEC" uuid="d4efac3b-7aa2-47fd-a8d4-9b14690bcd93"/>
+				<textField evaluationTime="Report">
+					<reportElement style="Column header" x="513" y="0" width="40" height="12" forecolor="#000000" uuid="6fa395a2-b866-45e4-ba02-fa4e99d85bc9"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement style="Column header" x="434" y="0" width="80" height="12" forecolor="#000000" uuid="2b9bc585-d0e6-436e-b7a2-0164bd2a766f"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Stranica"+$V{PAGE_NUMBER}+" od"]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd.MM.yyyy">
+					<reportElement style="Column header" x="2" y="0" width="197" height="13" forecolor="#000000" uuid="76ca89b0-daac-480d-8bc5-9c70cef4da5f"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false" pdfFontName="Helvetica" pdfEncoding="Cp1250"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

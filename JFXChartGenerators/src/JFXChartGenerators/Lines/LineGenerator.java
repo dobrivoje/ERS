@@ -19,12 +19,8 @@ public class LineGenerator extends AbstractMonthLineGenerator {
 
     @Override
     protected LineChart createCustomChart() {
-        // Obavezno generiši onoliko podeljaka na X osi 
-        // koliko ih ima MAKSIMALNO u seriji,a to je ovde 31.
-
-        final NumberAxis xAxis = new NumberAxis(1, 27, 1);
+        final NumberAxis xAxis = new NumberAxis(1, getFXSeriesMaps_MaxXAxis(), 1);
         final NumberAxis yAxis = new NumberAxis();
-        FXSeriesMapsMaxXAxis = 31;
 
         final LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
 
@@ -34,12 +30,10 @@ public class LineGenerator extends AbstractMonthLineGenerator {
         xAxis.setLabel(xAxisTitle);
         xAxis.setTickMarkVisible(false);
         xAxis.setMinorTickCount(0);
-        xAxis.setTickLength(xAxis.getTickLength());
 
         yAxis.setLabel(yAxisTitle);
         yAxis.setTickMarkVisible(false);
         yAxis.setMinorTickCount(0);
-        yAxis.setTickLength(yAxis.getTickLength());
         yAxis.setTickUnit(5);
 
         int i = 0;
@@ -56,8 +50,6 @@ public class LineGenerator extends AbstractMonthLineGenerator {
 
             lineChart.getData().add(sTmp);
         }
-
-        xAxis.setUpperBound(getFXSeriesMapsMaxXAxis());
 
         return lineChart;
     }

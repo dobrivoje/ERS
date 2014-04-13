@@ -38,7 +38,7 @@ public abstract class AbstractBASEChartGenerator<T1, T2> {
     // FXSeriesMapsMaxXAxis : Ako imamo više serija, na X osi se može dogoditi da se prikaže
     // manje podataka u npr. drugoj nego u prvoj seriji ! Zato moramo obezbediti da se prikaže
     // maksimum !
-    protected int FXSeriesMapsMaxXAxis;
+    private int FXSeriesMaps_MaxXAxis;
     protected List<String> FXSeriesMapTitles;
 
     protected String ChartTite;
@@ -50,16 +50,19 @@ public abstract class AbstractBASEChartGenerator<T1, T2> {
 
     protected List<XYChart.Series> fxSeries;
 
-    protected int getFXSeriesMapsMaxXAxis() {
+    protected int getFXSeriesMaps_MaxXAxis() {
+        FXSeriesMaps_MaxXAxis = 0;
         for (Map<T1, T2> s : FXSeriesMaps) {
             // Ako ima više serija, moramo uzeti max vrednost na X osi, da bi se prikazale sve vrednosti !
-            FXSeriesMapsMaxXAxis = Math.max(FXSeriesMapsMaxXAxis, s.entrySet().size());
+            if (FXSeriesMaps_MaxXAxis < s.entrySet().size()) {
+                FXSeriesMaps_MaxXAxis = s.entrySet().size();
+            }
         }
-        return FXSeriesMapsMaxXAxis;
+        return FXSeriesMaps_MaxXAxis;
     }
 
-    public static int getLastDayOfMonth(int year, int month) {
-        c.set(year, month - 1, 1);
+    public static int getLastDayOfMonth(int Year, int Month) {
+        c.set(Year, Month - 1, 1);
         lastDayOfMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
 
         return lastDayOfMonth;

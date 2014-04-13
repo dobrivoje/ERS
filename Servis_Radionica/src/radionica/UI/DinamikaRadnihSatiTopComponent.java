@@ -12,8 +12,8 @@ import INFSYS.Queries.INFSistemQuery;
 import JFXChartGenerators.Lines.AbstractMonthLineGenerator;
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.Lines.LineGenerator;
-import JFXChartGenerators.StackedBars.AbstractCategoryStackedBarGenerator;
-import JFXChartGenerators.StackedBars.StackedBarCategoryGenerator;
+import JFXChartGenerators.StackedBars.AbstractCategory_StackedBarGenerator;
+import JFXChartGenerators.StackedBars.StackedBarCategoryX_Generator;
 import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.text.ParseException;
@@ -69,8 +69,8 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
     private final AbstractMonthLineGenerator lcgRNKretanje = new LineGenerator();
     private final AbstractMonthLineGenerator lcgRNKretanjePreth = new LineGenerator();
 
-    private final AbstractCategoryStackedBarGenerator bCSSavetnici1 = new StackedBarCategoryGenerator();
-    private final AbstractCategoryStackedBarGenerator bCSSavetnici2 = new StackedBarCategoryGenerator();
+    private final AbstractCategory_StackedBarGenerator bCSSavetnici1 = new StackedBarCategoryX_Generator();
+    private final AbstractCategory_StackedBarGenerator bCSSavetnici2 = new StackedBarCategoryX_Generator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
     private String kalendarDatum_bind;
@@ -302,7 +302,7 @@ public final class DinamikaRadnihSatiTopComponent extends TopComponent {
         }
     }
 
-    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractCategoryStackedBarGenerator asbg) {
+    private void setFX_FA_Mesec_SSavetnici_Performanse(int Godina, int Mesec, AbstractCategory_StackedBarGenerator asbg) {
         if (godIzmenjen || mesecIzmenjen) {
             try {
                 asbg.setUpSeries(INFSistemQuery.Mesec_Svi_SSavetnici_Performanse_Serije_Cat(Godina, Mesec, Kategorije.ServisniSavetnik.IDINFSYSTEM));

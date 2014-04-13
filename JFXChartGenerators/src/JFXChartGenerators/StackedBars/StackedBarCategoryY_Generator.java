@@ -16,34 +16,35 @@ import javafx.scene.chart.XYChart;
  *
  * @author root
  */
-public class StackedBarGenerator extends AbstractStackedBarGenerator {
+public class StackedBarCategoryY_Generator extends AbstractCategory_StackedBarGenerator {
 
     @Override
     protected StackedBarChart createCustomChart() {
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
+        final NumberAxis xAxis = new NumberAxis();
+        final CategoryAxis yAxis = new CategoryAxis();
 
-        final StackedBarChart<String, Number> stackedBarChart = new StackedBarChart<>(xAxis, yAxis);
+        final StackedBarChart<Number, String> stackedBarChart = new StackedBarChart<>(xAxis, yAxis);
 
         stackedBarChart.setTitle(ChartTite);
 
         xAxis.setLabel(xAxisTitle);
-        xAxis.setTickMarkVisible(false);
-        xAxis.setCategories(FXCollections.<String>observableArrayList(categories));
+        xAxis.setTickMarkVisible(true);
+        xAxis.setMinorTickCount(0);
+        xAxis.setTickLabelRotation(45);
 
         yAxis.setLabel(yAxisTitle);
-        yAxis.setTickMarkVisible(true);
-        yAxis.setMinorTickCount(3);
+        yAxis.setTickMarkVisible(false);
+        yAxis.setCategories(FXCollections.<String>observableArrayList(categories));
 
         int i = 0;
         XYChart.Series sTmp;
 
-        for (Map<Integer, Integer> s : FXSeriesMaps) {
+        for (Map<String, Integer> s : FXSeriesMaps) {
             sTmp = new XYChart.Series<>();
             sTmp.setName(FXSeriesMapTitles.get(i++));
 
-            for (Map.Entry<Integer, Integer> e : s.entrySet()) {
-                sTmp.getData().add(new XYChart.Data(e.getKey() < 10 ? "0" + e.getKey().toString() : e.getKey().toString(), e.getValue()));
+            for (Map.Entry<String, Integer> e : s.entrySet()) {
+                sTmp.getData().add(new XYChart.Data(e.getValue(), e.getKey()));
             }
 
             stackedBarChart.getData().add(sTmp);

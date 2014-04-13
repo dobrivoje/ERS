@@ -25,7 +25,13 @@ public abstract class AbstractStackedBarGenerator
         super.setUpSeries(FXSeries);
 
         Set<Integer> sTmp = new TreeSet<>(FXSeriesMaps.get(0).keySet());
-
+        
+        // Obavezno se mora očistiti, inače će ostati maks. broj kategorija
+        // na X osi (npr. mesec je februar, i umesto 28 dana, pojavljuje se 31...
+        categories.clear();
+        
+        // Pošto je kategorija String tipa, onda se sortiranje TreeMap-om radi nad stringovima
+        // tako da redosled ide od 1,10,11,12,2,..9 tako da se mora obezbediti sortiranje na način ispod !
         for (Integer k : sTmp) {
             categories.add(k < 10 ? "0" + k.toString() : k.toString());
         }

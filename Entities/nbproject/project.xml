@@ -18,6 +18,7 @@
             <public-packages>
                 <package>ERS.Beans.FakturisaneUsluge</package>
                 <package>ERS.BusinessBeans</package>
+                <package>ERS.TimeLine</package>
                 <package>ERS.queries</package>
                 <package>INFSYS.Adapt</package>
                 <package>INFSYS.Adapt.Functionalities</package>

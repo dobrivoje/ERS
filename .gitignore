@@ -18,3 +18,30 @@
 /OpenCSV_Lib/build/
 /Servis_Manager/build/
 /build/
+/nbproject/private/
+/JasperReportsLibraries/build/
+/BeansBinding/build/
+/JCalendar/build/
+/Entities/build/
+/Persistence/build/
+/SQLServer Driver/build/
+/Servis_TerminPlaner/build/
+/Resursi/build/
+/Izvestaji/build/
+/Pretrazivac/build/
+/UpdateCenter/build/
+/Wallpaper/build/
+/BeansBinding/nbproject/private/
+/Entities/nbproject/private/
+/Izvestaji/nbproject/private/
+/JasperReportsLibraries/nbproject/private/
+/JCalendar/nbproject/private/
+/Persistence/nbproject/private/
+/Pretrazivac/nbproject/private/
+/Resursi/nbproject/private/
+/Servis_Manager/nbproject/private/
+/Servis_Radionica/nbproject/private/
+/Servis_TerminPlaner/nbproject/private/
+/SQLServer Driver/nbproject/private/
+/UpdateCenter/nbproject/private/
+/Wallpaper/nbproject/private/

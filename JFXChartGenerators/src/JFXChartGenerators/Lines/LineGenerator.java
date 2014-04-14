@@ -58,7 +58,7 @@ public class LineGenerator extends AbstractMonthLineGenerator {
         for (Node n : chart.lookupAll(".default-color" + Integer.toString(serija) + ".chart-series-line")) {
             n.setStyle("-fx-stroke: #" + color + ";");
         }
-        
+
         for (Node n : chart.lookupAll(".default-color" + Integer.toString(serija) + ".chart-line-symbol")) {
             n.setStyle("-fx-background-color: #" + color + ", white;");
         }
@@ -67,7 +67,7 @@ public class LineGenerator extends AbstractMonthLineGenerator {
     @Override
     protected void createScene() {
         super.createScene();
-        paint(0, "11FF33");
-        paint(1, "FF33AA");
+        paint(0, "FF33AA");
+        paint(1, "11FF33");
     }
 }

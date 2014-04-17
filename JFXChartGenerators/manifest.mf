@@ -1,4 +1,4 @@
 Manifest-Version: 1.0
 OpenIDE-Module: JFXChartGenerators
 OpenIDE-Module-Localizing-Bundle: JFXChartGenerators/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.6.15
+OpenIDE-Module-Specification-Version: 1.7

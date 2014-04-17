@@ -10,13 +10,13 @@ import static INFSYS.Queries.INFSistemQuery.finansijskiAspekt_GodisnjiPregled_Ra
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.StackedBars.AbstractStackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarGenerator;
-import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import org.dobrivoje.calendarutilities.SrpskiKalendar;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -66,19 +66,19 @@ public final class DinamikaFinPoslovanjaServisaTopComponent extends TopComponent
     private final AbstractStackedBarGenerator sbFinAspektTekGod = new StackedBarGenerator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
-    private String kalendarDatum_bind;
+    private String kalendarDatum;
 
     public String getKalendarDatum() {
-        return kalendarDatum_bind;
+        return kalendarDatum;
     }
 
-    public void setKalendarDatum(String kalendar) {
-        this.kalendarDatum_bind = kalendar;
+    public void setKalendarDatum(String kalendarDatum) {
+        this.kalendarDatum = kalendarDatum;
 
         try {
             calendar.setTime(
-                    kalendar == null
-                    ? new Date() : new SimpleDateFormat("yyyy-MM-dd").parse(kalendar));
+                    kalendarDatum == null
+                    ? new Date() : new SimpleDateFormat("yyyy-MM-dd").parse(kalendarDatum));
 
             if (calendar.get(Calendar.YEAR) != god) {
                 godIzmenjen = true;

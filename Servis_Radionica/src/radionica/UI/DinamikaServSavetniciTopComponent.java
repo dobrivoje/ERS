@@ -10,13 +10,13 @@ import INFSYS.Queries.INFSistemQuery;
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.StackedBars.AbstractCategory_StackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryX_Generator;
-import com.dobrivoje.utilities.datumi.SrpskiKalendar;
 import com.dobrivoje.utilities.warnings.Display;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import org.dobrivoje.calendarutilities.SrpskiKalendar;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -54,7 +54,7 @@ import org.openide.windows.WindowManager;
 public final class DinamikaServSavetniciTopComponent extends TopComponent {
 
     private Lookup.Result<String> kalendarLookup;
-    private LookupListener ll;
+    private LookupListener llKalendar;
 
     private final Calendar calendar = Calendar.getInstance();
     private int god, mesec;
@@ -166,7 +166,7 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
                 .findTopComponent("PretrazivacTopComponent")
                 .getLookup().lookupResult(String.class);
 
-        ll = new LookupListener() {
+        llKalendar = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -181,12 +181,12 @@ public final class DinamikaServSavetniciTopComponent extends TopComponent {
                 }
             }
         };
-        kalendarLookup.addLookupListener(ll);
+        kalendarLookup.addLookupListener(llKalendar);
     }
 
     @Override
     public void componentClosed() {
-        kalendarLookup.removeLookupListener(ll);
+        kalendarLookup.removeLookupListener(llKalendar);
         kalendarLookup = null;
     }
     //</editor-fold>

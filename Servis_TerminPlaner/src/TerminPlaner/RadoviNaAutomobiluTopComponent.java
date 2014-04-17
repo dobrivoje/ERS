@@ -6,7 +6,6 @@ package TerminPlaner;
 
 import INFSYS.Queries.INFSistemQuery;
 import TerminPlaner.QuickSearch.ISifra;
-import com.dobrivoje.utilities.datumi.DatumSelektor;
 import com.dobrivoje.utilities.icons.icon_renderer.INodeIconRenderer;
 import com.dobrivoje.utilities.icons.icon_renderer.IconRenderer;
 import com.dobrivoje.utilities.icons.icon_renderer.IconType;
@@ -35,6 +34,7 @@ import node_klase.infsistem.radninalozi.RadniNaloziRegBrojChildFactory;
 import node_klase.infsistem.radninalozi.RadniNaloziZaDatumChildFactory;
 import node_klase.infsistem.radninalozi.RadniNaloziZaSasijuChildFactory;
 import node_klase.infsistem.sifarnik.SifarnikChildFactory;
+import org.dobrivoje.calendarutilities.DatumSelektor;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;

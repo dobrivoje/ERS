@@ -10,7 +10,6 @@ import com.dobrivoje.utilities.comboboxmodeli.FirmaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.KompanijaComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.OrgJedComboBoxModel;
 import com.dobrivoje.utilities.comboboxmodeli.TipRadnikaComboBoxModel;
-import com.dobrivoje.utilities.datumi.DatumSelektor;
 import com.dobrivoje.utilities.warnings.Display;
 import ent.Firma;
 import ent.Kompanija;
@@ -37,6 +36,7 @@ import org.openide.util.NbBundle.Messages;
 import org.openide.util.Utilities;
 import javax.persistence.RollbackException;
 import javax.swing.SwingUtilities;
+import org.dobrivoje.calendarutilities.DatumSelektor;
 import servis.manager.QuickSearch.IRadnik;
 
 /**

@@ -18,27 +18,6 @@ import javafx.scene.chart.XYChart;
  */
 public class StackedBarCategoryX_Generator extends AbstractCategory_StackedBarGenerator {
 
-    private double YAxisLowerBound = -9999999999D;
-    private double YAxisUpperBound = -9999999999D;
-
-    //<editor-fold defaultstate="collapsed" desc="getters/setters">
-    public double getYAxisLowerBound() {
-        return YAxisLowerBound;
-    }
-
-    public void setYAxisLowerBound(double YAxisLowerBound) {
-        this.YAxisLowerBound = YAxisLowerBound;
-    }
-
-    public double getYAxisUpperBound() {
-        return YAxisUpperBound;
-    }
-
-    public void setYAxisUpperBound(double YAxisUpperBound) {
-        this.YAxisUpperBound = YAxisUpperBound;
-    }
-    //</editor-fold>
-
     @Override
     protected StackedBarChart createCustomChart() {
         final CategoryAxis xAxis = new CategoryAxis();
@@ -55,13 +34,6 @@ public class StackedBarCategoryX_Generator extends AbstractCategory_StackedBarGe
         yAxis.setLabel(yAxisTitle);
         yAxis.setTickMarkVisible(true);
         yAxis.setMinorTickCount(6);
-
-        if (YAxisLowerBound != -9999999999D) {
-            yAxis.setLowerBound(YAxisLowerBound);
-        }
-        if (YAxisUpperBound != -9999999999D) {
-            yAxis.setLowerBound(YAxisUpperBound);
-        }
 
         int i = 0;
         XYChart.Series sTmp;

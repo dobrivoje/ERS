@@ -6,7 +6,6 @@ package radionica.UI;
 
 import ERS.queries.ERSQuery;
 import Exceptions.AktivanRadnikException;
-import Exceptions.DatumException;
 import Exceptions.NalogException;
 import Exceptions.RadnikException;
 import com.dobrivoje.utilities.comboboxmodeli.StatusiComboBoxModel;
@@ -24,6 +23,7 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.NoResultException;
 import node_klase.RADDANZaDatumChildFactory;
+import org.dobrivoje.calendarutilities.exceptions.DatumException;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;

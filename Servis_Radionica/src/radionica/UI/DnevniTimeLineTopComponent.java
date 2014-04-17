@@ -57,45 +57,45 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
     private final AbstractCategory_StackedBarGenerator radniciFXCategories = new StackedBarCategoryX_Generator();
 
     //<editor-fold defaultstate="collapsed" desc="Kalendar Bind">
-    private String kalendarDatum_bind;
-    private boolean kalendarIzmenjen;
-    
+    private String kalendarDatum;
+    private boolean novDatum;
+
     public String getKalendarDatum() {
-        return kalendarDatum_bind;
+        return kalendarDatum;
     }
 
-    public void setKalendarDatum(String kalendar) {
-        if (kalendar == null) {
-            kalendar = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-            kalendarIzmenjen = true;
+    public void setKalendarDatum(String Datum) {
+        if (Datum == null) {
+            Datum = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+            novDatum = true;
         }
-        if (!kalendar.equals(this.kalendarDatum_bind)) {
-            this.kalendarDatum_bind = kalendar;
-            this.kalendarIzmenjen = true;
+        if (!Datum.equals(this.kalendarDatum)) {
+            this.kalendarDatum = Datum;
+            this.novDatum = true;
         } else {
-            this.kalendarIzmenjen = false;
+            this.novDatum = false;
         }
+
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Firma bind">
-    private Firma firma_bind = null;
-    private boolean firmaIzmenjena;
+    private Firma Firma = null;
+    private boolean novaFirma;
 
-    public Firma getFirma_bind() {
-        return firma_bind;
+    public Firma getFirma() {
+        return Firma;
     }
 
-    public void setFirma(Firma firma_bind) {
-        if (firma_bind == null) {
-            this.firma_bind = ERSQuery.FirmaID(2);
-            this.firmaIzmenjena = true;
-        }
-        if (!firma_bind.equals(this.firma_bind)) {
-            this.firma_bind = firma_bind;
-            this.firmaIzmenjena = true;
+    public void setFirma(Firma Firma) {
+        if (Firma == null) {
+            this.Firma = ERSQuery.PODRAZUMEVANA_FIRMA;
+            this.novaFirma = true;
+        } else if (!Firma.equals(this.Firma)) {
+            this.Firma = Firma;
+            this.novaFirma = true;
         } else {
-            this.firmaIzmenjena = false;
+            this.novaFirma = false;
         }
     }
     //</editor-fold>
@@ -113,7 +113,7 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
 
         radniciFXCategories.setUpChartPanel(jPanel_TimeLine);
         radniciFXCategories.setCSSStyle(CSSStyles.Style.RED_BAR);
-        setFX_TimeLine(firma_bind, "2014-4-9", radniciFXCategories);
+        setFX_TimeLine(Firma, "2014-4-9", radniciFXCategories);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
                 if (!datumi.isEmpty()) {
                     for (String d1 : datumi) {
                         setKalendarDatum(d1);
-                        setFX_TimeLine(firma_bind, d1, radniciFXCategories);
+                        setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
                     }
                 }
             }
@@ -187,12 +187,12 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
                 if (!firme.isEmpty()) {
                     for (Firma f1 : firme) {
                         setFirma(f1);
-                        setFX_TimeLine(firma_bind, kalendarDatum_bind, radniciFXCategories);
+                        setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
                     }
                 }
             }
         };
-        firmaLookup.addLookupListener(llKalendar);
+        firmaLookup.addLookupListener(llFirma);
     }
 
     @Override
@@ -219,16 +219,13 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
     //</editor-fold>
 
     private void setFX_TimeLine(Firma Firma, String Datum, AbstractCategory_StackedBarGenerator asbg) {
-        if (kalendarIzmenjen || firmaIzmenjena) {
+        if (novDatum || novaFirma) {
             try {
-                /*
-                 asbg.setUpSeries(ERS.queries.ERSQuery.allWorkersTimeLine(firma, Datum));
 
-                 asbg.setChartTitle("Učešće Servisnih Savetnika," + SrpskiKalendar.getMesecNazivLatinica(Mesec) + " " + String.valueOf(Godina));
-                 asbg.setSeriesTitles("Radovi", "Materijal");
-                 asbg.createFXObject();
-                    
-                 */
+                // asbg.setUpSeries(ERS.queries.ERSQuery.allWorkersTimeLineCat(Firma, Datum));
+                asbg.setChartTitle(Datum);
+                asbg.createFXObject();
+
             } catch (NullPointerException ex) {
                 Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);
             } catch (Exception e) {

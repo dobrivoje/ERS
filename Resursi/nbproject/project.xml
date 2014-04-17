@@ -31,7 +31,7 @@
                     </run-dependency>
                 </dependency>
                 <dependency>
-                    <code-name-base>org.dobrivoje.utils</code-name-base>
+                    <code-name-base>Utils</code-name-base>
                     <build-prerequisite/>
                     <compile-dependency/>
                     <run-dependency>

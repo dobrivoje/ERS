@@ -3,17 +3,16 @@
     <type>org.netbeans.modules.apisupport.project</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/nb-module-project/3">
-            <code-name-base>org.dobrivoje.utils</code-name-base>
+            <code-name-base>Utils</code-name-base>
             <suite-component/>
             <module-dependencies/>
             <public-packages>
                 <package>org.dobrivoje.calendarutilities</package>
                 <package>org.dobrivoje.calendarutilities.exceptions</package>
-                <package>org.dobrivoje.utils</package>
             </public-packages>
             <class-path-extension>
-                <runtime-relative-path>ext/JavaLibraryCALENDAR.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/JavaLibraryCALENDAR.jar</binary-origin>
+                <runtime-relative-path>ext/JavaLibraryUTILS.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/JavaLibraryUTILS.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

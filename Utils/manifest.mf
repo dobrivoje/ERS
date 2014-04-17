@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-OpenIDE-Module: org.dobrivoje.utils
-OpenIDE-Module-Localizing-Bundle: org/dobrivoje/utils/Bundle.properties
-OpenIDE-Module-Specification-Version: 1.0
+OpenIDE-Module: Utils
+OpenIDE-Module-Localizing-Bundle: Utils/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.2
 

@@ -5,15 +5,18 @@
  */
 package radionica.UI;
 
+import ERS.TimeLine.Functionalities.Adapters.FirmaAdapter;
 import ERS.queries.ERSQuery;
 import JFXChartGenerators.CssStyles.CSSStyles;
 import JFXChartGenerators.StackedBars.AbstractCategory_StackedBarGenerator;
 import JFXChartGenerators.StackedBars.StackedBarCategoryX_Generator;
 import com.dobrivoje.utilities.warnings.Display;
 import ent.Firma;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
+import org.dobrivoje.calendarutilities.DobriKalendar;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -50,9 +53,11 @@ import org.openide.windows.WindowManager;
 public final class DnevniTimeLineTopComponent extends TopComponent {
 
     private Lookup.Result<String> kalendarLookup;
-    private LookupListener llKalendar;
+    private LookupListener LLKalendar;
     private Lookup.Result<Firma> firmaLookup;
-    private LookupListener llFirma;
+    private LookupListener LLFirma;
+
+    private FirmaAdapter FA;
 
     private final AbstractCategory_StackedBarGenerator radniciFXCategories = new StackedBarCategoryX_Generator();
 
@@ -87,12 +92,14 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
         return Firma;
     }
 
-    public void setFirma(Firma Firma) {
+    public void setFirma(Firma Firma) throws ParseException {
         if (Firma == null) {
             this.Firma = ERSQuery.PODRAZUMEVANA_FIRMA;
+            FA = new FirmaAdapter(Firma, kalendarDatum);
             this.novaFirma = true;
         } else if (!Firma.equals(this.Firma)) {
             this.Firma = Firma;
+            FA.setFirma(Firma);
             this.novaFirma = true;
         } else {
             this.novaFirma = false;
@@ -100,7 +107,7 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
     }
     //</editor-fold>
 
-    public DnevniTimeLineTopComponent() {
+    public DnevniTimeLineTopComponent() throws ParseException {
         initComponents();
         setName(Bundle.CTL_DnevniTimeLineTopComponent());
         setToolTipText(Bundle.HINT_DnevniTimeLineTopComponent());
@@ -113,7 +120,7 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
 
         radniciFXCategories.setUpChartPanel(jPanel_TimeLine);
         radniciFXCategories.setCSSStyle(CSSStyles.Style.RED_BAR);
-        setFX_TimeLine(Firma, "2014-4-9", radniciFXCategories);
+        setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
     }
 
     /**
@@ -162,23 +169,26 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
                 .findTopComponent("PretrazivacTopComponent")
                 .getLookup().lookupResult(Firma.class);
 
-        llKalendar = new LookupListener() {
+        LLKalendar = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
                 Collection<String> datumi = lr.allInstances();
 
-                if (!datumi.isEmpty()) {
-                    for (String d1 : datumi) {
-                        setKalendarDatum(d1);
-                        setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
+                try {
+                    if (!datumi.isEmpty()) {
+                        for (String d1 : datumi) {
+                            setKalendarDatum(d1);
+                            setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
+                        }
                     }
+                } catch (ParseException ex) {
                 }
             }
         };
-        kalendarLookup.addLookupListener(llKalendar);
+        kalendarLookup.addLookupListener(LLKalendar);
 
-        llFirma = new LookupListener() {
+        LLFirma = new LookupListener() {
             @Override
             public void resultChanged(LookupEvent le) {
                 Lookup.Result lr = (Lookup.Result) le.getSource();
@@ -186,20 +196,23 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
 
                 if (!firme.isEmpty()) {
                     for (Firma f1 : firme) {
-                        setFirma(f1);
-                        setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
+                        try {
+                            setFirma(f1);
+                            setFX_TimeLine(Firma, kalendarDatum, radniciFXCategories);
+                        } catch (ParseException ex) {
+                        }
                     }
                 }
             }
         };
-        firmaLookup.addLookupListener(llFirma);
+        firmaLookup.addLookupListener(LLFirma);
     }
 
     @Override
     public void componentClosed() {
-        kalendarLookup.removeLookupListener(llKalendar);
+        kalendarLookup.removeLookupListener(LLKalendar);
         kalendarLookup = null;
-        firmaLookup.removeLookupListener(llFirma);
+        firmaLookup.removeLookupListener(LLFirma);
         firmaLookup = null;
     }
      //</editor-fold>
@@ -218,13 +231,15 @@ public final class DnevniTimeLineTopComponent extends TopComponent {
     }
     //</editor-fold>
 
-    private void setFX_TimeLine(Firma Firma, String Datum, AbstractCategory_StackedBarGenerator asbg) {
+    private void setFX_TimeLine(Firma Firma, String Datum, AbstractCategory_StackedBarGenerator acsg)
+            throws ParseException {
+        FirmaAdapter fa = new FirmaAdapter(Firma, Datum);
+
         if (novDatum || novaFirma) {
             try {
-
-                // asbg.setUpSeries(ERS.queries.ERSQuery.allWorkersTimeLineCat(Firma, Datum));
-                asbg.setChartTitle(Datum);
-                asbg.createFXObject();
+                acsg.setUpSeries();
+                acsg.setChartTitle(Datum);
+                acsg.createFXObject();
 
             } catch (NullPointerException ex) {
                 Display.obavestenjeBaloncic("Greška.", ex.getLocalizedMessage(), Display.TIP_OBAVESTENJA.GRESKA);

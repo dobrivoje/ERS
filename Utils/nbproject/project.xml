@@ -12,8 +12,8 @@
                 <package>org.dobrivoje.utils</package>
             </public-packages>
             <class-path-extension>
-                <runtime-relative-path>ext/JavaLibraryCALENDAR.jar</runtime-relative-path>
-                <binary-origin>release/modules/ext/JavaLibraryCALENDAR.jar</binary-origin>
+                <runtime-relative-path>ext/JavaLibraryUTILS.jar</runtime-relative-path>
+                <binary-origin>release/modules/ext/JavaLibraryUTILS.jar</binary-origin>
             </class-path-extension>
         </data>
     </configuration>

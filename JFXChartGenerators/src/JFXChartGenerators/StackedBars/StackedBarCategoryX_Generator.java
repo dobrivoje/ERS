@@ -51,5 +51,4 @@ public class StackedBarCategoryX_Generator extends AbstractCategory_StackedBarGe
 
         return stackedBarChart;
     }
-
 }

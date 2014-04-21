@@ -90,7 +90,7 @@ public class ReportGenerator {
             JasperViewer.viewReport(jasperPrint, false);
             entityManager.getTransaction().commit();
         } catch (NullPointerException | JRException e1) {
-            Display.obavestenjeBaloncic("GreĹˇka.", e1.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
+            Display.obavestenjeBaloncic("Greška.", e1.getMessage(), Display.TIP_OBAVESTENJA.GRESKA);
 
             if (!entityManager.getTransaction().isActive()) {
                 entityManager.getTransaction().rollback();
@@ -226,5 +226,5 @@ public class ReportGenerator {
 
         return parameters;
     }
-//</editor-fold>
+    //</editor-fold>
 }

@@ -10,9 +10,12 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.swing.table.TableColumnModel;
 import node_klase.interfejsi.globalrefresh.refreshEvidencijeRadnika;
 import node_klase.radnici.dnevnaevidencija.EvidencijaSvihRadnikaFirmeZaDatumChildFactory;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.netbeans.swing.etable.ETableColumn;
+import org.netbeans.swing.etable.ETableColumnModel;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
@@ -104,7 +107,7 @@ public final class DnevnaEvidencijaTopComponent extends TopComponent
     private void evidencijeRadnikaNodeCreation(boolean aktivnaFirma) {
         evidencijeRadnikaRefresh(
                 aktivnaFirma
-                ? aktivneFirme.iterator().next() : this.firma, kalendarDatum);
+                        ? aktivneFirme.iterator().next() : this.firma, kalendarDatum);
 
         jCheckBox_AktivneFirmeActionPerformed(null);
 
@@ -126,6 +129,11 @@ public final class DnevnaEvidencijaTopComponent extends TopComponent
                 "status", "Status", "nalog", "NALOG",
                 "pocStanja", "Početak", "krajStanja", "Kraj",
                 "trajanje", "Trajanje");
+
+        // Sakrij prvu kolonu koja je ima bezveze naziv node-a :
+        TableColumnModel tm = outlineViewDnevnaEvidencijeSvihRadnika.getOutline().getColumnModel();
+        ETableColumn etc = (ETableColumn) tm.getColumn(0);
+        ((ETableColumnModel) tm).setColumnHidden(etc, true);
 
         evidencijeRadnikaNodeCreation(jCheckBox_AktivneFirme.isSelected());
     }

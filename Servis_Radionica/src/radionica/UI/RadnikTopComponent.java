@@ -22,9 +22,12 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.NoResultException;
+import javax.swing.table.TableColumnModel;
 import node_klase.RADDANZaDatumChildFactory;
 import org.dobrivoje.calendarutilities.exceptions.DatumException;
 import org.netbeans.api.settings.ConvertAsProperties;
+import org.netbeans.swing.etable.ETableColumn;
+import org.netbeans.swing.etable.ETableColumnModel;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
 import org.openide.explorer.ExplorerManager;
@@ -197,6 +200,11 @@ public final class RadnikTopComponent extends TopComponent
                 "pocStanja", "Početak", "krajStanja", "Kraj",
                 "trajanje", "Trajanje");
 
+        // Sakrij prvu kolonu koja je ima bezveze naziv node-a :
+        TableColumnModel tm = outlineViewEvidencijeRadnikaZaDan.getOutline().getColumnModel();
+        ETableColumn etc = (ETableColumn) tm.getColumn(0);
+        ((ETableColumnModel) tm).setColumnHidden(etc, true);
+        
         evidencijeRadnikaNodeCreation(r, datum);
         associateLookup(ExplorerUtils.createLookup(em, getActionMap()));
     }
